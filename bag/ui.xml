@@ -1,0 +1,58 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/  http://wowprogramming.com/FrameXML/UI.xsd">
+	<Button name="DJUIBagItemTemplate" virtual="true">
+		<Size>
+			<AbsDimension x="37" y="37"/>
+		</Size>
+		<Layers>
+			<Layer level="BORDER">
+				<Texture name="$parentIconTexture" parentKey="icon"/>
+				<FontString hidden="true" inherits="NumberFontNormal" justifyH="RIGHT" name="$parentCount" parentKey="count">
+					<Anchors>
+						<Anchor point="BOTTOMRIGHT">
+							<Offset>
+								<AbsDimension x="0" y="1"/>
+							</Offset>							
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+			<Layer level="OVERLAY">
+				<Texture alphaMode="ADD" file="Interface\Buttons\UI-ActionButton-Border" name="$parentGlow" parentKey="glow">
+					<Size x="70" y="70"/>
+					<Anchors>
+						<Anchor point="CENTER"/>
+					</Anchors>
+					<Color a="0.6" b="1.0" g="1.0" r="1.0"/>
+				</Texture>
+			</Layer>
+		</Layers>
+
+		<Scripts>
+			<OnEnter function="DJUIBag_ItemEnter" />
+			<OnLeave function="DJUIBag_ItemLeave" />
+		</Scripts>
+
+		<NormalTexture file="Interface\Buttons\UI-Quickslot2" name="$parentNormalTexture">
+			<Size>
+				<AbsDimension x="64" y="64"/>
+			</Size>
+			<Anchors>
+				<Anchor point="CENTER">
+					<Offset>
+						<AbsDimension x="0" y="-1"/>
+					</Offset>
+				</Anchor>
+			</Anchors>
+		</NormalTexture>
+		<PushedTexture file="Interface\Buttons\UI-Quickslot-Depress"/>
+		<HighlightTexture alphaMode="ADD" file="Interface\Buttons\ButtonHilight-Square"/>
+	</Button>
+	<Frame name="DJUIBag" parent="UIParent">
+		<Anchors>
+			<Anchor point="CENTER" relativePoint="CENTER" relativeTo="UIParent"/>
+		</Anchors>
+		<Scripts>
+			<OnLoad function="DJUIBag_OnLoad" />
+		</Scripts>
+	</Frame>
+</Ui>
