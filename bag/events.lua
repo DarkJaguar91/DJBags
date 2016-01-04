@@ -1,15 +1,17 @@
 local _, ns = ...
 
-local impl = ns.bag.impl
+local impl = ns.impl
+local eventFrame = CreateFrame("Frame", "DJUIBagEventFrame", nil)
+eventFrame:Hide()
 
 SLASH_DJBAG1, SLASH_DJBAG2 = '/djb', '/djbag'
 function SlashCmdList.DJBAG(msg, editbox)
 
 end
 
-impl.mainFrame:RegisterEvent("ADDON_LOADED")
-
-impl.mainFrame:SetScript("OnEvent", function(self, event, ...)
+eventFrame:RegisterEvent("ADDON_LOADED")
+eventFrame:RegisterEvent("BAG_UPDATE")
+eventFrame:SetScript("OnEvent", function(self, event, ...)
 	if impl[event] then
 		impl[event](impl, ...)
 	end

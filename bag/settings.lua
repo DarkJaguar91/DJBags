@@ -1,12 +1,7 @@
 local _, ns = ...
 
-if not ns.bag then
-	ns.bag = {}
-	ns.bag.__index = ns.bag
-end
-
 local settings = {}
-ns.bag.settings = settings
+ns.settings = settings
 
 settings.saved = {
 	itemSize = 37,
@@ -18,13 +13,16 @@ settings.saved = {
 	countFontSize = 10,
 	types = {},
 	bagColumns = {
-		["Miscellaneous"] = 0,
-		["Consumable"] = 0,
-		["Trade Goods"] = 0,
-		["Quest"] = 0,
-		["Sets"] = 1,
-		["Armor"] = 1,
-		["Weapon"] = 1,
+		{
+			"Miscellaneous",
+			"Consumable",
+			"Trade Goods",
+			"Quest",
+		},
+		{
+			"Armor",
+			"Weapon"
+		}
 	},
 }
 

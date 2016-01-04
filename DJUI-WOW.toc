@@ -2,8 +2,6 @@
 ## Author: Darkjaguar91
 ## Version: 0.01
 ## Title: DJUI
-## Notes: NOTE!!.
-
-core/core.xml
+## Notes: NOTE!!
 
 bag/bag.xml
