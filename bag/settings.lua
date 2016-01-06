@@ -9,14 +9,20 @@ settings.saved = {
 	itemPadding = 3,
 	padding = 5,
 	bagPadding = 3,
-	titleSize = 15,
-	countFontSize = 10,
+	containerColor = {0, 0, 0, 0.6},
+	titleSize = 11,
+	titlePadding = 2,
+	titleColor = {0.8, 0.8, 0.8, 1},
+	countFontSize = 11,
+	countFontBotPadding = 2,
+	countFontSidePadding = 2,
 	types = {},
 	bagColumns = {
 		{
 			"Miscellaneous",
 			"Consumable",
 			"Trade Goods",
+			"Junk",
 			"Quest",
 		},
 		{

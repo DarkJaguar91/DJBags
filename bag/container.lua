@@ -16,15 +16,20 @@ function containers:GetCurrencyBar()
 		self.currencyBar = CreateFrame("Frame", "DJUICurrencyBar", UIParent)
 		self.currencyBar:SetSize(container:GetWidth(), settings.saved.titleSize)
 		self.currencyBar:SetPoint("BOTTOMRIGHT", -300, 125)
-		self.currencyBar.background = self.currencyBar:CreateTexture("DJUICurrencyBarBackground", "BACKGROUND")
-		self.currencyBar.background:SetAllPoints()
-		self.currencyBar.background:SetTexture(0, 0, 0, 0.6)		
+
+		self.currencyBar:SetBackdrop({
+	        bgFile = "Interface\\ChatFrame\\ChatFrameBackground",
+	        edgeFile = "Interface\\Buttons\\WHITE8x8",
+	        tile = false, tileSize = 16, edgeSize = 1,
+    	})
+    	self.currencyBar:SetBackdropColor(unpack(settings.saved.containerColor))	
 
 		self.currencyBar:SetMovable(true)
 		self.currencyBar:EnableMouse(true)
 		self.currencyBar:RegisterForDrag("LeftButton")
 		self.currencyBar:SetScript("OnDragStart", self.currencyBar.StartMoving)
 		self.currencyBar:SetScript("OnDragStop", self.currencyBar.StopMovingOrSizing)
+		tinsert(UISpecialFrames, self.currencyBar:GetName());
 	end
 
 	return self.currencyBar
@@ -38,14 +43,24 @@ function containers:GetContainer(name)
 	return self.list[name]
 end 
 
+function containers:Toggle()
+	if containers.currencyBar:IsShown() then
+		containers:Hide()
+	else
+		containers:Show()
+	end
+end
+
 function containers:Show()
-	for k, v in pairs(self.list) do
+	containers.currencyBar:Show()
+	for k, v in pairs(containers.list) do
 		v:Show()
 	end
 end
 
 function containers:Hide()
-	for k, v in pairs(self.list) do
+	containers.currencyBar:Hide()
+	for k, v in pairs(containers.list) do
 		v:Hide()
 	end
 end
@@ -68,19 +83,25 @@ function container:Init(name)
 	self.name = name
 	self.items = {}
 
+	self:SetFrameLevel(5)
+
 	self.title = self:CreateFontString(self:GetName() .. "Title", "OVERLAY")
 	self.title:SetFont("Fonts\\FRIZQT__.TTF", settings.saved.titleSize, "OUTLINE")
 	self.title:SetText(name)
-	self.title:SetPoint("TOP", 0, -1)
-	self.title:SetTextColor(0.6, 0.36, 0, 1)
+	self.title:SetPoint("TOPLEFT", settings.saved.titlePadding, -settings.saved.titlePadding)
+	self.title:SetTextColor(unpack(settings.saved.titleColor))
 
 	self.itemContainer = CreateFrame("Frame", self:GetName() .. "ItemContainer", self)
 	self.itemContainer:SetPoint("TOPLEFT", self, "TOPLEFT", settings.saved.padding, -settings.saved.titleSize - settings.saved.padding)
 	self.itemContainer:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", -settings.saved.padding, settings.saved.padding)
 
-	self.background = self:CreateTexture(self:GetName() .. "Background", "BACKGROUND")
-	self.background:SetAllPoints()
-	self.background:SetTexture(0, 0, 0, 0.6)
+	self:SetBackdrop({
+        bgFile = "Interface\\ChatFrame\\ChatFrameBackground",
+        edgeFile = "Interface\\Buttons\\WHITE8x8",
+        tile = false, tileSize = 16, edgeSize = 1,
+    })
+    self:SetBackdropColor(unpack(settings.saved.containerColor))
+    tinsert(UISpecialFrames, self:GetName());
 
 	self:Position()
 end
@@ -170,6 +191,9 @@ function container:RemoveItem(item)
 		if self.items[i] == item then
 			table.remove(self.items, i)
 			self:Arrange()
+			if #self.items == 0 then
+				self:RepositionChildren()
+			end
 			break
 		end 
 	end
@@ -199,6 +223,10 @@ function container:Arrange()
 	if h == 0 then
 		self:Hide()
 		return
+	end
+
+	if containers.currencyBar:IsShown() then
+		self:Show()
 	end
 
 	self:SetSize(w, h)

@@ -51,6 +51,23 @@ function button:Init(bag, slot)
 	self.button:SetID(slot)
 	self.button:SetAllPoints()
 
+	self.button.BattlepayItemTexture:Hide()
+
+	self.button.Count:SetFont("Fonts\\FRIZQT__.TTF", settings.saved.countFontSize, "OUTLINE")
+	self.button.Count:ClearAllPoints()
+	self.button.Count:SetPoint("BOTTOMRIGHT",  -settings.saved.countFontSidePadding, 
+		settings.saved.countFontBotPadding)
+
+	self.button.IconBorder:SetTexture([[Interface\AddOns\DJUI-WOW\art\Border]])
+	self.button.icon:ClearAllPoints()
+	self.button.icon:SetPoint("TOPLEFT", -1, 1)
+	self.button.icon:SetPoint("BOTTOMRIGHT", 1, -1)
+
+	local NT = _G[self.button:GetName() .. "NormalTexture"]
+	NT:SetTexture([[Interface\AddOns\DJUI-WOW\art\Border]])
+	NT:ClearAllPoints()
+	NT:SetAllPoints()
+
 	self:Show()
 	self.button:Show()
 end
@@ -61,7 +78,7 @@ function button:GetInformation()
 		local texture, count, locked, quality, readable, lootable, link, isFiltered = GetContainerItemInfo(self.bag, self.slot)
 		local name, link, quality, iLevel, reqLevel, class, subclass, maxStack, equipSlot, texture, vendorPrice = GetItemInfo(id)
 
-		return id, name, texture, count, quality, ilevel
+		return id, name, texture, count, quality, iLevel
 	end
 end
 
@@ -74,16 +91,16 @@ function button:GetContainerName()
 
 		if isInSet then
 			settings.setNames[setName] = true
+			setName = string.gsub(setName, ",", " &")
 		end
-
-		return settings.saved.types[id] or (isInSet and setName) or class
+		return settings.saved.types[id] or (isInSet and setName) or (quality == 0 and "Junk") or class
 	end
 end
 
 function button:Update()
 	local id, name, texture, count, quality, ilevel = self:GetInformation()
 
-	if id then		
+	if id then
 		self:UpdateItem(id, name, texture, count, quality, ilevel)
 	else
 		self:Clear()
@@ -130,6 +147,18 @@ function button:UpdateItem(id, name, texture, count, quality, ilevel)
 		button.Count:Show()
 	else
 		button.Count:Hide()
+	end
+
+	if quality <= 0 then
+		button.JunkIcon:Show()
+	else
+		button.JunkIcon:Hide()
+	end
+	button.IconBorder:SetVertexColor(GetItemQualityColor(quality))
+	button.IconBorder:Show()
+
+	if C_NewItems.IsNewItem(self.bag, self.slot) then
+		button.newitemglowAnim:Play()
 	end
 end
 

@@ -17,7 +17,6 @@ function impl:ADDON_LOADED(name)
 				button:Update()
 			end
 		end
-		containers:Show()
 	end
 end
 
@@ -29,3 +28,35 @@ function impl:BAG_UPDATE(bag, slot)
 		end
 	end
 end
+
+-- Replace the standard bags
+
+ToggleAllBags = function()
+	containers:Toggle()
+end
+
+ToggleBag = function()
+	containers:Toggle()
+end
+
+ToggleBackpack = function()
+	containers:Toggle()
+end
+
+OpenAllBags = function()
+	containers:Show()
+end
+
+OpenBackpack = function()
+	containers:Show()
+end
+
+CloseAllBags = function()
+	containers:Hide()
+end
+
+CloseBackpack = function()
+	containers:Hide()
+end
+
+-- BankFrame:UnregisterAllEvents()
