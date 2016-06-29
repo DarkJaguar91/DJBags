@@ -1,0 +1,33 @@
+<Ui xsi:schemaLocation="http://www.blizzard.com/wow/ui/  http://wowprogramming.com/FrameXML/UI.xsd">
+    <!-- Utils -->
+    <!--<Script file="src/lua/util/uuid.lua"/>-->
+    <!--<Script file="src/lua/util/util.lua"/>-->
+
+    <!-- Cache -->
+    <!--<Script file="src/lua/cache/cache.lua"/>-->
+
+    <!-- Settings -->
+    <!--<Script file="src/lua/settings/defaults/item.lua"/>-->
+    <!--<Script file="src/lua/settings/defaults/container.lua"/>-->
+    <!--<Script file="src/lua/settings/defaults/itemContainer.lua"/>-->
+    <!--<Script file="src/lua/settings/defaults/category.lua"/>-->
+    <!--<Script file="src/lua/settings/defaults/categoryContainer.lua"/>-->
+    <!--<Script file="src/lua/settings/defaults/moneyBar.lua"/>-->
+    <!--<Script file="src/lua/settings/settings.lua"/>-->
+
+    <!-- Tools -->
+    <!--<Script file="src/lua/event/eventManager.lua"/>-->
+
+    <!-- elements -->
+    <!--<Script file="src/lua/element/item.lua"/>-->
+    <!--<Script file="src/lua/element/container.lua"/>-->
+    <!--<Script file="src/lua/element/itemContainer.lua"/>-->
+    <!--<Script file="src/lua/element/categoryContainer.lua"/>-->
+    <!--<Script file="src/lua/element/moneyBar.lua"/>-->
+
+    <!-- Controller -->
+    <!--<Script file="src/lua/controller/bag.lua"/>-->
+
+    <!-- Core (Load last) -->
+    <Script file="src/lua/core.lua"/>
+</Ui>
