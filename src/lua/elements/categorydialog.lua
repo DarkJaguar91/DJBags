@@ -53,15 +53,23 @@ function InitDropDown(self, level)
 end
 
 function dialog:Init(id)
-    --    local name, link, quality, iLevel, reqLevel, class, subclass, maxStack, equipSlot, texture, vendorPrice = GetItemInfo(id)
+        local name, link, quality, iLevel, reqLevel, class, subclass, maxStack, equipSlot, texture, vendorPrice = GetItemInfo(id)
 
-    self.title:SetText(string.format('Change %s\'s category?', 'Test Name'))
+    self.title:SetText(string.format('Change %s\'s category?', name))
     -- TODO add texture
 
     UIDropDownMenu_Initialize(self.dropDown, InitDropDown)
     self.errorText:Hide()
     local text = ADDON.settings.categories.userDefined[id] or ''
     self:SetText(text)
+
+    self.frame:SetHeight(75 + self.title:GetStringHeight())
+end
+
+function dialog:Setup()
+    if self.frame then
+        self.frame:Setup()
+    end
 end
 
 function dialog:SetText(text)
@@ -171,7 +179,6 @@ function dialog:CreateFrame()
         dialog.frame:Hide()
     end)
 
-    self.frame:SetWidth(350)
-    self.frame:SetHeight(90)
+    self.frame:SetSize(350, 90)
 end
 
