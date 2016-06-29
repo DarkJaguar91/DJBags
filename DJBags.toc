@@ -1,7 +1,8 @@
-## Interface: 60200
-## Author: Darkjaguar91
-## Version: 0.01
-## Title: DJUI
-## Notes: NOTE!!
+## Interface: 70000
+## Title: DJBags
+## Author: DarkJaguar91
+## Notes: BagAddon - Alpha
+## Version: 0.0.4
+## SavedVariables: DJBagsConfig
 
-bag/bag.xml
+src/manifest.xml

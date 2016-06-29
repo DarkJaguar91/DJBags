@@ -1,2 +1,3 @@
-# DJUI-WOW
-WOW UI Mod
+# DJBags
+
+A Bag replacement addon.
