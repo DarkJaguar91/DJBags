@@ -47,6 +47,8 @@ function item:Init()
     self.button.cooldown = _G[self.button:GetName() .. "Cooldown"]
 
     self.button:Show()
+
+    self.button:HookScript('OnClick', self.OnClick)
 end
 
 function item:Setup()
@@ -175,10 +177,10 @@ function item:UpdateLock()
     SetItemButtonDesaturated(self.button, locked);
 end
 
-function item:OnClick()
-    if self.id then
-        if IsAltKeyDown() and IsControlKeyDown() then
-            --            ADDON.categoryInput(self, self.id)
+function item:OnClick(button)
+    if self:GetParent().id then
+        if IsAltKeyDown() and button == 'LeftButton' then
+            ADDON.categoryDialog(self:GetParent().id)
         end
     end
 end

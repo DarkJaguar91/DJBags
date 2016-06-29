@@ -13,7 +13,14 @@ function core:ADDON_LOADED(name)
 
     ADDON.bag:Init()
 
+    ADDON.eventManager:AddEvent(self, "SETTINGS_UPDATE")
     ADDON.eventManager:RemoveEvent(self, 'ADDON_LOADED')
+end
+
+function core:SETTINGS_UPDATE()
+    ADDON.cache:UpdateSettings()
+    ADDON.bag:UpdateSettings()
+    ADDON.categoryDialog:Setup()
 end
 
 ADDON.eventManager:AddEvent(core, 'ADDON_LOADED')
@@ -22,9 +29,13 @@ ADDON.eventManager:AddEvent(core, 'ADDON_LOADED')
 
 SLASH_DJBAGS1, SLASH_DJBAGS2 = '/db', '/djbags'; -- 3.
 function SlashCmdList.DJBAGS(msg, editbox) -- 4.
---    ADDON.bag:Open()
-ADDON.categoryDialog(12)
-ADDON.eventManager:AddEvent('MyRandonEvent')
+ADDON.bag:Open()
+end
+
+SLASH_TDJBAGS1, SLASH_TDJBAGS2 = '/tt', '/ttt'; -- 3.
+function SlashCmdList.TDJBAGS(msg, editbox) -- 4.
+ADDON.settings.item.size = 50
+ADDON.eventManager:FireEvent('SETTINGS_UPDATE')
 end
 
 SLASH_RELOAD1 = '/rl'

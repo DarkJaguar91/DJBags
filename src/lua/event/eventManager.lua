@@ -15,7 +15,7 @@ function eventFrame:FireEvent(event, ...)
     end
 end
 
-eventFrame:SetScript("OnEvent", eventFrame.AddEvent)
+eventFrame:SetScript("OnEvent", eventFrame.FireEvent)
 
 function eventFrame:AddEvent(obj, event)
     if not obj[event] then return end

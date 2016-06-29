@@ -13,17 +13,23 @@ function bag:Init()
     self.frame.mainBar = ADDON.mainBar(self.frame)
     self.frame.mainBar:SetPoint('TOPRIGHT', self.frame, 'BOTTOMRIGHT', 0, -2)
     self.frame.mainBar:Show()
+    ADDON.eventManager:AddEvent(self, 'SETTINGS_UPDATE')
+
+    self.frame:HookScript('OnShow', function()
+        self:Register()
+    end)
+    self.frame:HookScript('OnHide', function()
+        self:UnRegister()
+    end)
 end
 
 function bag:Open()
-    self:Register()
     self:UpdateAllItems()
     self.frame.mainBar:Update()
     self.frame:Show()
 end
 
 function bag:Close()
-    self:UnRegister()
     self.frame:Hide()
 end
 
@@ -36,25 +42,37 @@ function bag:Toggle()
 end
 
 local function UpdateItemsForBag(self, bag, arrangeList)
-    for slot = 1, GetContainerNumSlots(bag) do
-        local item = ADDON.cache:GetItem(bag, slot)
-        local previousContainer
-        if item:GetParent() and item:GetParent().__class == ADDON.itemContainer.__class then
-            previousContainer = item:GetParent()
-        end
-
-        item:Update()
-
-        local newContainer = ADDON.cache:GetBagItemContainer(ADDON.utils:GetItemContainerName(bag, slot))
-        self.frame:AddContainer(newContainer)
-
-        if previousContainer ~= newContainer then
-            if previousContainer then
+    local count = GetContainerNumSlots(bag)
+    if count == 0 and ADDON.cache.items[bag] then
+        for _, item in pairs(ADDON.cache.items[bag]) do
+            if item:GetParent() and item:GetParent().__class == ADDON.itemContainer.__class then
+                local previousContainer = item:GetParent()
                 previousContainer:RemoveItem(item)
                 arrangeList[previousContainer] = true
+                item:Hide()
             end
-            newContainer:AddItem(item)
-            arrangeList[newContainer] = true
+        end
+    else
+        for slot = 1, count do
+            local item = ADDON.cache:GetItem(bag, slot)
+            local previousContainer
+            if item:GetParent() and item:GetParent().__class == ADDON.itemContainer.__class then
+                previousContainer = item:GetParent()
+            end
+
+            item:Update()
+
+            local newContainer = ADDON.cache:GetBagItemContainer(ADDON.utils:GetItemContainerName(bag, slot))
+            self.frame:AddContainer(newContainer)
+
+            if previousContainer ~= newContainer then
+                if previousContainer then
+                    previousContainer:RemoveItem(item)
+                    arrangeList[previousContainer] = true
+                end
+                newContainer:AddItem(item)
+                arrangeList[newContainer] = true
+            end
         end
     end
 end
@@ -91,6 +109,15 @@ function bag:UnRegister()
     ADDON.eventManager:RemoveEvent(self, 'BAG_UPDATE')
     ADDON.eventManager:RemoveEvent(self, 'BAG_UPDATE_COOLDOWN')
     ADDON.eventManager:RemoveEvent(self, 'ITEM_LOCK_CHANGED')
+end
+
+function bag:UpdateSettings()
+    self.frame:Setup()
+    self.frame.mainBar:Setup()
+    self.frame.mainBar:Update()
+    if self.frame:IsVisible() then
+        self:Open()
+    end
 end
 
 function bag:BAG_UPDATE(bag)

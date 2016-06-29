@@ -17,3 +17,15 @@ function cache:GetBagItemContainer(name)
     self.bagContainers[name] = self.bagContainers[name] or ADDON.itemContainer(name, name ~= ADDON.utils.EMPTY_BAG_NAME, nil, name == ADDON.utils.EMPTY_BAG_NAME)
     return self.bagContainers[name]
 end
+
+function cache:UpdateSettings()
+    for _, slots in pairs(self.items) do
+        for _, item in pairs(slots) do
+            item:Setup()
+        end
+    end
+    for _, container in pairs(cache.bagContainers) do
+        container:Setup()
+        container:Arrange()
+    end
+end

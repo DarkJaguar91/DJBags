@@ -8,6 +8,21 @@ settings.__index = settings
 
 function settings:Init()
     self:GetCharacterSettings()
+
+    ADDON.eventManager:AddEvent("SETTING_UPDATE")
+end
+
+function settings:SETTINGS_UPDATE()
+    local realm = GetRealmName()
+    local player = UnitName("player")
+
+    if not DJBagsConfig then
+        DJBagsConfig = {}
+    end
+    if not DJBagsConfig[realm] then
+        DJBagsConfig[realm] = {}
+    end
+    --    DJBagsConfig[player] = ADDON.settings
 end
 
 function settings:GetCharacterSettings()
