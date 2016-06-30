@@ -15,6 +15,7 @@
     <Script file="src/lua/settings/defaults/category.lua"/>
     <Script file="src/lua/settings/defaults/categoryContainer.lua"/>
     <Script file="src/lua/settings/defaults/mainBar.lua"/>
+    <Script file="src/lua/settings/editor.lua"/>
     <Script file="src/lua/settings/settings.lua"/>
 
     <!-- sorters -->

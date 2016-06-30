@@ -27,20 +27,19 @@ ADDON.eventManager:AddEvent(core, 'ADDON_LOADED')
 
 --region Slash Commands
 
-SLASH_DJBAGS1, SLASH_DJBAGS2 = '/db', '/djbags'; -- 3.
-function SlashCmdList.DJBAGS(msg, editbox) -- 4.
-ADDON.bag:Open()
+SLASH_DJBAGS1, SLASH_DJBAGS2 = '/db', '/djbags';
+function SlashCmdList.DJBAGS(msg, editbox)
+    ADDON.bag:Open()
 end
 
-SLASH_TDJBAGS1, SLASH_TDJBAGS2 = '/tt', '/ttt'; -- 3.
-function SlashCmdList.TDJBAGS(msg, editbox) -- 4.
-ADDON.settings.item.size = 50
-ADDON.eventManager:FireEvent('SETTINGS_UPDATE')
+SLASH_TDJBAGS1, SLASH_TDJBAGS2 = '/tt', '/ttt';
+function SlashCmdList.TDJBAGS(msg, editbox)
+    ADDON.settingsController:ShowSettings()
 end
 
 SLASH_RELOAD1 = '/rl'
-function SlashCmdList.RELOAD(msg, editbox) -- 4.
-ReloadUI()
+function SlashCmdList.RELOAD(msg, editbox)
+    ReloadUI()
 end
 
 --endregion

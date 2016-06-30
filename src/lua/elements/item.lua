@@ -112,7 +112,7 @@ local function UpdateFiltered(self, filtered, shouldDoRelicChecks, itemID)
 end
 
 local function UpdateCountcolour(self, equipable, quality)
-    if (equipable) then
+    if equipable and quality then
         self.button.Count:SetVertexColor(BAG_ITEM_QUALITY_COLORS[quality].r, BAG_ITEM_QUALITY_COLORS[quality].g, BAG_ITEM_QUALITY_COLORS[quality].b)
     else
         self.button.Count:SetVertexColor(1, 1, 1)
