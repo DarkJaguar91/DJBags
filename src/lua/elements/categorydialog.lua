@@ -16,6 +16,7 @@ function dialog:Show(id)
     local frame = self:GetFrame(id)
     self.id = id
     frame:Show()
+    self.editBox:SetFocus()
 end
 
 function dialog:GetFrame(id)
@@ -101,6 +102,12 @@ function dialog:CreateFrame()
     })
     self.editBox:SetBackdropBorderColor(0.3, 0.3, 0.3, 1)
     self.editBox:SetBackdropColor(0, 0, 0, 0)
+    self.editBox:SetScript('OnEnterPressed', function()
+        dialog.okBtn:Click()
+    end)
+    self.editBox:SetScript('OnEscapePressed', function()
+        dialog.frame:Hide()
+    end)
 
     self.errorText = self.frame:CreateFontString('DJBagsCategoryDialogTitle', 'OVERLAY')
     self.errorText:SetFont('Fonts\\FRIZQT__.TTF', 18, 'OUTLINE')
@@ -131,7 +138,7 @@ function dialog:CreateFrame()
     self.resetBtn:SetPoint('BOTTOMLEFT', self.frame, 'BOTTOMLEFT', 5, 5)
     self.resetBtn:SetScript('OnClick', function()
         ADDON.settings.categories.userDefined[dialog.id] = nil
-        ADDON.eventManager:FireEvent('SETTINGS_UPDATE')
+        ADDON.eventManager:FireEvent('SETTINGS_UPDATE', true)
         dialog.frame:Hide()
     end)
 
@@ -154,7 +161,7 @@ function dialog:CreateFrame()
         dialog.errorText:Hide()
         if not text or text ~= '' then
             ADDON.settings.categories.userDefined[dialog.id] = text
-            ADDON.eventManager:FireEvent('SETTINGS_UPDATE')
+            ADDON.eventManager:FireEvent('SETTINGS_UPDATE', true)
             dialog.frame:Hide()
         else
             dialog.errorText:Show()
