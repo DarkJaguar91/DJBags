@@ -45,7 +45,7 @@ function utils:GetItemContainerName(bag, slot)
 
         local userDefinedList = ADDON.settings.categories.userDefined
         if userDefinedList[id] then
-            return userDefinedList[id]
+            return userDefinedList[id] .. '*'
         end
 
         local subClassSplitList = ADDON.settings.categories.subClass

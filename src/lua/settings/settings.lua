@@ -19,7 +19,6 @@ function settings:ShowSettings()
 end
 
 function settings:SETTINGS_UPDATE()
-    print('lol')
     local realm = GetRealmName()
     local player = UnitName("player")
 
@@ -29,7 +28,7 @@ function settings:SETTINGS_UPDATE()
     if not DJBagsConfig[realm] then
         DJBagsConfig[realm] = {}
     end
-    --    DJBagsConfig[player] = ADDON.settings
+    DJBagsConfig[realm][player] = ADDON.settings
 
     ADDON.settingsEditor:UpdateSettings()
 end
@@ -39,6 +38,6 @@ function settings:GetCharacterSettings()
     local player = UnitName("player")
 
     if DJBagsConfig and DJBagsConfig[realm] and DJBagsConfig[realm][player] then
-        --        ADDON.settings = DJBagsConfig[realm][player]
+        ADDON.settings = DJBagsConfig[realm][player]
     end
 end

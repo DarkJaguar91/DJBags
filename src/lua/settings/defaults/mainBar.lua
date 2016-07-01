@@ -2,7 +2,7 @@ local NAME, ADDON = ...
 
 ADDON.settings = ADDON.settings or {}
 
-ADDON.settings.moneyBar = {
+ADDON.settings.mainBar = {
     currencyFontSize = 12,
     currencyFontColor = { 1, 1, 1, 1 },
     currencyFont = 'Fonts\\FRIZQT__.TTF',

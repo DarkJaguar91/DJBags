@@ -18,7 +18,7 @@ function cache:GetBagItemContainer(name)
     return self.bagContainers[name]
 end
 
-function cache:UpdateSettings()
+function cache:UpdateSettings(arrange)
     for _, slots in pairs(self.items) do
         for _, item in pairs(slots) do
             item:Setup()
@@ -26,6 +26,8 @@ function cache:UpdateSettings()
     end
     for _, container in pairs(cache.bagContainers) do
         container:Setup()
-        container:Arrange()
+        if arrange then
+            container:Arrange()
+        end
     end
 end

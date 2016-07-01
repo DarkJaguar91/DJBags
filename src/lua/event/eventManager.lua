@@ -20,7 +20,7 @@ eventFrame:SetScript("OnEvent", eventFrame.FireEvent)
 function eventFrame:AddEvent(obj, event)
     if not obj[event] then return end
 
-    if not self.types[event] then
+    if not self.types[event] or next(self.types[event]) == nil then
         self.types[event] = {}
         self:RegisterEvent(event)
     end
@@ -33,7 +33,7 @@ function eventFrame:RemoveEvent(obj, event)
 
     self.types[event][obj] = nil
 
-    if #self.types[event] <= 0 then
+    if next(self.types[event]) == nil then
         self:UnregisterEvent(event)
     end
 end

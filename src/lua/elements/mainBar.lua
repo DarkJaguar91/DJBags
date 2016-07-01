@@ -69,7 +69,7 @@ end
 function bar:Setup()
     ADDON.container.Setup(self)
 
-    local settings = ADDON.settings.moneyBar
+    local settings = ADDON.settings.mainBar
     self.currency:SetFont(settings.currencyFont, settings.currencyFontSize, '')
     self.currency:SetTextColor(unpack(settings.currencyFontColor))
     self.slots:SetFont(settings.slotsFont, settings.slotsFontSize, '')
@@ -87,5 +87,5 @@ function bar:Update()
     self.slots:SetText(string.format("%d/%d", total - free, total))
 
     self.currencyBox:SetWidth(self.currency:GetStringWidth())
-    self:SetSize(self.currency:GetStringWidth() + self.slots:GetStringWidth() + 165, self.currency:GetStringHeight() + 12)
+    self:SetSize(self.currency:GetStringWidth() + self.slots:GetStringWidth() + 165, math.max(self.currency:GetStringHeight(), self.slots:GetStringHeight()) + 12)
 end

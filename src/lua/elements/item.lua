@@ -46,6 +46,10 @@ function item:Init()
 
     self.button.cooldown = _G[self.button:GetName() .. "Cooldown"]
 
+    self.button.Count:ClearAllPoints()
+    self.button.Count:SetJustifyH('LEFT')
+    self.button.Count:SetPoint('BOTTOMRIGHT', -1, 3)
+
     self.button:Show()
 
     self.button:HookScript('OnClick', self.OnClick)
@@ -55,7 +59,7 @@ function item:Setup()
     local settings = ADDON.settings.item
     self:SetSize(settings.size, settings.size)
     local name, _, outline = self.button.Count:GetFont()
-    self.button.Count:SetFont(name, math.min(settings.size / 4, 13), outline)
+    self.button.Count:SetFont(name, math.min(settings.size / 3, 13), outline)
 end
 
 --region Update Events

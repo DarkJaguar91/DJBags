@@ -102,6 +102,7 @@ function bag:Register()
     ADDON.eventManager:AddEvent(self, 'BAG_UPDATE')
     ADDON.eventManager:AddEvent(self, 'BAG_UPDATE_COOLDOWN')
     ADDON.eventManager:AddEvent(self, 'ITEM_LOCK_CHANGED')
+    ADDON.eventManager:AddEvent(self, 'PLAYER_MONEY')
 end
 
 function bag:UnRegister()
@@ -109,15 +110,20 @@ function bag:UnRegister()
     ADDON.eventManager:RemoveEvent(self, 'BAG_UPDATE')
     ADDON.eventManager:RemoveEvent(self, 'BAG_UPDATE_COOLDOWN')
     ADDON.eventManager:RemoveEvent(self, 'ITEM_LOCK_CHANGED')
+    ADDON.eventManager:RemoveEvent(self, 'PLAYER_MONEY')
 end
 
-function bag:UpdateSettings()
+function bag:UpdateSettings(arrange)
     self.frame:Setup()
     self.frame.mainBar:Setup()
     self.frame.mainBar:Update()
-    if self.frame:IsVisible() then
+    if self.frame:IsVisible() and arrange then
         self:Open()
     end
+end
+
+function bag:PLAYER_MONEY()
+    self.frame.mainBar:Update()
 end
 
 function bag:BAG_UPDATE(bag)

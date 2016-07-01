@@ -1,7 +1,7 @@
 local NAME, ADDON = ...
 
 local STEP = 1
-local SCROLL = 1
+local SCROLL = 20
 local MAX = 1
 
 ADDON.settingsEditor = {}
@@ -15,7 +15,6 @@ setmetatable(settings, {
 })
 
 function settings:UpdateSettings()
-    print('asd')
     if self.frame then
         self.frame:Setup()
         if self.containers then
@@ -53,7 +52,7 @@ function settings:CreateFrame()
 
     self.scrollFrame = CreateFrame("ScrollFrame", 'DJBagsSettingsScreenScrollFrame', self.frame)
     self.scrollFrame:SetPoint('TOPLEFT', 5, -30)
-    self.scrollFrame:SetPoint('BOTTOMRIGHT', self.scrollBar, 'BOTTOMLEFT', -5, 0)
+    self.scrollFrame:SetPoint('BOTTOMRIGHT', self.scrollBar, 'BOTTOMLEFT', -5, -15)
     self.scrollBar:SetValue(1)
 
     self.scrollFrame:EnableMouseWheel(true)
@@ -76,8 +75,19 @@ function settings:CreateFrame()
 
     self.scrollFrame:SetScrollChild(self.content)
 
+    self:CreateCategorySettings()
+    self:CreateItemSettings()
     self:CreateContainerSettings()
     self:CreateItemContainerSettings()
+    self:CreateCategoryContainerSettings()
+    self:CreateMainBarSettings()
+
+    self.settingsFrame = CreateFrame('FRAME', 'DJBagsSettingsOpenFrame', UIParent)
+    self.settingsFrame.name = 'DJBags'
+    self.settingsTextInfo = self.settingsFrame:CreateFontString('DJBagsSettingsInfo', 'OVERLAY', 'GameFontNormal')
+    self.settingsTextInfo:SetPoint('CENTER')
+    self.settingsTextInfo:SetText('In order to access DJBag\'s settings, please type:\n\n/db\n\nor\n\n/djbags\n\nin the game chat window.')
+    InterfaceOptions_AddCategory(self.settingsFrame);
 
     return self.frame
 end
@@ -95,7 +105,7 @@ function settings:AddSettingsPanel(panel)
 end
 
 local function CreateColorSelector(name, parent, getColor, callBack)
-    local colourSelector = CreateFrame('BUTTON', 'DJBagsSettingsColourSelector' .. name, parent)
+    local colourSelector = CreateFrame('BUTTON', 'DJBagsSettingsColourSelector' .. name .. ADDON.uuid(), parent)
     colourSelector:SetNormalFontObject("GameFontHighlight")
     colourSelector:SetText(name)
     colourSelector:SetBackdrop({
@@ -139,8 +149,8 @@ local function round(num)
     end
 end
 
-local function CreateSlider(parent, name, min, max, value, callBack)
-    local slider = CreateFrame('Slider', name .. 'slider', parent, 'OptionsSliderTemplate')
+local function CreateSlider(name, parent, min, max, value, callBack)
+    local slider = CreateFrame('Slider', 'DJBagsSettingsColourSelector' .. name .. ADDON.uuid(), parent, 'OptionsSliderTemplate')
     getglobal(slider:GetName() .. "Text"):SetText(name .. ' - ' .. tostring(value()));
     getglobal(slider:GetName() .. "High"):SetText(max);
     getglobal(slider:GetName() .. "Low"):SetText(min);
@@ -158,9 +168,38 @@ local function CreateSlider(parent, name, min, max, value, callBack)
 end
 
 local function CreateTitle(title, parent)
-    parent.title = parent:CreateFontString('DJBagsSettingsScreenTitle' .. title, nil, 'GameFontNormal')
+    parent.title = parent:CreateFontString('DJBagsSettingsScreenTitle' .. title .. ADDON.uuid(), nil, 'GameFontNormal')
     parent.title:SetText(title)
     parent.title:SetPoint('TOPLEFT', 5, -5)
+end
+
+local function CreateCheckBox(name, container, checked, callBack)
+    local check = CreateFrame('CHECKBUTTON', 'DJBagsSettingsCheckButton' .. name .. ADDON.uuid(), container, 'UICheckButtonTemplate')
+    _G[check:GetName() .. "Text"]:SetText(name)
+    check.textW = _G[check:GetName() .. "Text"]:GetStringWidth()
+    check.call = callBack
+    check:SetChecked(checked)
+    check:SetScript('OnClick', function(self)
+        self.call(self:GetChecked())
+    end)
+    return check
+end
+
+function settings:CreateItemSettings()
+    local container = ADDON.container('DJBagsSettingsItemScreen', nil)
+
+    CreateTitle('Item settings', container)
+
+    container.size = CreateSlider('Size', container, 18, 50, function()
+        return ADDON.settings.item.size
+    end, function(value)
+        ADDON.settings.item.size = value
+        ADDON.eventManager:FireEvent('SETTINGS_UPDATE', true)
+    end)
+    container.size:SetPoint('TOPLEFT', 10, -35)
+
+    container:SetHeight(65)
+    self:AddSettingsPanel(container)
 end
 
 function settings:CreateContainerSettings()
@@ -184,14 +223,13 @@ function settings:CreateContainerSettings()
     end)
     container.backgroundPicker:SetPoint('TOPLEFT', container.borderPicker, 'TOPRIGHT', 15, 0)
 
-    container.borderWidth = CreateSlider(container, 'Border Width', 1, 4, function()
+    container.borderWidth = CreateSlider('Border Width', container, 1, 4, function()
         return ADDON.settings.container.borderWidth
     end, function(value)
         ADDON.settings.container.borderWidth = value
         ADDON.eventManager:FireEvent('SETTINGS_UPDATE')
     end)
     container.borderWidth:SetPoint('TOPLEFT', container.backgroundPicker, 'TOPRIGHT', 15, 0)
-
 
     container:SetHeight(55)
     self:AddSettingsPanel(container)
@@ -210,38 +248,176 @@ function settings:CreateItemContainerSettings()
     end)
     container.fontColor:SetPoint('TOPLEFT', 5, -25)
 
-    container.fontSize = CreateSlider(container, 'Font size', 8, 18, function()
+    container.fontSize = CreateSlider('Font size', container, 8, 18, function()
         return ADDON.settings.itemContainer.fontSize
     end, function(value)
         ADDON.settings.itemContainer.fontSize = value
-        ADDON.eventManager:FireEvent('SETTINGS_UPDATE')
+        ADDON.eventManager:FireEvent('SETTINGS_UPDATE', true)
     end)
     container.fontSize:SetPoint('TOPLEFT', container.fontColor, 'TOPRIGHT', 15, 0)
 
-    container.colsSlider = CreateSlider(container, 'Columns', 4, 10, function()
+    container.colsSlider = CreateSlider('Columns', container, 4, 10, function()
         return ADDON.settings.itemContainer.cols
     end, function(value)
         ADDON.settings.itemContainer.cols = value
-        ADDON.eventManager:FireEvent('SETTINGS_UPDATE')
+        ADDON.eventManager:FireEvent('SETTINGS_UPDATE', true)
     end)
     container.colsSlider:SetPoint('TOPLEFT', container.fontSize, 'TOPRIGHT', 15, 0)
 
-    container.padding = CreateSlider(container, 'Padding', 1, 10, function()
+    container.padding = CreateSlider('Padding', container, 1, 10, function()
         return ADDON.settings.itemContainer.padding
     end, function(value)
         ADDON.settings.itemContainer.padding = value
-        ADDON.eventManager:FireEvent('SETTINGS_UPDATE')
+        ADDON.eventManager:FireEvent('SETTINGS_UPDATE', true)
     end)
     container.padding:SetPoint('TOPLEFT', container.fontColor, 'BOTTOMLEFT', 2, -20)
 
-    container.spacing = CreateSlider(container, 'Item Spacing', 1, 10, function()
+    container.spacing = CreateSlider('Item Spacing', container, 1, 10, function()
         return ADDON.settings.itemContainer.spacing
     end, function(value)
         ADDON.settings.itemContainer.spacing = value
-        ADDON.eventManager:FireEvent('SETTINGS_UPDATE')
+        ADDON.eventManager:FireEvent('SETTINGS_UPDATE', true)
     end)
     container.spacing:SetPoint('TOPLEFT', container.padding, 'TOPRIGHT', 15, 0)
 
     container:SetHeight(95)
+    self:AddSettingsPanel(container)
+end
+
+function settings:CreateCategoryContainerSettings()
+    local container = ADDON.container('DJBagsSettingsCategoryContainerScreen', nil)
+
+    CreateTitle('Bag container settings', container)
+
+    container.padding = CreateSlider('Padding', container, 1, 10, function()
+        return ADDON.settings.categoryContainer.padding
+    end, function(value)
+        ADDON.settings.categoryContainer.padding = value
+        ADDON.eventManager:FireEvent('SETTINGS_UPDATE', true)
+    end)
+    container.padding:SetPoint('TOPLEFT', 15, -35)
+
+    container.spacing = CreateSlider('Container spacing', container, 1, 10, function()
+        return ADDON.settings.categoryContainer.spacing
+    end, function(value)
+        ADDON.settings.categoryContainer.spacing = value
+        ADDON.eventManager:FireEvent('SETTINGS_UPDATE', true)
+    end)
+    container.spacing:SetPoint('TOPLEFT', container.padding, 'TOPRIGHT', 15, 0)
+
+    container.maxHeight = CreateSlider('Max height', container, 250, 1000, function()
+        return ADDON.settings.categoryContainer.maxHeight
+    end, function(value)
+        ADDON.settings.categoryContainer.maxHeight = value
+        ADDON.eventManager:FireEvent('SETTINGS_UPDATE', true)
+    end)
+    container.maxHeight:SetPoint('TOPLEFT', container.spacing, 'TOPRIGHT', 15, 0)
+
+    container:SetHeight(70)
+    self:AddSettingsPanel(container)
+end
+
+function settings:CreateMainBarSettings()
+    local container = ADDON.container('DJBagsSettingsMainBarScreen', nil)
+
+    CreateTitle('Main Bar', container)
+
+    container.currencyFontColor = CreateColorSelector('Currency Font Colour', container, function()
+        return ADDON.settings.mainBar.currencyFontColor
+    end, function(r, g, b, a)
+        ADDON.settings.mainBar.currencyFontColor = { r, g, b, a }
+        ADDON.eventManager:FireEvent('SETTINGS_UPDATE')
+    end)
+    container.currencyFontColor:SetPoint('TOPLEFT', 5, -25)
+
+    container.slotFontColor = CreateColorSelector('Slot Font Colour', container, function()
+        return ADDON.settings.mainBar.slotsFontColor
+    end, function(r, g, b, a)
+        ADDON.settings.mainBar.slotsFontColor = { r, g, b, a }
+        ADDON.eventManager:FireEvent('SETTINGS_UPDATE')
+    end)
+    container.slotFontColor:SetPoint('TOPLEFT', container.currencyFontColor, 'TOPRIGHT', 15, 0)
+
+    container.currencyFontSize = CreateSlider('Currency font size', container, 8, 18, function()
+        return ADDON.settings.mainBar.currencyFontSize
+    end, function(value)
+        ADDON.settings.mainBar.currencyFontSize = value
+        ADDON.eventManager:FireEvent('SETTINGS_UPDATE')
+    end)
+    container.currencyFontSize:SetPoint('TOPLEFT', container.slotFontColor, 'TOPRIGHT', 15, 0)
+
+    container.slotFontSize = CreateSlider('Currency font size', container, 8, 18, function()
+        return ADDON.settings.mainBar.slotsFontSize
+    end, function(value)
+        ADDON.settings.mainBar.slotsFontSize = value
+        ADDON.eventManager:FireEvent('SETTINGS_UPDATE')
+    end)
+    container.slotFontSize:SetPoint('TOPLEFT', container.currencyFontColor, 'BOTTOMLEFT', 2, -20)
+
+    container:SetHeight(95)
+    self:AddSettingsPanel(container)
+end
+
+function settings:CreateCategorySettings()
+    local container = ADDON.container('DJBagsSettingsMainBarScreen', nil)
+
+    CreateTitle('Category Subclassing', container)
+
+    function container:Add(item)
+        self.items = self.items or {}
+        tinsert(self.items, item)
+    end
+
+    container:Add(CreateCheckBox(AUCTION_CATEGORY_ARMOR, container, ADDON.settings.categories.subClass[LE_ITEM_CLASS_ARMOR], function(value)
+        ADDON.settings.categories.subClass[LE_ITEM_CLASS_ARMOR] = value
+        ADDON.eventManager:FireEvent('SETTINGS_UPDATE', true)
+    end))
+    container:Add(CreateCheckBox(AUCTION_CATEGORY_CONSUMABLES, container, ADDON.settings.categories.subClass[LE_ITEM_CLASS_CONSUMABLE], function(value)
+        ADDON.settings.categories.subClass[LE_ITEM_CLASS_CONSUMABLE] = value
+        ADDON.eventManager:FireEvent('SETTINGS_UPDATE', true)
+    end))
+    container:Add(CreateCheckBox(AUCTION_CATEGORY_GEMS, container, ADDON.settings.categories.subClass[LE_ITEM_CLASS_GEM], function(value)
+        ADDON.settings.categories.subClass[LE_ITEM_CLASS_GEM] = value
+        ADDON.eventManager:FireEvent('SETTINGS_UPDATE', true)
+    end))
+    container:Add(CreateCheckBox(AUCTION_CATEGORY_GLYPHS, container, ADDON.settings.categories.subClass[LE_ITEM_CLASS_GLYPH], function(value)
+        ADDON.settings.categories.subClass[LE_ITEM_CLASS_GLYPH] = value
+        ADDON.eventManager:FireEvent('SETTINGS_UPDATE', true)
+    end))
+    container:Add(CreateCheckBox(AUCTION_CATEGORY_ITEM_ENHANCEMENT, container, ADDON.settings.categories.subClass[LE_ITEM_CLASS_ITEM_ENHANCEMENT], function(value)
+        ADDON.settings.categories.subClass[LE_ITEM_CLASS_ITEM_ENHANCEMENT] = value
+        ADDON.eventManager:FireEvent('SETTINGS_UPDATE', true)
+    end))
+    container:Add(CreateCheckBox(AUCTION_CATEGORY_MISCELLANEOUS, container, ADDON.settings.categories.subClass[LE_ITEM_CLASS_MISCELLANEOUS], function(value)
+        ADDON.settings.categories.subClass[LE_ITEM_CLASS_MISCELLANEOUS] = value
+        ADDON.eventManager:FireEvent('SETTINGS_UPDATE', true)
+    end))
+    container:Add(CreateCheckBox(AUCTION_CATEGORY_RECIPES, container, ADDON.settings.categories.subClass[LE_ITEM_CLASS_RECIPE], function(value)
+        ADDON.settings.categories.subClass[LE_ITEM_CLASS_RECIPE] = value
+        ADDON.eventManager:FireEvent('SETTINGS_UPDATE', true)
+    end))
+    container:Add(CreateCheckBox(AUCTION_CATEGORY_TRADE_GOODS, container, ADDON.settings.categories.subClass[LE_ITEM_CLASS_TRADEGOODS], function(value)
+        ADDON.settings.categories.subClass[LE_ITEM_CLASS_TRADEGOODS] = value
+        ADDON.eventManager:FireEvent('SETTINGS_UPDATE', true)
+    end))
+    container:Add(CreateCheckBox(AUCTION_CATEGORY_WEAPONS, container, ADDON.settings.categories.subClass[LE_ITEM_CLASS_WEAPON], function(value)
+        ADDON.settings.categories.subClass[LE_ITEM_CLASS_WEAPON] = value
+        ADDON.eventManager:FireEvent('SETTINGS_UPDATE', true)
+    end))
+
+    local y = -20
+    local x = 5
+    if container.items then
+        for _, item in pairs(container.items) do
+            if x + item.textW > self.scrollFrame:GetWidth() - 10 then
+                x = 5
+                y = y - 30
+            end
+            item:SetPoint('TOPLEFT', x, y)
+            x = x + item.textW + 35
+        end
+    end
+
+    container:SetHeight(35 - y)
     self:AddSettingsPanel(container)
 end
