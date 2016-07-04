@@ -13,7 +13,9 @@ function bag:Init()
     self.frame.mainBar = ADDON.mainBar(self.frame)
     self.frame.mainBar:SetPoint('TOPRIGHT', self.frame, 'BOTTOMRIGHT', 0, -2)
     self.frame.mainBar:Show()
-    ADDON.eventManager:AddEvent(self, 'SETTINGS_UPDATE')
+    self.frame.bagBar = ADDON.bagBar(self.frame)
+    self.frame.bagBar:SetPoint('TOPRIGHT', self.frame.mainBar, 'BOTTOMRIGHT', 0, -3)
+    self.frame.mainBar:SetBagFrame(self.frame.bagBar)
 
     self.frame:HookScript('OnShow', function()
         self:Register()
@@ -26,6 +28,7 @@ end
 function bag:Open()
     self:UpdateAllItems()
     self.frame.mainBar:Update()
+    self.frame.bagBar:Update()
     self.frame:Show()
 end
 
@@ -41,47 +44,12 @@ function bag:Toggle()
     end
 end
 
-local function UpdateItemsForBag(self, bag, arrangeList)
-    local count = GetContainerNumSlots(bag)
-    if count == 0 and ADDON.cache.items[bag] then
-        for _, item in pairs(ADDON.cache.items[bag]) do
-            if item:GetParent() and item:GetParent().__class == ADDON.itemContainer.__class then
-                local previousContainer = item:GetParent()
-                previousContainer:RemoveItem(item)
-                arrangeList[previousContainer] = true
-                item:Hide()
-            end
-        end
-    else
-        for slot = 1, count do
-            local item = ADDON.cache:GetItem(bag, slot)
-            local previousContainer
-            if item:GetParent() and item:GetParent().__class == ADDON.itemContainer.__class then
-                previousContainer = item:GetParent()
-            end
-
-            item:Update()
-
-            local newContainer = ADDON.cache:GetBagItemContainer(ADDON.utils:GetItemContainerName(bag, slot))
-            self.frame:AddContainer(newContainer)
-
-            if previousContainer ~= newContainer then
-                if previousContainer then
-                    previousContainer:RemoveItem(item)
-                    arrangeList[previousContainer] = true
-                end
-                newContainer:AddItem(item)
-                arrangeList[newContainer] = true
-            end
-        end
-    end
-end
-
 function bag:UpdateAllItems()
     local arrangeList = {}
     for bag = 0, NUM_BAG_SLOTS do
-        UpdateItemsForBag(self, bag, arrangeList)
+        ADDON.utils:UpdateItemsForBag(self.frame, bag, arrangeList, ADDON.cache.GetBagItemContainer)
     end
+    self:CheckForRemovedItems(arrangeList)
     for container, _ in pairs(arrangeList) do
         container:Arrange()
     end
@@ -90,7 +58,8 @@ end
 
 function bag:UpdateAllItemsForBag(bag)
     local arrangeList = {}
-    UpdateItemsForBag(self, bag, arrangeList)
+    ADDON.utils:UpdateItemsForBag(self.frame, bag, arrangeList, ADDON.cache.GetBagItemContainer)
+    self:CheckForRemovedItems(arrangeList)
     for container, _ in pairs(arrangeList) do
         container:Arrange()
     end
@@ -103,6 +72,7 @@ function bag:Register()
     ADDON.eventManager:AddEvent(self, 'BAG_UPDATE_COOLDOWN')
     ADDON.eventManager:AddEvent(self, 'ITEM_LOCK_CHANGED')
     ADDON.eventManager:AddEvent(self, 'PLAYER_MONEY')
+    ADDON.eventManager:AddEvent(self, 'BAG_UPDATE_DELAYED')
 end
 
 function bag:UnRegister()
@@ -111,12 +81,14 @@ function bag:UnRegister()
     ADDON.eventManager:RemoveEvent(self, 'BAG_UPDATE_COOLDOWN')
     ADDON.eventManager:RemoveEvent(self, 'ITEM_LOCK_CHANGED')
     ADDON.eventManager:RemoveEvent(self, 'PLAYER_MONEY')
+    ADDON.eventManager:RemoveEvent(self, 'BAG_UPDATE_DELAYED')
 end
 
 function bag:UpdateSettings(arrange)
     self.frame:Setup()
     self.frame.mainBar:Setup()
     self.frame.mainBar:Update()
+    self.frame.bagBar:Setup()
     if self.frame:IsVisible() and arrange then
         self:Open()
     end
@@ -134,7 +106,8 @@ end
 
 function bag:INVENTORY_SEARCH_UPDATE()
     for bag = 0, NUM_BAG_SLOTS do
-        for _, item in pairs(ADDON.cache:GetItemsForBag(bag)) do
+        for slot = 1, GetContainerNumSlots(bag) do
+            local item = ADDON.cache:GetItem(bag, slot)
             item:UpdateSearch()
         end
     end
@@ -152,5 +125,18 @@ end
 function bag:ITEM_LOCK_CHANGED(bag, slot)
     if bag >= 0 and bag <= NUM_BAG_SLOTS then
         ADDON.cache:GetItem(bag, slot):UpdateLock()
+    end
+    self.frame.bagBar:UpdateLock(bag)
+end
+
+function bag:BAG_UPDATE_DELAYED()
+    self.frame.bagBar:Update()
+end
+
+function bag:CheckForRemovedItems(arrangeList)
+    for bag = 1, NUM_BAG_SLOTS do
+        if GetContainerNumSlots(bag) == 0 and ADDON.cache.items[bag] then
+            ADDON.utils:UpdateItemsForBag(self.frame, bag, arrangeList, ADDON.cache.GetBagItemContainer)
+        end
     end
 end

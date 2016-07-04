@@ -15,6 +15,7 @@
     <Script file="src/lua/settings/defaults/category.lua"/>
     <Script file="src/lua/settings/defaults/categoryContainer.lua"/>
     <Script file="src/lua/settings/defaults/mainBar.lua"/>
+    <Script file="src/lua/settings/defaults/bagItem.lua"/>
     <Script file="src/lua/settings/editor.lua"/>
     <Script file="src/lua/settings/settings.lua"/>
 
@@ -32,9 +33,12 @@
     <Script file="src/lua/elements/categoryContainer.lua"/>
     <Script file="src/lua/elements/mainBar.lua"/>
     <Script file="src/lua/elements/categoryDialog.lua"/>
+    <Script file="src/lua/elements/bagItem.lua"/>
+    <Script file="src/lua/elements/bagBar.lua"/>
 
     <!-- Controller -->
     <Script file="src/lua/controllers/bag.lua"/>
+    <Script file="src/lua/controllers/bank.lua"/>
 
     <!-- Core (Load last) -->
     <Script file="src/lua/core.lua"/>

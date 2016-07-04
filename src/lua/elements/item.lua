@@ -7,7 +7,9 @@ local item = ADDON.item
 setmetatable(item, {
     __call = function(tbl, bag, slot)
         local parent = CreateFrame('FRAME', string.format('DJBagsItemParent%d_%d', bag, slot))
-        parent.button = CreateFrame('BUTTON', string.format('DJBagsItem%d_%d', bag, slot), parent, 'ContainerFrameItemButtonTemplate')
+        local inherit = bag == BANK_CONTAINER and 'BankItemButtonGenericTemplate' or
+                bag == REAGENTBANK_CONTAINER and 'ReagentBankItemButtonGenericTemplate' or 'ContainerFrameItemButtonTemplate'
+        parent.button = CreateFrame('BUTTON', string.format('DJBagsItem%d_%d', bag, slot), parent, inherit)
 
         parent:SetID(bag)
         parent.button:SetID(slot)
@@ -34,15 +36,21 @@ function item:Init()
     self.button:GetNormalTexture():ClearAllPoints()
     self.button:GetNormalTexture():SetAllPoints()
 
-    self.button.NewItemTexture:ClearAllPoints()
-    self.button.NewItemTexture:SetAllPoints()
+    if self.button.NewItemTexture then
+        self.button.NewItemTexture:ClearAllPoints()
+        self.button.NewItemTexture:SetAllPoints()
+    end
 
-    self.button.flash:ClearAllPoints()
-    self.button.flash:SetAllPoints()
+    if self.button.flash then
+        self.button.flash:ClearAllPoints()
+        self.button.flash:SetAllPoints()
+    end
 
     self.button.quest = _G[self.button:GetName() .. "IconQuestTexture"]
-    self.button.quest:ClearAllPoints()
-    self.button.quest:SetAllPoints()
+    if self.button.quest then
+        self.button.quest:ClearAllPoints()
+        self.button.quest:SetAllPoints()
+    end
 
     self.button.cooldown = _G[self.button:GetName() .. "Cooldown"]
 
@@ -116,7 +124,7 @@ local function UpdateFiltered(self, filtered, shouldDoRelicChecks, itemID)
 end
 
 local function UpdateCountcolour(self, equipable, quality)
-    if equipable and quality then
+    if equipable and quality and quality >= LE_ITEM_QUALITY_COMMON then
         self.button.Count:SetVertexColor(BAG_ITEM_QUALITY_COLORS[quality].r, BAG_ITEM_QUALITY_COLORS[quality].g, BAG_ITEM_QUALITY_COLORS[quality].b)
     else
         self.button.Count:SetVertexColor(1, 1, 1)
@@ -140,30 +148,40 @@ end
 
 function item:Update()
     local texture, count, locked, quality, _, _, _, filtered, _, id = GetContainerItemInfo(self:GetID(), self.button:GetID())
-    local isQuestItem, questId, isActive = GetContainerItemQuestInfo(self:GetID(), self.button:GetID())
-    local isNewItem = C_NewItems.IsNewItem(self:GetID(), self.button:GetID())
-    local isBattlePayItem = IsBattlePayItem(self:GetID(), self.button:GetID())
-    local shouldDoRelicChecks = not BagHelpBox:IsShown() and not GetCVarBitfield("closedInfoFrames", LE_FRAME_TUTORIAL_ARTIFACT_RELIC_MATCH)
     local equipable = IsEquippableItem(id)
-
-    if (equipable) then
-        count = count > 1 and count or select(4, GetItemInfo(id))
-    end
-
     self.id = id
     self.name = id and select(1, GetItemInfo(id)) or ''
     self.quality = quality or 0
     self.ilevel = id and select(4, GetItemInfo(id)) or 0
 
-    SetItemButtonTexture(self.button, texture)
-    SetItemButtonQuality(self.button, quality, id)
-    SetItemButtonCount(self.button, count)
-    SetItemButtonDesaturated(self.button, locked)
-    UpdateQuest(self, isQuestItem, questId, isActive)
-    UpdateNewItemAnimations(self, isNewItem, isBattlePayItem, quality)
-    UpdateFiltered(self, filtered, shouldDoRelicChecks, id)
-    UpdateCountcolour(self, equipable, quality)
-    UpdateCooldown(self)
+
+    if self:GetID() == BANK_CONTAINER or self:GetID() == REAGENTBANK_CONTAINER then
+        BankFrameItemButton_Update(self.button)
+        if (equipable) then
+            count = count > 1 and count or select(4, GetItemInfo(id))
+            SetItemButtonCount(self.button, count)
+            UpdateCountcolour(self, equipable, quality)
+        end
+    else
+        local isQuestItem, questId, isActive = GetContainerItemQuestInfo(self:GetID(), self.button:GetID())
+        local isNewItem = C_NewItems.IsNewItem(self:GetID(), self.button:GetID())
+        local isBattlePayItem = IsBattlePayItem(self:GetID(), self.button:GetID())
+        local shouldDoRelicChecks = not BagHelpBox:IsShown() and not GetCVarBitfield("closedInfoFrames", LE_FRAME_TUTORIAL_ARTIFACT_RELIC_MATCH)
+
+        if (equipable) then
+            count = count > 1 and count or select(4, GetItemInfo(id))
+        end
+
+        SetItemButtonTexture(self.button, texture)
+        SetItemButtonQuality(self.button, quality, id)
+        SetItemButtonCount(self.button, count)
+        SetItemButtonDesaturated(self.button, locked)
+        UpdateQuest(self, isQuestItem, questId, isActive)
+        UpdateNewItemAnimations(self, isNewItem, isBattlePayItem, quality)
+        UpdateFiltered(self, filtered, shouldDoRelicChecks, id)
+        UpdateCountcolour(self, equipable, quality)
+        UpdateCooldown(self)
+    end
 end
 
 function item:UpdateCooldown()

@@ -6,6 +6,8 @@ ADDON.cache.__index = ADDON.cache
 local cache = ADDON.cache
 cache.items = {}
 cache.bagContainers = {}
+cache.bankContainers = {}
+cache.reagentContainers = {}
 
 function cache:GetItem(bag, slot)
     self.items[bag] = self.items[bag] or {}
@@ -16,6 +18,16 @@ end
 function cache:GetBagItemContainer(name)
     self.bagContainers[name] = self.bagContainers[name] or ADDON.itemContainer(name, name ~= ADDON.utils.EMPTY_BAG_NAME, nil, name == ADDON.utils.EMPTY_BAG_NAME)
     return self.bagContainers[name]
+end
+
+function cache:GetBankItemContainer(name)
+    self.bankContainers[name] = self.bankContainers[name] or ADDON.itemContainer(name, name ~= ADDON.utils.EMPTY_BAG_NAME, nil, name == ADDON.utils.EMPTY_BAG_NAME)
+    return self.bankContainers[name]
+end
+
+function cache:GetReagentItemContainer(name)
+    self.reagentContainers[name] = self.reagentContainers[name] or ADDON.itemContainer(name, name ~= ADDON.utils.EMPTY_BAG_NAME, nil, name == ADDON.utils.EMPTY_BAG_NAME)
+    return self.reagentContainers[name]
 end
 
 function cache:UpdateSettings(arrange)

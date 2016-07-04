@@ -47,6 +47,18 @@ function bar:Init()
     self.slots:SetPoint('TOPLEFT', self.searchBox, 'TOPRIGHT', 5, 0)
     self.slots:SetPoint('BOTTOMLEFT', self.searchBox, 'BOTTOMRIGHT', 5, 0)
 
+    self.bagBtn = CreateFrame("CheckButton", 'TestBtnThingy', self, 'UIRadioButtonTemplate')
+    self.bagBtn:SetPoint('RIGHT', -5, 0)
+    self.bagBtn:SetScript('OnClick', function()
+        if self.bagFrame then
+            if self.bagBtn:GetChecked() then
+                self.bagFrame:Show()
+            else
+                self.bagFrame:Hide()
+            end
+        end
+    end)
+
     self.currencyBox:SetScript('OnEnter', function()
         local cnt = GetCurrencyListSize()
         GameTooltip:SetOwner(self.currencyBox, "ANCHOR_NONE")
@@ -64,6 +76,15 @@ function bar:Init()
     self.currencyBox:SetScript('OnLeave', function()
         GameTooltip:Hide()
     end)
+end
+
+function bar:SetBagFrame(frame)
+    self.bagFrame = frame
+    if self.bagBtn:GetChecked() then
+        frame:Show()
+    else
+        frame:Hide()
+    end
 end
 
 function bar:Setup()

@@ -12,6 +12,7 @@ function core:ADDON_LOADED(name)
     ADDON.settingsController:Init()
 
     ADDON.bag:Init()
+    ADDON.bank:Init()
 
     ADDON.eventManager:AddEvent(self, "SETTINGS_UPDATE")
     ADDON.eventManager:RemoveEvent(self, 'ADDON_LOADED')
@@ -20,6 +21,7 @@ end
 function core:SETTINGS_UPDATE(arrange)
     ADDON.cache:UpdateSettings(arrange)
     ADDON.bag:UpdateSettings(arrange)
+    ADDON.bank:UpdateSettings(arrange)
     ADDON.categoryDialog:Setup()
 end
 
@@ -31,12 +33,9 @@ ToggleAllBags = function()
     ADDON.bag:Toggle()
 end
 
-local oldToggleBag = ToggleBag
-ToggleBag = function(id, ...)
+ToggleBag = function(id)
     if id < 5 and id > -1 then
         ADDON.bag:Toggle()
-    else
-        oldToggleBag(id, ...)
     end
 end
 

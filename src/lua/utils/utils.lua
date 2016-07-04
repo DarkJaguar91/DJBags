@@ -36,7 +36,7 @@ function utils:GetItemContainerName(bag, slot)
         local isInSet, setName = GetContainerItemEquipmentSetInfo(bag, slot)
 
         if quality == LE_ITEM_QUALITY_POOR then
-            return subClassName
+            return BAG_FILTER_JUNK
         end
 
         if isInSet then
@@ -56,4 +56,40 @@ function utils:GetItemContainerName(bag, slot)
         return className
     end
     return self.EMPTY_BAG_NAME
+end
+
+function utils:UpdateItemsForBag(frame, bag, arrangeList, containerFunc)
+    local count = GetContainerNumSlots(bag)
+    if count == 0 and ADDON.cache.items[bag] then
+        for _, item in pairs(ADDON.cache.items[bag]) do
+            if item:GetParent() then
+                local previousContainer = item:GetParent()
+                previousContainer:RemoveItem(item)
+                arrangeList[previousContainer] = true
+                item:Hide()
+            end
+        end
+    else
+        for slot = 1, count do
+            local item = ADDON.cache:GetItem(bag, slot)
+            local previousContainer
+            if item:GetParent() and item:GetParent().__class == ADDON.itemContainer.__class then
+                previousContainer = item:GetParent()
+            end
+
+            item:Update()
+
+            local newContainer = containerFunc(ADDON.cache, ADDON.utils:GetItemContainerName(bag, slot))
+            frame:AddContainer(newContainer)
+            arrangeList[newContainer] = true
+
+            if previousContainer ~= newContainer then
+                if previousContainer then
+                    previousContainer:RemoveItem(item)
+                    arrangeList[previousContainer] = true
+                end
+                newContainer:AddItem(item)
+            end
+        end
+    end
 end

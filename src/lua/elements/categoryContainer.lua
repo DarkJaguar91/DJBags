@@ -4,7 +4,6 @@ ADDON.categoryContainer = {}
 ADDON.categoryContainer.__index = ADDON.categoryContainer
 
 local container = ADDON.categoryContainer
-container.containers = {}
 setmetatable(container, {
     __call = function(tbl, name, parent)
         local frame = ADDON.container(name, parent)
@@ -27,6 +26,7 @@ function container:Init()
     self:RegisterForDrag("LeftButton")
     self:SetScript("OnDragStart", self.StartMoving)
     self:SetScript("OnDragStop", self.StopMovingOrSizing)
+    self.containers = {}
 end
 
 function container:Setup()
