@@ -37,10 +37,13 @@ function settings:GetCharacterSettings()
     local realm = GetRealmName()
     local player = UnitName("player")
 
-    if DJBagsConfig and DJBagsConfig[realm] and DJBagsConfig[realm][player] then
-        local userSettings = DJBagsConfig[realm][player]
-        self:MigrateSettings(userSettings, ADDON.settings)
-        ADDON.settings = userSettings
+    if DJBagsConfig then
+        if DJBagsConfig[realm] and DJBagsConfig[realm][player] then
+            local userSettings = DJBagsConfig[realm][player]
+            self:MigrateSettings(userSettings, ADDON.settings)
+            ADDON.settings = userSettings
+        end
+        ADDON.globalCategories = DJBagsConfig.globalCategories or {}
     end
 end
 

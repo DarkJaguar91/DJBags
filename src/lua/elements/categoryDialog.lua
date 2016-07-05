@@ -125,7 +125,7 @@ function dialog:CreateFrame()
     self.resetBtn = CreateFrame('BUTTON', 'DJBagsCategoryDialogResetButton', self.frame)
     self.resetBtn:SetNormalFontObject("GameFontHighlight")
     self.resetBtn:SetSize(75, 20)
-    self.resetBtn:SetText("Clear")
+    self.resetBtn:SetText(RESET)
     self.resetBtn:SetBackdrop({
         bgFile = "Interface\\ChatFrame\\ChatFrameBackground",
         edgeFile = "Interface\\Buttons\\WHITE8x8",
@@ -145,7 +145,7 @@ function dialog:CreateFrame()
     self.okBtn = CreateFrame('BUTTON', 'DJBagsCategoryDialogOkButton', self.frame)
     self.okBtn:SetNormalFontObject("GameFontHighlight")
     self.okBtn:SetSize(75, 20)
-    self.okBtn:SetText("OK")
+    self.okBtn:SetText(DONE)
     self.okBtn:SetBackdrop({
         bgFile = "Interface\\ChatFrame\\ChatFrameBackground",
         edgeFile = "Interface\\Buttons\\WHITE8x8",
@@ -171,7 +171,7 @@ function dialog:CreateFrame()
     self.cancelBtn = CreateFrame('BUTTON', 'DJBagsCategoryDialogCancelButton', self.frame)
     self.cancelBtn:SetNormalFontObject("GameFontHighlight")
     self.cancelBtn:SetSize(75, 20)
-    self.cancelBtn:SetText("Cancel")
+    self.cancelBtn:SetText(CANCEL)
     self.cancelBtn:SetBackdrop({
         bgFile = "Interface\\ChatFrame\\ChatFrameBackground",
         edgeFile = "Interface\\Buttons\\WHITE8x8",
