@@ -24,7 +24,7 @@ setmetatable(container, {
 function container:Init(hasTitle)
     self.items = {}
     if hasTitle == nil or hasTitle then
-        self.title = self:CreateFontString(self:GetName() .. 'Title', 'OVERLAY')
+        self.title = self:CreateFontString(self:GetName() .. 'Title', 'OVERLAY', 'GameFontNormal')
     end
 end
 
@@ -39,7 +39,8 @@ function container:Setup()
     self.sortFunction = ADDON.sorters.items[settings.sortFunction]
 
     if self.title then
-        self.title:SetFont(settings.font, settings.fontSize, '')
+        local font, _, outline = self.title:GetFont()
+        self.title:SetFont(font, settings.fontSize, outline)
         self.title:SetText(self.name)
         self.title:SetTextColor(unpack(settings.fontColor))
         self.title:ClearAllPoints()

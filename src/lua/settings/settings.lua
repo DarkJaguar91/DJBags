@@ -53,14 +53,14 @@ function settings:MigrateSettings(table, default)
             if type(v) ~= type(table[k]) then
                 table[k] = v
             elseif type(v) == 'table' then
-                migrate(table[k], v)
+                self:MigrateSettings(table[k], v)
             end
         else
             table[k] = v
         end
     end
     for k, v in pairs(table) do
-        if not default[k] then
+        if not default[k] and type(v) == 'table' then
             table[k] = nil
         end
     end

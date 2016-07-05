@@ -6,7 +6,6 @@ ADDON.settings.itemContainer = {
     spacing = 3,
     padding = 5,
     cols = 5,
-    font = 'Fonts\\FRIZQT__.TTF',
     fontSize = 13,
     fontColor = { 0.5, 1, 0.5, 1 },
     titleMargin = 5,

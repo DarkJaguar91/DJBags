@@ -70,6 +70,9 @@ end
 
 SLASH_TDJBAGS1, SLASH_TDJBAGS2 = '/tt', '/ttt';
 function SlashCmdList.TDJBAGS(msg, editbox)
+    for k, v in pairs(C_NewItems) do
+            print(k, v)
+    end
 end
 
 SLASH_RELOAD1 = '/rl'

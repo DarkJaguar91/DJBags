@@ -44,6 +44,12 @@ function bag:Toggle()
     end
 end
 
+function bag:NewItemsUpdated()
+    if self.frame:IsVisible() then
+        self:UpdateAllItems()
+    end
+end
+
 function bag:UpdateAllItems()
     local arrangeList = {}
     for bag = 0, NUM_BAG_SLOTS do

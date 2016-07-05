@@ -61,6 +61,7 @@ function item:Init()
     self.button:Show()
 
     self.button:HookScript('OnClick', self.OnClick)
+    self.button:SetScript('OnEnter', self.OnEnter)
 end
 
 function item:Setup()
@@ -68,6 +69,73 @@ function item:Setup()
     self:SetSize(settings.size, settings.size)
     local name, _, outline = self.button.Count:GetFont()
     self.button.Count:SetFont(name, math.min(settings.size / 3, 13), outline)
+end
+
+function item:OnEnter(...)
+    local bag = self:GetParent():GetID()
+
+    if bag == BANK_CONTAINER or bag == REAGENTBANK_CONTAINER then
+        BankFrameItemButton_OnEnter(self, ...)
+    else
+        self:GetParent().OnEnterBag(self)
+    end
+end
+
+function item:OnEnterBag()
+    GameTooltip:SetOwner(self, "ANCHOR_NONE")
+
+    local newItemTexture = self.NewItemTexture
+    local battlepayItemTexture = self.BattlepayItemTexture
+    local flash = self.flashAnim
+    local newItemGlowAnim = self.newitemglowAnim
+
+    newItemTexture:Hide()
+    battlepayItemTexture:Hide()
+
+    if (flash:IsPlaying() or newItemGlowAnim:IsPlaying()) then
+        flash:Stop()
+        newItemGlowAnim:Stop()
+    end
+
+    local showSell
+    local _, repairCost, speciesID, level, breedQuality, maxHealth, power, speed, name = GameTooltip:SetBagItem(self:GetParent():GetID(), self:GetID())
+    if(speciesID and speciesID > 0) then
+        ContainerFrameItemButton_CalculateItemTooltipAnchors(self, GameTooltip)
+        BattlePetToolTip_Show(speciesID, level, breedQuality, maxHealth, power, speed, name)
+        return;
+    else
+        if (BattlePetTooltip) then
+            BattlePetTooltip:Hide()
+        end
+    end
+
+    local requiresCompareTooltipReanchor = ContainerFrameItemButton_CalculateItemTooltipAnchors(self, GameTooltip)
+
+    if ( requiresCompareTooltipReanchor and (IsModifiedClick("COMPAREITEMS") or GetCVarBool("alwaysCompareItems")) ) then
+        GameTooltip_ShowCompareItem(GameTooltip)
+    end
+
+    if ( InRepairMode() and (repairCost and repairCost > 0) ) then
+        GameTooltip:AddLine(REPAIR_COST, nil, nil, nil, true)
+        SetTooltipMoney(GameTooltip, repairCost)
+        GameTooltip:Show()
+    elseif ( MerchantFrame:IsShown() and MerchantFrame.selectedTab == 1 ) then
+        showSell = 1
+    end
+
+    if ( IsModifiedClick("DRESSUP") and self.hasItem ) then
+        ShowInspectCursor()
+    elseif ( showSell ) then
+        ShowContainerSellCursor(self:GetParent():GetID(),self:GetID())
+    elseif ( self.readable ) then
+        ShowInspectCursor()
+    else
+        ResetCursor()
+    end
+
+    if ArtifactFrame and self.hasItem then
+        ArtifactFrame:OnInventoryItemMouseEnter(self:GetParent():GetID(), self:GetID())
+    end
 end
 
 --region Update Events

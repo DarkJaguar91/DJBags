@@ -35,7 +35,7 @@ function bar:Init()
     end)
 
     self.currencyBox = CreateFrame('FRAME', 'DJBagsMainBarCurrencyBox', self)
-    self.currency = self.currencyBox:CreateFontString('DJBagMainBarCurrencyText', 'OVERLAY')
+    self.currency = self.currencyBox:CreateFontString('DJBagMainBarCurrencyText', 'OVERLAY', 'GameFontNormal')
     self.currency:SetAllPoints()
     self.currencyBox:SetPoint('TOPLEFT', 5, -5)
     self.currencyBox:SetPoint('BOTTOMLEFT', 5, 5)
@@ -43,11 +43,11 @@ function bar:Init()
     self.searchBox:SetPoint('TOPLEFT', self.currencyBox, 'TOPRIGHT', 10, 0)
     self.searchBox:SetPoint('BOTTOMLEFT', self.currencyBox, 'BOTTOMRIGHT', 10, 0)
     self.searchBox:SetWidth(125)
-    self.slots = self:CreateFontString('DJBagMainBarSlotsText', 'OVERLAY')
+    self.slots = self:CreateFontString('DJBagMainBarSlotsText', 'OVERLAY', 'GameFontNormal')
     self.slots:SetPoint('TOPLEFT', self.searchBox, 'TOPRIGHT', 5, 0)
     self.slots:SetPoint('BOTTOMLEFT', self.searchBox, 'BOTTOMRIGHT', 5, 0)
 
-    self.bagBtn = CreateFrame("CheckButton", 'TestBtnThingy', self, 'UIRadioButtonTemplate')
+    self.bagBtn = CreateFrame("CheckButton", 'DJMainBarBagBtn', self, 'UIRadioButtonTemplate')
     self.bagBtn:SetPoint('RIGHT', -5, 0)
     self.bagBtn:SetScript('OnClick', function()
         if self.bagFrame then
@@ -57,6 +57,28 @@ function bar:Init()
                 self.bagFrame:Hide()
             end
         end
+    end)
+
+    self.clearBtn = CreateFrame('Button', 'DJMainBarClearBtn', self)
+    self.clearBtn:SetNormalTexture([[Interface\Buttons\UI-RotationLeft-Button-Up]])
+    self.clearBtn:SetPushedTexture([[Interface\Buttons\UI-RotationLeft-Button-Down]])
+    self.clearBtn:SetHighlightTexture([[Interface\Buttons\ButtonHilight-Square]])
+    self.clearBtn:GetHighlightTexture():ClearAllPoints()
+    self.clearBtn:GetHighlightTexture():SetPoint('TOPLEFT', 3, -3)
+    self.clearBtn:GetHighlightTexture():SetPoint('BOTTOMRIGHT', -3, 3)
+    self.clearBtn:SetPoint('RIGHT', self.bagBtn, 'LEFT', -1, 0)
+    self.clearBtn:SetSize(25, 25)
+    self.clearBtn:SetScript('OnEnter', function(self)
+        GameTooltip:SetOwner(self, 'TOPRIGHT')
+        GameTooltip:SetText('Clear New Items')
+        GameTooltip:Show()
+    end)
+    self.clearBtn:SetScript('OnLeave', function(self)
+        GameTooltip:Hide()
+    end)
+    self.clearBtn:SetScript('OnClick', function(self)
+        C_NewItems:ClearAll()
+        ADDON.bag:NewItemsUpdated()
     end)
 
     self.currencyBox:SetScript('OnEnter', function()
@@ -91,9 +113,12 @@ function bar:Setup()
     ADDON.container.Setup(self)
 
     local settings = ADDON.settings.mainBar
-    self.currency:SetFont(settings.currencyFont, settings.currencyFontSize, '')
+    local font, _, outline = self.currency:GetFont()
+    self.currency:SetFont(font, settings.currencyFontSize, outline)
     self.currency:SetTextColor(unpack(settings.currencyFontColor))
-    self.slots:SetFont(settings.slotsFont, settings.slotsFontSize, '')
+
+    font, _, outline = self.slots:GetFont()
+    self.slots:SetFont(font, settings.slotsFontSize, outline)
     self.slots:SetTextColor(unpack(settings.slotsFontColor))
 end
 
@@ -108,5 +133,5 @@ function bar:Update()
     self.slots:SetText(string.format("%d/%d", total - free, total))
 
     self.currencyBox:SetWidth(self.currency:GetStringWidth())
-    self:SetSize(self.currency:GetStringWidth() + self.slots:GetStringWidth() + 165, math.max(self.currency:GetStringHeight(), self.slots:GetStringHeight()) + 12)
+    self:SetSize(self.currency:GetStringWidth() + self.slots:GetStringWidth() + 190, math.max(self.currency:GetStringHeight(), self.slots:GetStringHeight()) + 12)
 end

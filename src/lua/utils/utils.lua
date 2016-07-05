@@ -43,9 +43,18 @@ function utils:GetItemContainerName(bag, slot)
             return setName
         end
 
+        if bag >= 0 and bag <= NUM_BAG_SLOTS and C_NewItems.IsNewItem(bag, slot) then
+            return NEW
+        end
+
         local userDefinedList = ADDON.settings.categories.userDefined
         if userDefinedList[id] then
             return userDefinedList[id] .. '*'
+        end
+
+        local globalDefinedList = ADDON.globalCategories
+        if globalDefinedList[id] then
+            return globalDefinedList[id] .. '**'
         end
 
         local subClassSplitList = ADDON.settings.categories.subClass

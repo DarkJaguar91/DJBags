@@ -64,7 +64,14 @@ function dialog:Init(id)
 
     UIDropDownMenu_Initialize(self.dropDown, InitDropDown)
     self.errorText:Hide()
-    local text = ADDON.settings.categories.userDefined[id] or ''
+    local text = ''
+    if ADDON.settings.categories.userDefined[id] then
+        text = ADDON.settings.categories.userDefined[id]
+        self.globalCheckbox:SetChecked(false)
+    elseif ADDON.globalCategories[id] then
+        text = ADDON.globalCategories[id]
+        self.globalCheckbox:SetChecked(true)
+    end
     self:SetText(text)
 
     self.frame:SetHeight(75 + self.title:GetStringHeight())
@@ -85,8 +92,8 @@ function dialog:CreateFrame()
     self.frame:SetPoint('CENTER')
     table.insert(UISpecialFrames, self.frame:GetName())
 
-    self.title = self.frame:CreateFontString('DJBagsCategoryDialogTitle', 'OVERLAY')
-    self.title:SetFont('Fonts\\FRIZQT__.TTF', 18, 'OUTLINE')
+    self.title = self.frame:CreateFontString('DJBagsCategoryDialogTitle', 'OVERLAY', 'GameFontNormal')
+    self.title:SetFont(select(1, self.title:GetFont()), 18, 'OUTLINE')
     self.title:SetTextColor(1, 1, 1, 1)
     self.title:SetPoint("TOPLEFT", 5, -5)
     self.title:SetPoint("TOPRIGHT", -5, -5)
@@ -112,8 +119,8 @@ function dialog:CreateFrame()
         dialog.frame:Hide()
     end)
 
-    self.errorText = self.frame:CreateFontString('DJBagsCategoryDialogTitle', 'OVERLAY')
-    self.errorText:SetFont('Fonts\\FRIZQT__.TTF', 18, 'OUTLINE')
+    self.errorText = self.frame:CreateFontString('DJBagsCategoryDialogTitle', 'GameFontNormal')
+    self.errorText:SetFont(select(1, self.errorText:GetFont()), 18, 'OUTLINE')
     self.errorText:SetTextColor(1, 0, 0, 1)
     self.errorText:SetPoint("TOPRIGHT", self.editBox, 'TOPLEFT', -5, 0)
     self.errorText:SetText('A Category name needs to be entered!')
@@ -140,10 +147,18 @@ function dialog:CreateFrame()
     self.resetBtn:SetBackdropColor(0, 0, 0, 0)
     self.resetBtn:SetPoint('BOTTOMLEFT', self.frame, 'BOTTOMLEFT', 5, 5)
     self.resetBtn:SetScript('OnClick', function()
-        ADDON.settings.categories.userDefined[dialog.id] = nil
+        if self.globalCheckbox:GetChecked() then
+            ADDON.globalCategories[dialog.id] = nil
+        else
+            ADDON.settings.categories.userDefined[dialog.id] = nil
+        end
         ADDON.eventManager:FireEvent('SETTINGS_UPDATE', true)
         dialog.frame:Hide()
     end)
+
+    self.globalCheckbox = CreateFrame("CheckButton", 'DJBagsCategoryDialogGlobalCheckbox', self.frame, 'OptionsSmallCheckButtonTemplate')
+    self.globalCheckbox:SetPoint('LEFT', self.resetBtn, 'RIGHT', 5, 0)
+    _G[self.globalCheckbox:GetName().."Text"]:SetText(ALL)
 
     self.okBtn = CreateFrame('BUTTON', 'DJBagsCategoryDialogOkButton', self.frame)
     self.okBtn:SetNormalFontObject("GameFontHighlight")
@@ -163,7 +178,11 @@ function dialog:CreateFrame()
         local text = dialog.editBox:GetText()
         dialog.errorText:Hide()
         if not text or text ~= '' then
-            ADDON.settings.categories.userDefined[dialog.id] = text
+            if self.globalCheckbox:GetChecked() then
+                ADDON.globalCategories[dialog.id] = text
+            else
+                ADDON.settings.categories.userDefined[dialog.id] = text
+            end
             ADDON.eventManager:FireEvent('SETTINGS_UPDATE', true)
             dialog.frame:Hide()
         else
