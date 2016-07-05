@@ -1,0 +1,1075 @@
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/misc.xml	(revision 3879ca3845eea8b6154429c795364f7d79160483)
++++ .idea/misc.xml	(revision )
+@@ -1,5 +1,8 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
++  <component name="EntryPointsManager">
++    <entry_points version="2.0" />
++  </component>
+   <component name="MavenImportPreferences">
+     <option name="generalSettings">
+       <MavenGeneralSettings>
+\ No newline at end of file
+Index: src/lua/elements/mainBar.lua
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/lua/elements/mainBar.lua	(revision 3879ca3845eea8b6154429c795364f7d79160483)
++++ src/lua/elements/mainBar.lua	(revision )
+@@ -47,6 +47,18 @@
+     self.slots:SetPoint('TOPLEFT', self.searchBox, 'TOPRIGHT', 5, 0)
+     self.slots:SetPoint('BOTTOMLEFT', self.searchBox, 'BOTTOMRIGHT', 5, 0)
+ 
++    self.bagBtn = CreateFrame("CheckButton", 'TestBtnThingy', self, 'UIRadioButtonTemplate')
++    self.bagBtn:SetPoint('RIGHT', -5, 0)
++    self.bagBtn:SetScript('OnClick', function()
++        if self.bagFrame then
++            if self.bagBtn:GetChecked() then
++                self.bagFrame:Show()
++            else
++                self.bagFrame:Hide()
++            end
++        end
++    end)
++
+     self.currencyBox:SetScript('OnEnter', function()
+         local cnt = GetCurrencyListSize()
+         GameTooltip:SetOwner(self.currencyBox, "ANCHOR_NONE")
+@@ -64,6 +76,15 @@
+     self.currencyBox:SetScript('OnLeave', function()
+         GameTooltip:Hide()
+     end)
++end
++
++function bar:SetBagFrame(frame)
++    self.bagFrame = frame
++    if self.bagBtn:GetChecked() then
++        frame:Show()
++    else
++        frame:Hide()
++    end
+ end
+ 
+ function bar:Setup()
+Index: src/lua/cache/cache.lua
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/lua/cache/cache.lua	(revision 3879ca3845eea8b6154429c795364f7d79160483)
++++ src/lua/cache/cache.lua	(revision )
+@@ -6,6 +6,8 @@
+ local cache = ADDON.cache
+ cache.items = {}
+ cache.bagContainers = {}
++cache.bankContainers = {}
++cache.reagentContainers = {}
+ 
+ function cache:GetItem(bag, slot)
+     self.items[bag] = self.items[bag] or {}
+@@ -16,6 +18,16 @@
+ function cache:GetBagItemContainer(name)
+     self.bagContainers[name] = self.bagContainers[name] or ADDON.itemContainer(name, name ~= ADDON.utils.EMPTY_BAG_NAME, nil, name == ADDON.utils.EMPTY_BAG_NAME)
+     return self.bagContainers[name]
++end
++
++function cache:GetBankItemContainer(name)
++    self.bankContainers[name] = self.bankContainers[name] or ADDON.itemContainer(name, name ~= ADDON.utils.EMPTY_BAG_NAME, nil, name == ADDON.utils.EMPTY_BAG_NAME)
++    return self.bankContainers[name]
++end
++
++function cache:GetReagentItemContainer(name)
++    self.reagentContainers[name] = self.reagentContainers[name] or ADDON.itemContainer(name, name ~= ADDON.utils.EMPTY_BAG_NAME, nil, name == ADDON.utils.EMPTY_BAG_NAME)
++    return self.reagentContainers[name]
+ end
+ 
+ function cache:UpdateSettings(arrange)
+\ No newline at end of file
+Index: src/lua/controllers/bag.lua
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/lua/controllers/bag.lua	(revision 3879ca3845eea8b6154429c795364f7d79160483)
++++ src/lua/controllers/bag.lua	(revision )
+@@ -13,7 +13,9 @@
+     self.frame.mainBar = ADDON.mainBar(self.frame)
+     self.frame.mainBar:SetPoint('TOPRIGHT', self.frame, 'BOTTOMRIGHT', 0, -2)
+     self.frame.mainBar:Show()
+-    ADDON.eventManager:AddEvent(self, 'SETTINGS_UPDATE')
++    self.frame.bagBar = ADDON.bagBar(self.frame)
++    self.frame.bagBar:SetPoint('TOPRIGHT', self.frame.mainBar, 'BOTTOMRIGHT', 0, -3)
++    self.frame.mainBar:SetBagFrame(self.frame.bagBar)
+ 
+     self.frame:HookScript('OnShow', function()
+         self:Register()
+@@ -26,6 +28,7 @@
+ function bag:Open()
+     self:UpdateAllItems()
+     self.frame.mainBar:Update()
++    self.frame.bagBar:Update()
+     self.frame:Show()
+ end
+ 
+@@ -41,46 +44,10 @@
+     end
+ end
+ 
+-local function UpdateItemsForBag(self, bag, arrangeList)
+-    local count = GetContainerNumSlots(bag)
+-    if count == 0 and ADDON.cache.items[bag] then
+-        for _, item in pairs(ADDON.cache.items[bag]) do
+-            if item:GetParent() and item:GetParent().__class == ADDON.itemContainer.__class then
+-                local previousContainer = item:GetParent()
+-                previousContainer:RemoveItem(item)
+-                arrangeList[previousContainer] = true
+-                item:Hide()
+-            end
+-        end
+-    else
+-        for slot = 1, count do
+-            local item = ADDON.cache:GetItem(bag, slot)
+-            local previousContainer
+-            if item:GetParent() and item:GetParent().__class == ADDON.itemContainer.__class then
+-                previousContainer = item:GetParent()
+-            end
+-
+-            item:Update()
+-
+-            local newContainer = ADDON.cache:GetBagItemContainer(ADDON.utils:GetItemContainerName(bag, slot))
+-            self.frame:AddContainer(newContainer)
+-
+-            if previousContainer ~= newContainer then
+-                if previousContainer then
+-                    previousContainer:RemoveItem(item)
+-                    arrangeList[previousContainer] = true
+-                end
+-                newContainer:AddItem(item)
+-                arrangeList[newContainer] = true
+-            end
+-        end
+-    end
+-end
+-
+ function bag:UpdateAllItems()
+     local arrangeList = {}
+     for bag = 0, NUM_BAG_SLOTS do
+-        UpdateItemsForBag(self, bag, arrangeList)
++        ADDON.utils:UpdateItemsForBag(self, bag, arrangeList, ADDON.cache.GetBagItemContainer)
+     end
+     for container, _ in pairs(arrangeList) do
+         container:Arrange()
+@@ -90,7 +57,7 @@
+ 
+ function bag:UpdateAllItemsForBag(bag)
+     local arrangeList = {}
+-    UpdateItemsForBag(self, bag, arrangeList)
++    ADDON.utils:UpdateItemsForBag(self, bag, arrangeList, ADDON.cache.GetBagItemContainer)
+     for container, _ in pairs(arrangeList) do
+         container:Arrange()
+     end
+@@ -103,6 +70,7 @@
+     ADDON.eventManager:AddEvent(self, 'BAG_UPDATE_COOLDOWN')
+     ADDON.eventManager:AddEvent(self, 'ITEM_LOCK_CHANGED')
+     ADDON.eventManager:AddEvent(self, 'PLAYER_MONEY')
++    ADDON.eventManager:AddEvent(self, 'BAG_UPDATE_DELAYED')
+ end
+ 
+ function bag:UnRegister()
+@@ -111,12 +79,14 @@
+     ADDON.eventManager:RemoveEvent(self, 'BAG_UPDATE_COOLDOWN')
+     ADDON.eventManager:RemoveEvent(self, 'ITEM_LOCK_CHANGED')
+     ADDON.eventManager:RemoveEvent(self, 'PLAYER_MONEY')
++    ADDON.eventManager:RemoveEvent(self, 'BAG_UPDATE_DELAYED')
+ end
+ 
+ function bag:UpdateSettings(arrange)
+     self.frame:Setup()
+     self.frame.mainBar:Setup()
+     self.frame.mainBar:Update()
++    self.frame.bagBar:Setup()
+     if self.frame:IsVisible() and arrange then
+         self:Open()
+     end
+@@ -134,7 +104,8 @@
+ 
+ function bag:INVENTORY_SEARCH_UPDATE()
+     for bag = 0, NUM_BAG_SLOTS do
+-        for _, item in pairs(ADDON.cache:GetItemsForBag(bag)) do
++        for slot = 1, GetContainerNumSlots(bag) do
++            local item = ADDON.cache:GetItem(bag, slot)
+             item:UpdateSearch()
+         end
+     end
+@@ -153,4 +124,9 @@
+     if bag >= 0 and bag <= NUM_BAG_SLOTS then
+         ADDON.cache:GetItem(bag, slot):UpdateLock()
+     end
++    self.frame.bagBar:UpdateLock(bag)
++end
++
++function bag:BAG_UPDATE_DELAYED()
++    self.frame.bagBar:Update()
+ end
+\ No newline at end of file
+Index: src/lua/elements/bagBar.lua
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/lua/elements/bagBar.lua	(revision 3879ca3845eea8b6154429c795364f7d79160483)
++++ src/lua/elements/bagBar.lua	(revision )
+@@ -1,6 +1,61 @@
+---
+--- User: Brandon James Talbot
+--- Date: 2016/06/29
+--- Time: 6:04 PM
+---
++local NAME, ADDON = ...
+ 
++ADDON.bagBar = {}
++ADDON.bagBar.__index = ADDON.bagBar
++
++local bar = ADDON.bagBar
++setmetatable(bar, {
++    __call = function(self, parent)
++        local frame = ADDON.container('DJBagsBagBar', parent)
++
++        for k, v in pairs(self) do
++            frame[k] = v
++        end
++
++        frame:Init()
++        frame:Setup()
++
++        return frame
++    end
++})
++
++function bar:Init()
++    self.bag1 = ADDON.bagItem('DJBagsBag0', 1, GetInventorySlotInfo("Bag0Slot"))
++    self.bag1:SetParent(self)
++    self.bag2 = ADDON.bagItem('DJBagsBag1', 2, GetInventorySlotInfo("Bag1Slot"))
++    self.bag2:SetParent(self)
++    self.bag3 = ADDON.bagItem('DJBagsBag2', 3, GetInventorySlotInfo("Bag2Slot"))
++    self.bag3:SetParent(self)
++    self.bag4 = ADDON.bagItem('DJBagsBag3', 4, GetInventorySlotInfo("Bag3Slot"))
++    self.bag4:SetParent(self)
++end
++
++function bar:Setup()
++    ADDON.container.Setup(self)
++
++    self.bag1:SetPoint("TOPRIGHT", -5, -5)
++    self.bag2:SetPoint("TOPRIGHT", self.bag1, 'TOPLEFT', -5, 0)
++    self.bag3:SetPoint("TOPRIGHT", self.bag2, 'TOPLEFT', -5, 0)
++    self.bag4:SetPoint("TOPRIGHT", self.bag3, 'TOPLEFT', -5, 0)
++
++    self:SetSize(self.bag1:GetWidth() * 4 + 25, 10 + self.bag1:GetHeight())
++end
++
++function bar:Update()
++    self.bag1:Update()
++    self.bag2:Update()
++    self.bag3:Update()
++    self.bag4:Update()
++end
++
++function bar:UpdateLock(bag)
++    if bag == self.bag1:GetID() then
++        self.bag1:UpdateLock()
++    elseif bag == self.bag2:GetID() then
++        self.bag2:UpdateLock()
++    elseif bag == self.bag3:GetID() then
++        self.bag3:UpdateLock()
++    elseif bag == self.bag4:GetID() then
++        self.bag4:UpdateLock()
++    end
++end
+\ No newline at end of file
+Index: src/lua/core.lua
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/lua/core.lua	(revision 3879ca3845eea8b6154429c795364f7d79160483)
++++ src/lua/core.lua	(revision )
+@@ -12,6 +12,7 @@
+     ADDON.settingsController:Init()
+ 
+     ADDON.bag:Init()
++    ADDON.bank:Init()
+ 
+     ADDON.eventManager:AddEvent(self, "SETTINGS_UPDATE")
+     ADDON.eventManager:RemoveEvent(self, 'ADDON_LOADED')
+@@ -71,6 +72,11 @@
+ 
+ SLASH_TDJBAGS1, SLASH_TDJBAGS2 = '/tt', '/ttt';
+ function SlashCmdList.TDJBAGS(msg, editbox)
++    local b = ADDON.item(-3, 1)
++    b:Update()
++    b:SetSize(32, 32)
++    b:SetPoint('CENTER')
++    b:Show()
+ end
+ 
+ SLASH_RELOAD1 = '/rl'
+\ No newline at end of file
+Index: src/lua/controllers/bank.lua
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/lua/controllers/bank.lua	(revision )
++++ src/lua/controllers/bank.lua	(revision )
+@@ -0,0 +1,79 @@
++local NAME, ADDON = ...
++
++ADDON.bank = {}
++ADDON.bank.__index = ADDON.bank
++
++local bank = ADDON.bank
++
++function bank:Init()
++    self.frame = ADDON.bankBar(UIParent)
++    self.frame:SetPoint('TOPLEFT', 200, -200)
++    self.frame:SetUserPlaced(true)
++    self.frame:Hide()
++
++    self.frame:HookScript('OnShow', function()
++        self:Register()
++    end)
++    self.frame:HookScript('OnHide', function()
++        self:UnRegister()
++    end)
++    ADDON.eventManager:AddEvent(self, "BANKFRAME_OPENED")
++    ADDON.eventManager:AddEvent(self, "BANKFRAME_CLOSED")
++    BankFrame:UnregisterAllEvents()
++end
++
++function bank:BANKFRAME_OPENED()
++    self.frame:Update()
++    self.frame:UpdateAllItems()
++    self.frame:Show()
++end
++
++function bank:BANKFRAME_CLOSED()
++    self.frame:Hide()
++end
++
++function bank:Register()
++--    ADDON.eventManager:AddEvent(self, 'ITEM_LOCK_CHANGED')
++    ADDON.eventManager:AddEvent(self, "PLAYERBANKSLOTS_CHANGED")
++    ADDON.eventManager:AddEvent(self, 'BAG_UPDATE')
++--    ADDON.eventManager:AddEvent(self, "PLAYERREAGENTBANKSLOTS_CHANGED")
++--    ADDON.eventManager:AddEvent(self, "PLAYERBANKBAGSLOTS_CHANGED")
++--    ADDON.eventManager:AddEvent(self, 'PLAYER_MONEY')
++--    ADDON.eventManager:AddEvent(self, 'BAG_UPDATE_COOLDOWN')
++--    ADDON.eventManager:AddEvent(self, 'INVENTORY_SEARCH_UPDATE')
++end
++
++function bank:UnRegister()
++--    ADDON.eventManager:RemoveEvent(self, 'ITEM_LOCK_CHANGED')
++    ADDON.eventManager:RemoveEvent(self, "PLAYERBANKSLOTS_CHANGED")
++--    ADDON.eventManager:RemoveEvent(self, "PLAYERREAGENTBANKSLOTS_CHANGED")
++--    ADDON.eventManager:RemoveEvent(self, "PLAYERBANKBAGSLOTS_CHANGED")
++--    ADDON.eventManager:RemoveEvent(self, 'PLAYER_MONEY')
++    ADDON.eventManager:RemoveEvent(self, 'BAG_UPDATE')
++--    ADDON.eventManager:RemoveEvent(self, 'BAG_UPDATE_COOLDOWN')
++--    ADDON.eventManager:RemoveEvent(self, 'INVENTORY_SEARCH_UPDATE')
++end
++
++function bank:ITEM_LOCK_CHANGED(bag, slot)
++    if bag == BANK_CONTAINER and slot > NUM_BANKGENERIC_SLOTS then
++        self.frame:UpdateBagLock(slot-NUM_BANKGENERIC_SLOTS)
++    else
++        ADDON.cache:GetItem(bag, slot):UpdateLock()
++    end
++end
++
++function bank:PLAYERBANKSLOTS_CHANGED()
++    self.frame:UpdateBag(BANK_CONTAINER)
++end
++
++function bank:BAG_UPDATE(bag)
++    self.frame:UpdateBag(bag)
++end
++
++function bank:PLAYERREAGENTBANKSLOTS_CHANGED()
++    self.frame:UpdateReagents()
++end
++
++function bank:BAG_UPDATE_COOLDOWN()
++    self.frame:UpdateCooldown()
++end
+\ No newline at end of file
+Index: src/lua/elements/item.lua
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/lua/elements/item.lua	(revision 3879ca3845eea8b6154429c795364f7d79160483)
++++ src/lua/elements/item.lua	(revision )
+@@ -7,7 +7,9 @@
+ setmetatable(item, {
+     __call = function(tbl, bag, slot)
+         local parent = CreateFrame('FRAME', string.format('DJBagsItemParent%d_%d', bag, slot))
+-        parent.button = CreateFrame('BUTTON', string.format('DJBagsItem%d_%d', bag, slot), parent, 'ContainerFrameItemButtonTemplate')
++        local inherit = bag == BANK_CONTAINER and 'BankItemButtonGenericTemplate' or
++                bag == REAGENTBANK_CONTAINER and 'ReagentBankItemButtonGenericTemplate' or 'ContainerFrameItemButtonTemplate'
++        parent.button = CreateFrame('BUTTON', string.format('DJBagsItem%d_%d', bag, slot), parent, inherit)
+ 
+         parent:SetID(bag)
+         parent.button:SetID(slot)
+@@ -34,15 +36,21 @@
+     self.button:GetNormalTexture():ClearAllPoints()
+     self.button:GetNormalTexture():SetAllPoints()
+ 
++    if self.button.NewItemTexture then
+-    self.button.NewItemTexture:ClearAllPoints()
+-    self.button.NewItemTexture:SetAllPoints()
++        self.button.NewItemTexture:ClearAllPoints()
++        self.button.NewItemTexture:SetAllPoints()
++    end
+ 
++    if self.button.flash then
+-    self.button.flash:ClearAllPoints()
+-    self.button.flash:SetAllPoints()
++        self.button.flash:ClearAllPoints()
++        self.button.flash:SetAllPoints()
++    end
+ 
+     self.button.quest = _G[self.button:GetName() .. "IconQuestTexture"]
++    if self.button.quest then
+-    self.button.quest:ClearAllPoints()
+-    self.button.quest:SetAllPoints()
++        self.button.quest:ClearAllPoints()
++        self.button.quest:SetAllPoints()
++    end
+ 
+     self.button.cooldown = _G[self.button:GetName() .. "Cooldown"]
+ 
+@@ -116,7 +124,7 @@
+ end
+ 
+ local function UpdateCountcolour(self, equipable, quality)
+-    if equipable and quality then
++    if equipable and quality and quality >= LE_ITEM_QUALITY_COMMON then
+         self.button.Count:SetVertexColor(BAG_ITEM_QUALITY_COLORS[quality].r, BAG_ITEM_QUALITY_COLORS[quality].g, BAG_ITEM_QUALITY_COLORS[quality].b)
+     else
+         self.button.Count:SetVertexColor(1, 1, 1)
+@@ -140,30 +148,46 @@
+ 
+ function item:Update()
+     local texture, count, locked, quality, _, _, _, filtered, _, id = GetContainerItemInfo(self:GetID(), self.button:GetID())
++    local equipable = IsEquippableItem(id)
++    self.id = id
++    self.name = id and select(1, GetItemInfo(id)) or ''
++    self.quality = quality or 0
++    self.ilevel = id and select(4, GetItemInfo(id)) or 0
++
++
++    if self:GetID() == BANK_CONTAINER or self:GetID() == REAGENTBANK_CONTAINER then
++        BankFrameItemButton_Update(self.button)
++        if (equipable) then
++            count = count > 1 and count or select(4, GetItemInfo(id))
++            SetItemButtonCount(self.button, count)
++            UpdateCountcolour(self, equipable, quality)
++        end
++    else
+-    local isQuestItem, questId, isActive = GetContainerItemQuestInfo(self:GetID(), self.button:GetID())
+-    local isNewItem = C_NewItems.IsNewItem(self:GetID(), self.button:GetID())
+-    local isBattlePayItem = IsBattlePayItem(self:GetID(), self.button:GetID())
+-    local shouldDoRelicChecks = not BagHelpBox:IsShown() and not GetCVarBitfield("closedInfoFrames", LE_FRAME_TUTORIAL_ARTIFACT_RELIC_MATCH)
++        local isQuestItem, questId, isActive = GetContainerItemQuestInfo(self:GetID(), self.button:GetID())
++        local isNewItem = C_NewItems.IsNewItem(self:GetID(), self.button:GetID())
++        local isBattlePayItem = IsBattlePayItem(self:GetID(), self.button:GetID())
++        local shouldDoRelicChecks = not BagHelpBox:IsShown() and not GetCVarBitfield("closedInfoFrames", LE_FRAME_TUTORIAL_ARTIFACT_RELIC_MATCH)
+-    local equipable = IsEquippableItem(id)
+ 
++
+-    if (equipable) then
+-        count = count > 1 and count or select(4, GetItemInfo(id))
+-    end
++        if (equipable) then
++            count = count > 1 and count or select(4, GetItemInfo(id))
++        end
+ 
+-    self.id = id
+-    self.name = id and select(1, GetItemInfo(id)) or ''
+-    self.quality = quality or 0
+-    self.ilevel = id and select(4, GetItemInfo(id)) or 0
++        self.id = id
++        self.name = id and select(1, GetItemInfo(id)) or ''
++        self.quality = quality or 0
++        self.ilevel = id and select(4, GetItemInfo(id)) or 0
+ 
+-    SetItemButtonTexture(self.button, texture)
+-    SetItemButtonQuality(self.button, quality, id)
+-    SetItemButtonCount(self.button, count)
+-    SetItemButtonDesaturated(self.button, locked)
+-    UpdateQuest(self, isQuestItem, questId, isActive)
+-    UpdateNewItemAnimations(self, isNewItem, isBattlePayItem, quality)
+-    UpdateFiltered(self, filtered, shouldDoRelicChecks, id)
+-    UpdateCountcolour(self, equipable, quality)
+-    UpdateCooldown(self)
++        SetItemButtonTexture(self.button, texture)
++        SetItemButtonQuality(self.button, quality, id)
++        SetItemButtonCount(self.button, count)
++        SetItemButtonDesaturated(self.button, locked)
++        UpdateQuest(self, isQuestItem, questId, isActive)
++        UpdateNewItemAnimations(self, isNewItem, isBattlePayItem, quality)
++        UpdateFiltered(self, filtered, shouldDoRelicChecks, id)
++        UpdateCountcolour(self, equipable, quality)
++        UpdateCooldown(self)
++    end
+ end
+ 
+ function item:UpdateCooldown()
+\ No newline at end of file
+Index: src/lua/utils/utils.lua
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/lua/utils/utils.lua	(revision 3879ca3845eea8b6154429c795364f7d79160483)
++++ src/lua/utils/utils.lua	(revision )
+@@ -36,7 +36,7 @@
+         local isInSet, setName = GetContainerItemEquipmentSetInfo(bag, slot)
+ 
+         if quality == LE_ITEM_QUALITY_POOR then
+-            return subClassName
++            return BAG_FILTER_JUNK
+         end
+ 
+         if isInSet then
+@@ -56,4 +56,41 @@
+         return className
+     end
+     return self.EMPTY_BAG_NAME
++end
++
++
++function utils:UpdateItemsForBag(parent, bag, arrangeList, containerFunc)
++    local count = GetContainerNumSlots(bag)
++    if count == 0 and ADDON.cache.items[bag] then
++        for _, item in pairs(ADDON.cache.items[bag]) do
++            if item:GetParent() and item:GetParent().__class == ADDON.itemContainer.__class then
++                local previousContainer = item:GetParent()
++                previousContainer:RemoveItem(item)
++                arrangeList[previousContainer] = true
++                item:Hide()
++            end
++        end
++    else
++        for slot = 1, count do
++            local item = ADDON.cache:GetItem(bag, slot)
++            local previousContainer
++            if item:GetParent() and item:GetParent().__class == ADDON.itemContainer.__class then
++                previousContainer = item:GetParent()
++            end
++
++            item:Update()
++
++            local newContainer = containerFunc(ADDON.cache, ADDON.utils:GetItemContainerName(bag, slot))
++            arrangeList[newContainer] = true
++            parent.frame:AddContainer(newContainer)
++
++            if previousContainer ~= newContainer then
++                if previousContainer then
++                    previousContainer:RemoveItem(item)
++                    arrangeList[previousContainer] = true
++                end
++                newContainer:AddItem(item)
++            end
++        end
++    end
+ end
+\ No newline at end of file
+Index: src/lua/event/eventManager.lua
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/lua/event/eventManager.lua	(revision 3879ca3845eea8b6154429c795364f7d79160483)
++++ src/lua/event/eventManager.lua	(revision )
+@@ -25,16 +25,21 @@
+         self:RegisterEvent(event)
+     end
+ 
++    print(obj, event)
+     self.types[event][obj] = true
+ end
+ 
+ function eventFrame:RemoveEvent(obj, event)
++    if obj and event then
+-    if not self.types[event] and not self.types[event][obj] then return end
++        if not self.types[event] and not self.types[event][obj] then return end
+ 
+-    self.types[event][obj] = nil
++        self.types[event][obj] = nil
+ 
+-    if next(self.types[event]) == nil then
+-        self:UnregisterEvent(event)
++        if next(self.types[event]) == nil then
++            self:UnregisterEvent(event)
++        end
++
++        print(obj, event)
+     end
+ end
+ 
+\ No newline at end of file
+Index: src/lua/elements/bagItem.lua
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/lua/elements/bagItem.lua	(revision )
++++ src/lua/elements/bagItem.lua	(revision )
+@@ -0,0 +1,98 @@
++local NAME, ADDON = ...
++
++ADDON.bagItem = {}
++ADDON.bagItem.__index = ADDON.bagItem
++
++local item = ADDON.bagItem
++setmetatable(item, {
++    __call = function(tbl, name, slot, id)
++        local frame = CreateFrame('BUTTON', name, nil, 'ItemButtonTemplate')
++        frame:SetID(id)
++        frame.slot = slot
++
++        for k, v in pairs(tbl) do
++            frame[k] = v
++        end
++
++        frame:Init()
++        frame:Setup()
++
++        return frame
++    end
++})
++
++function item:Init()
++    self:SetScript('OnDragStart', self.DragItem)
++    self:SetScript('OnReceiveDrag', self.PlaceOrPickup)
++    self:SetScript('OnClick', self.PlaceOrPickup)
++    self:SetScript('OnEnter', self.OnEnter)
++    self:SetScript('OnLeave', self.OnLeave)
++
++    self.IconBorder:ClearAllPoints()
++    self.IconBorder:SetAllPoints()
++
++    self:SetNormalTexture([[Interface\Common\WhiteIconFrame]])
++    self:GetNormalTexture():ClearAllPoints()
++    self:GetNormalTexture():SetAllPoints()
++end
++
++function item:Setup()
++    local settings = ADDON.settings.bagItem or {size = 26}
++
++    self:SetSize(settings.size, settings.size)
++end
++
++function item:Update()
++    PaperDollItemSlotButton_Update(self)
++end
++
++function item:UpdateLock()
++    PaperDollItemSlotButton_UpdateLock(self)
++end
++
++function item:PlaceOrPickup()
++    local placed = PutItemInBag(self:GetID())
++    if not placed then
++        PickupBagFromSlot(self:GetID())
++    end
++end
++
++function item:DragItem()
++    PickupBagFromSlot(self:GetID())
++end
++
++function item:OnEnter()
++    if self:GetRight() >= (GetScreenWidth() / 2) then
++        GameTooltip:SetOwner(self, 'ANCHOR_LEFT')
++    else
++        GameTooltip:SetOwner(self, 'ANCHOR_RIGHT')
++    end
++
++    local hasItem, hasCooldown, repairCost, speciesID, level, breedQuality, maxHealth, power, speed, name = GameTooltip:SetInventoryItem("player", self:GetID());
++    if(speciesID and speciesID > 0) then
++        BattlePetToolTip_Show(speciesID, level, breedQuality, maxHealth, power, speed, name);
++        CursorUpdate(self);
++        return;
++    end
++
++    if (not IsInventoryItemProfessionBag("player", self:GetID())) then
++        for i = LE_BAG_FILTER_FLAG_EQUIPMENT, NUM_LE_BAG_FILTER_FLAGS do
++            if ( GetBankBagSlotFlag(self:GetID(), i) ) then
++                GameTooltip:AddLine(BAG_FILTER_ASSIGNED_TO:format(BAG_FILTER_LABELS[i]));
++                break;
++            end
++        end
++    end
++
++    if ( not hasItem ) then
++        GameTooltip:SetText(self.tooltipText);
++    end
++
++    GameTooltip:Show();
++    CursorUpdate(self);
++end
++
++function item:OnLeave()
++    GameTooltip_Hide();
++    ResetCursor();
++end
+\ No newline at end of file
+Index: src/lua/settings/defaults/bagItem.lua
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/lua/settings/defaults/bagItem.lua	(revision )
++++ src/lua/settings/defaults/bagItem.lua	(revision )
+@@ -0,0 +1,7 @@
++local NAME, ADDON = ...
++
++ADDON.settings = ADDON.settings or {}
++
++ADDON.settings.bagItem = {
++    size = 32,
++}
+\ No newline at end of file
+Index: src/lua/elements/bankBar.lua
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/lua/elements/bankBar.lua	(revision )
++++ src/lua/elements/bankBar.lua	(revision )
+@@ -0,0 +1,249 @@
++local NAME, ADDON = ...
++
++ADDON.bankBar = {}
++ADDON.bankBar.__index = ADDON.bankBar
++
++local bar = ADDON.bankBar
++setmetatable(bar, {
++    __call = function(tbl, parent)
++        local frame = ADDON.container('DJBagsBankBar', parent)
++
++        for k, v in pairs(tbl) do
++            frame[k] = v
++        end
++
++        frame:Init()
++        frame:Setup()
++
++        return frame
++    end
++})
++
++function bar:Init()
++    table.insert(UISpecialFrames, self:GetName())
++    self:SetMovable(true)
++    self:EnableMouse(true)
++    self:RegisterForDrag("LeftButton")
++    self:SetScript("OnDragStart", self.StartMoving)
++    self:SetScript("OnDragStop", self.StopMovingOrSizing)
++    self:SetScript('OnHide', self.OnHide)
++
++    self.bags = CreateFrame('FRAME', 'DJBagsBankBarBagsContainer', self)
++    self.bags.items = {}
++    self.bags:SetPoint('TOPLEFT', 5, -5)
++    self.bags:SetPoint('BOTTOMLEFT', 5, 5)
++
++    self.emptyBag = CreateFrame('Frame', 'DJBagsBankBarEmptySlotPurchaseContainer', self)
++
++    self.emptyBag:SetParent(self)
++    self.emptyBag:SetPoint('TOPRIGHT', -5, -5)
++    self.emptyBag.prefix = self.emptyBag:CreateFontString('DJBagsBankBarCostPrefix', nil, 'GameFontNormalMed3')
++    self.emptyBag.prefix:SetPoint('TOPLEFT')
++    self.emptyBag.prefix:SetText(COSTS_LABEL)
++    self.emptyBag.money = CreateFrame('FRAME', 'DJBagsBankBarCostSlot', self.emptyBag, 'SmallMoneyFrameTemplate')
++    self.emptyBag.money:SetPoint('LEFT', self.emptyBag.prefix, 'RIGHT', 5, 0)
++    self.emptyBag.purchaseBtn = CreateFrame('BUTTON', 'DJBagsBankBarPurchaseButton', self.emptyBag, 'UIPanelButtonTemplate')
++    self.emptyBag.purchaseBtn:SetPoint('TOP', self.emptyBag.money, 'BOTTOM', 0, -5)
++    self.emptyBag.purchaseBtn:SetText(BANKSLOTPURCHASE)
++    self.emptyBag.purchaseBtn:SetSize(124, 21)
++    self.emptyBag.purchaseBtn:SetScript('OnClick', function()
++        PlaySound("igMainMenuOption");
++        StaticPopup_Show("CONFIRM_BUY_BANK_SLOT");
++    end)
++    SmallMoneyFrame_OnLoad(self.emptyBag.money)
++    MoneyFrame_SetType(self.emptyBag.money, "STATIC");
++
++    self.bagBtn = CreateFrame('BUTTON', self:GetName()..'Tab1', self, 'TabButtonTemplate')
++    self.bagBtn.tab = 1
++    self.bagBtn:SetPoint('BOTTOMLEFT', self, 'TOPLEFT')
++    self.bagBtn:SetText(BANK)
++    self.bagBtn:SetScript('OnClick', self.TabClick)
++    PanelTemplates_TabResize(self.bagBtn, 0)
++    _G[self.bagBtn:GetName().."HighlightTexture"]:SetWidth(self.bagBtn:GetTextWidth() + 31)
++
++    self.reagentBtn = CreateFrame('BUTTON', self:GetName()..'Tab2', self, 'TabButtonTemplate')
++    self.reagentBtn.tab = 2
++    self.reagentBtn:SetPoint('BOTTOMLEFT', self.bagBtn, 'BOTTOMRIGHT', 0, 0)
++    self.reagentBtn:SetText(REAGENT_BANK)
++    self.reagentBtn:SetScript('OnClick', self.TabClick)
++    PanelTemplates_TabResize(self.reagentBtn, 0)
++    _G[self.reagentBtn:GetName().."HighlightTexture"]:SetWidth(self.reagentBtn:GetTextWidth() + 31)
++    PanelTemplates_SetNumTabs(self, 2)
++
++    self.bankContainer = {}
++    self.bankContainer.frame = ADDON.categoryContainer('DJBagsBankContainer', self)
++    self.bankContainer.frame:SetPoint('TOPLEFT', self, 'BOTTOMLEFT', 0, -3)
++    self.bankContainer.frame:Hide()
++
++    self.reagentContainer = {}
++    self.reagentContainer.frame = ADDON.categoryContainer('DJBagsReagentContainer', self)
++    self.reagentContainer.frame:SetPoint('TOPLEFT', self, 'BOTTOMLEFT', 0, -3)
++    self.reagentContainer.frame:Hide()
++
++    self.reagentDeposit = CreateFrame('BUTTON', 'DJBagsBankBarReagentDepositButton', self, 'UIPanelButtonTemplate')
++    self.reagentDeposit:SetPoint('BOTTOMRIGHT', -5, 5)
++    self.reagentDeposit.width = 256
++    self.reagentDeposit:SetHeight(24)
++    self.reagentDeposit:SetText(REAGENTBANK_DEPOSIT)
++    self.reagentDeposit:SetScript('OnClick', function()
++        PlaySound("igMainMenuOption");
++        DepositReagentBank();
++    end)
++
++    self.searchBar = CreateFrame('EDITBOX', 'DJBagsBankBarSearch', self, 'BagSearchBoxTemplate')
++    self.searchBar:SetPoint('BOTTOMLEFT', 10, 5)
++    self.searchBar:SetPoint('RIGHT', self.reagentDeposit, 'LEFT', -5, 0)
++
++    self:SetScript('OnShow', self.OnShow)
++
++    self:Arrange()
++end
++
++function bar:TabClick(...)
++    PlaySound("igMainMenuOpen")
++    PanelTemplates_SetTab(self:GetParent(), self.tab)
++    if self.tab == 1 then
++        self:GetParent().bankContainer.frame:Show()
++        self:GetParent().reagentContainer.frame:Hide()
++    else
++        self:GetParent().bankContainer.frame:Hide()
++        self:GetParent().reagentContainer.frame:Show()
++    end
++end
++
++function bar:OnShow()
++    PlaySound("igMainMenuOpen")
++    ADDON.bag:Open()
++    PanelTemplates_SetTab(self, 1)
++    self.bankContainer.frame:Show()
++    self.reagentContainer.frame:Hide()
++end
++
++function bar:OnHide()
++    PlaySound("igMainMenuClose")
++    CloseAllBags(self);
++    CloseBankBagFrames();
++    CloseBankFrame();
++    StaticPopup_Hide("CONFIRM_BUY_BANK_SLOT")
++end
++
++function bar:Arrange()
++    local x = 0
++    local y
++    for _, item in pairs(self.bags.items) do
++        item:SetPoint('TOPLEFT', x, 0)
++        x = x + 5 + item:GetWidth()
++        y = y or item:GetHeight()
++    end
++    if y then
++        if self.emptyBag:IsVisible() then
++            self.emptyBag:SetSize(
++                math.max(
++                    self.emptyBag.prefix:GetStringWidth() + self.emptyBag.money:GetWidth(),
++                    self.emptyBag.purchaseBtn:GetWidth()
++                ),
++                self.emptyBag.prefix:GetStringHeight() + self.emptyBag.purchaseBtn:GetHeight()
++            )
++            y = math.max(y, self.emptyBag:GetHeight())
++            x = x + 10 + self.emptyBag:GetWidth()
++        end
++        if IsReagentBankUnlocked() then
++            self.reagentDeposit:SetWidth(self.reagentDeposit.width)
++            x = math.max(x, 126 + self.reagentDeposit.width)
++        else
++            self.reagentDeposit:SetWidth(0)
++        end
++
++        self.bags:SetWidth(x-5)
++        self:SetSize(x + 5, 10 + y + 30)
++    end
++end
++
++function bar:Update()
++    self:CheckForMissingBankBags()
++    for _, item in pairs(self.bags.items) do
++        item:Update()
++    end
++end
++
++function bar:CheckForMissingBankBags()
++    local nBags, full = GetNumBankSlots()
++
++    if not full then
++        self.emptyBag:Show()
++        local cost = GetBankSlotCost(nBags)
++        if( GetMoney() >= cost ) then
++            SetMoneyFrameColor("BankFrameDetailMoneyFrame", "white");
++        else
++            SetMoneyFrameColor("BankFrameDetailMoneyFrame", "red")
++        end
++        MoneyFrame_Update(self.emptyBag.money, cost);
++    else
++        self.emptyBag:Hide()
++    end
++
++    if nBags > #self.bags.items then
++        for bag = #self.bags.items+1, nBags do
++            local item = ADDON.bagItem('DJBagsBankBagItem' .. bag, bag, BankButtonIDToInvSlotID(bag, 1))
++            item:SetParent(self.bags)
++            tinsert(self.bags.items, item)
++        end
++        self:Arrange()
++    end
++end
++
++function bar:UpdateAllItems()
++    local arrangeList = {}
++    ADDON.utils:UpdateItemsForBag(self.bankContainer, BANK_CONTAINER, arrangeList, ADDON.cache.GetBankItemContainer)
++    for bag = 5, 5+GetNumBankSlots() do
++        ADDON.utils:UpdateItemsForBag(self.bankContainer, bag, arrangeList, ADDON.cache.GetBankItemContainer)
++    end
++    for container, _ in pairs(arrangeList) do
++        container:Arrange()
++    end
++    self.bankContainer.frame:Arrange()
++
++    self:UpdateReagents()
++end
++
++function bar:UpdateBag(bag)
++    self:UpdateAllItemsForBag(bag)
++end
++
++function bar:UpdateAllItemsForBag(bag)
++    local arrangeList = {}
++    ADDON.utils:UpdateItemsForBag(self.bankContainer, bag, arrangeList, ADDON.cache.GetBankItemContainer)
++    for container, _ in pairs(arrangeList) do
++        container:Arrange()
++    end
++    self.bankContainer.frame:Arrange()
++end
++
++function bar:UpdateReagents()
++    if IsReagentBankUnlocked() then
++        local arrangeList = {}
++        ADDON.utils:UpdateItemsForBag(self.reagentContainer, REAGENTBANK_CONTAINER, arrangeList, ADDON.cache.GetReagentItemContainer)
++        for container, _ in pairs(arrangeList) do
++            container:Arrange()
++        end
++        self.reagentContainer.frame:Arrange()
++    else
++        -- TODO show purchase button and set size
++    end
++end
++
++function bar:UpdateBagLock(bag)
++    self.bags.items[bag]:UpdateLock()
++end
++
++function bar:Setup()
++    ADDON.container.Setup(self)
++end
++
++function bar:UpdateCooldown()
++    for bag = 5, 5+GetNumBankSlots() do
++        for slot = 1, GetContainerNumSlots(bag) do
++            ADDON.cache.GetItem(bag, slot):UpdateCooldown()
++        end
++    end
++end
+\ No newline at end of file
+Index: src/manifest.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/manifest.xml	(revision 3879ca3845eea8b6154429c795364f7d79160483)
++++ src/manifest.xml	(revision )
+@@ -32,9 +32,13 @@
+     <Script file="src/lua/elements/categoryContainer.lua"/>
+     <Script file="src/lua/elements/mainBar.lua"/>
+     <Script file="src/lua/elements/categoryDialog.lua"/>
++    <Script file="src/lua/elements/bagItem.lua"/>
++    <Script file="src/lua/elements/bagBar.lua"/>
++    <Script file="src/lua/elements/bankBar.lua"/>
+ 
+     <!-- Controller -->
+     <Script file="src/lua/controllers/bag.lua"/>
++    <Script file="src/lua/controllers/bank.lua"/>
+ 
+     <!-- Core (Load last) -->
+     <Script file="src/lua/core.lua"/>
+\ No newline at end of file
+Index: src/lua/elements/categoryContainer.lua
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/lua/elements/categoryContainer.lua	(revision 3879ca3845eea8b6154429c795364f7d79160483)
++++ src/lua/elements/categoryContainer.lua	(revision )
+@@ -4,11 +4,9 @@
+ ADDON.categoryContainer.__index = ADDON.categoryContainer
+ 
+ local container = ADDON.categoryContainer
+-container.containers = {}
+ setmetatable(container, {
+     __call = function(tbl, name, parent)
+         local frame = ADDON.container(name, parent)
+-
+         for k, v in pairs(tbl) do
+             frame[k] = v
+         end
+@@ -25,8 +23,21 @@
+     self:SetMovable(true)
+     self:EnableMouse(true)
+     self:RegisterForDrag("LeftButton")
+-    self:SetScript("OnDragStart", self.StartMoving)
+-    self:SetScript("OnDragStop", self.StopMovingOrSizing)
++    self:SetScript("OnDragStart", function(self, ...)
++        if self:GetParent() ~= UIParent then
++            self:GetParent():StartMoving(...)
++        else
++            self:StartMoving(...)
++        end
++    end)
++    self:SetScript("OnDragStop", function(self, ...)
++        if self:GetParent() ~= UIParent then
++            self:GetParent():StopMovingOrSizing(...)
++        else
++            self:StopMovingOrSizing(...)
++        end
++    end)
++    self.containers = {}
+ end
+ 
+ function container:Setup()
+\ No newline at end of file
