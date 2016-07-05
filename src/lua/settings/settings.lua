@@ -1,7 +1,5 @@
 local NAME, ADDON = ...
 
-local DBVERSION = 1
-
 ADDON.settingsController = {}
 local settings = ADDON.settingsController
 settings.__index = settings
@@ -39,24 +37,28 @@ function settings:GetCharacterSettings()
     local realm = GetRealmName()
     local player = UnitName("player")
 
-    ADDON.settings.version = DBVERSION
     if DJBagsConfig and DJBagsConfig[realm] and DJBagsConfig[realm][player] then
-        if not DJBagsConfig[realm][player].version or DJBagsConfig[realm][player].version < DBVERSION then
-            DJBagsConfig[realm][player] = self:migrateDb(DJBagsConfig[realm][player].version or 0, DJBagsConfig[realm][player])
+        local userSettings = DJBagsConfig[realm][player]
+        self:MigrateSettings(userSettings, ADDON.settings)
+        ADDON.settings = userSettings
+    end
+end
+
+function settings:MigrateSettings(table, default)
+    for k, v in pairs(default) do
+        if table[k] then
+            if type(v) ~= type(table[k]) then
+                table[k] = v
+            elseif type(v) == 'table' then
+                migrate(table[k], v)
+            end
+        else
+            table[k] = v
         end
-        ADDON.settings = DJBagsConfig[realm][player]
     end
-end
-
-settings.migrateFunc = {}
-settings.migrateFunc[1] = function ()
-    return ADDON.settings
-end
-
-function settings:migrateDb(version, old)
-    while version < DBVERSION do
-        version = version + 1
-        old = self.migrateFunc[version](old)
+    for k, v in pairs(table) do
+        if not default[k] then
+            table[k] = nil
+        end
     end
-    return old
 end
