@@ -40,6 +40,9 @@ function InitDropDown(self, level)
     for _, v in pairs(ADDON.settings.categories.userDefined) do
         unique[v] = true
     end
+    for _, v in pairs(ADDON.globalCategories) do
+        unique[v] = {}
+    end
 
     if next(unique) ~= nil then
         local info
