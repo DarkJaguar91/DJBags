@@ -75,6 +75,7 @@ function settings:CreateFrame()
 
     self.scrollFrame:SetScrollChild(self.content)
 
+    self:CreateAutoSettings()
     self:CreateCategorySettings()
     self:CreateItemSettings()
     self:CreateContainerSettings()
@@ -419,5 +420,25 @@ function settings:CreateCategorySettings()
     end
 
     container:SetHeight(35 - y)
+    self:AddSettingsPanel(container)
+end
+
+function settings:CreateAutoSettings()
+    local container = ADDON.container('DJBagsSettingsAutoScreen', nil)
+
+    CreateTitle('Automatic tools', container)
+
+    local autoSellJunk = CreateCheckBox("Auto sell junk", container, ADDON.settings.auto.sellJunk, function(value)
+        ADDON.settings.auto.sellJunk = value
+        ADDON.eventManager:FireEvent('SETTINGS_UPDATE', true)
+    end)
+    autoSellJunk:SetPoint('TOPLEFT', 5, -20)
+    local autoDeposit = CreateCheckBox("Auto deposit reagents", container, ADDON.settings.auto.depositReagents, function(value)
+        ADDON.settings.auto.depositReagents = value
+        ADDON.eventManager:FireEvent('SETTINGS_UPDATE', true)
+    end)
+    autoDeposit:SetPoint('LEFT', autoSellJunk, 'RIGHT', 75, 0)
+
+    container:SetHeight(55)
     self:AddSettingsPanel(container)
 end

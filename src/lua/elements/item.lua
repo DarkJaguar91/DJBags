@@ -221,6 +221,7 @@ function item:Update()
     self.name = id and select(1, GetItemInfo(id)) or ''
     self.quality = quality or 0
     self.ilevel = id and select(4, GetItemInfo(id)) or 0
+    self.button.hasItem = nil
 
 
     if self:GetID() == BANK_CONTAINER or self:GetID() == REAGENTBANK_CONTAINER then
@@ -235,6 +236,8 @@ function item:Update()
         local isNewItem = C_NewItems.IsNewItem(self:GetID(), self.button:GetID())
         local isBattlePayItem = IsBattlePayItem(self:GetID(), self.button:GetID())
         local shouldDoRelicChecks = not BagHelpBox:IsShown() and not GetCVarBitfield("closedInfoFrames", LE_FRAME_TUTORIAL_ARTIFACT_RELIC_MATCH)
+
+        self.button.hasItem = true
 
         if (equipable) then
             count = count > 1 and count or select(4, GetItemInfo(id))

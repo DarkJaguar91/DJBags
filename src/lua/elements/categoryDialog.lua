@@ -119,7 +119,7 @@ function dialog:CreateFrame()
         dialog.frame:Hide()
     end)
 
-    self.errorText = self.frame:CreateFontString('DJBagsCategoryDialogTitle', 'GameFontNormal')
+    self.errorText = self.frame:CreateFontString('DJBagsCategoryDialogTitle', 'OVERLAY', 'GameFontNormal')
     self.errorText:SetFont(select(1, self.errorText:GetFont()), 18, 'OUTLINE')
     self.errorText:SetTextColor(1, 0, 0, 1)
     self.errorText:SetPoint("TOPRIGHT", self.editBox, 'TOPLEFT', -5, 0)

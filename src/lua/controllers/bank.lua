@@ -76,6 +76,10 @@ function bank:OnShow()
     PanelTemplates_SetTab(self, 1)
     bank.bankContainer:Show()
     bank.reagentContainer:Hide()
+
+    if ADDON.settings.auto.depositReagents and IsReagentBankUnlocked() then
+        DepositReagentBank();
+    end
 end
 
 function bank:OnHide()

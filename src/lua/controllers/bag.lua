@@ -23,6 +23,22 @@ function bag:Init()
     self.frame:HookScript('OnHide', function()
         self:UnRegister()
     end)
+
+    ADDON.eventManager:AddEvent(self, 'MERCHANT_SHOW')
+end
+
+function bag:MERCHANT_SHOW()
+    if ADDON.settings.auto.sellJunk then
+        for bag = 0, NUM_BAG_SLOTS do
+            for slot = 1 , GetContainerNumSlots(bag) do
+                if select(4, GetContainerItemInfo(bag, slot)) == LE_ITEM_QUALITY_POOR then
+                    ShowMerchantSellCursor(1)
+                    UseContainerItem(bag, slot)
+                end
+            end
+        end
+        ResetCursor()
+    end
 end
 
 function bag:Open()
