@@ -37,6 +37,7 @@ function settings:GetCharacterSettings()
     local realm = GetRealmName()
     local player = UnitName("player")
 
+    ADDON.globalCategories = {}
     if DJBagsConfig then
         if DJBagsConfig[realm] and DJBagsConfig[realm][player] then
             local userSettings = DJBagsConfig[realm][player]
