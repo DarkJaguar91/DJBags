@@ -51,9 +51,7 @@ function container:Setup()
 end
 
 function container:AddItem(item)
-    if item:GetParent() ~= self then
-        self.items[item] = true
-    end
+    self.items[item] = true
 end
 
 function container:RemoveItem(item)

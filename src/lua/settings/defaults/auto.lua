@@ -5,4 +5,5 @@ ADDON.settings = ADDON.settings or {}
 ADDON.settings.auto = {
     depositReagents = false,
     sellJunk = false,
+    clearNewItems = false,
 }

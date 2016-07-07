@@ -44,6 +44,13 @@ end
 
 function item:Update()
     PaperDollItemSlotButton_Update(self)
+    local slotcount = GetContainerNumSlots(self.slot)
+    if slotcount > 0 then
+        self.Count:SetText(tostring(slotcount))
+        self.Count:Show()
+    else
+        self.Count:Hide()
+    end
 end
 
 function item:UpdateLock()

@@ -64,7 +64,7 @@ function utils:GetItemContainerName(bag, slot)
 
         return className
     end
-    return self.EMPTY_BAG_NAME
+    return EMPTY
 end
 
 function utils:UpdateItemsForBag(frame, bag, arrangeList, containerFunc)
@@ -74,6 +74,7 @@ function utils:UpdateItemsForBag(frame, bag, arrangeList, containerFunc)
             if item:GetParent() then
                 local previousContainer = item:GetParent()
                 previousContainer:RemoveItem(item)
+                item:SetParent(nil)
                 arrangeList[previousContainer] = true
                 item:Hide()
             end

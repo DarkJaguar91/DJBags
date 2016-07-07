@@ -27,6 +27,18 @@ function container:Init()
     self:SetScript("OnDragStart", self.StartMoving)
     self:SetScript("OnDragStop", self.StopMovingOrSizing)
     self.containers = {}
+
+    self.closeBtn = CreateFrame('Button', self:GetName() .. 'CloseButton', self)
+    self.closeBtn:SetNormalTexture([[Interface\Buttons\UI-Panel-MinimizeButton-Disabled]])
+    self.closeBtn:SetPushedTexture([[Interface\Buttons\UI-Panel-MinimizeButton-Down]])
+    self.closeBtn:SetHighlightTexture([[Interface\Buttons\UI-Panel-MinimizeButton-Up]])
+    self.closeBtn:SetScript('OnClick', function()
+        if self:GetParent() == UIParent then
+            self:Hide()
+        else
+            self:GetParent():Hide()
+        end
+    end)
 end
 
 function container:Setup()
@@ -38,6 +50,13 @@ function container:Setup()
     self.spacing = settings.spacing
     self.sortFunction = ADDON.sorters.containers[settings.sortFunction]
     self.maxHeight = settings.maxHeight
+    if settings.closeVisible then
+        self.closeBtn:Show()
+    else
+        self.closeBtn:Hide()
+    end
+    self.closeBtn:SetPoint('Topright', self, 'TOPRIGHT', settings.closeSize / 5, settings.closeSize / 5)
+    self.closeBtn:SetSize(settings.closeSize, settings.closeSize)
 end
 
 function container:AddContainer(container)

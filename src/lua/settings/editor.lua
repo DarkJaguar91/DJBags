@@ -314,7 +314,13 @@ function settings:CreateCategoryContainerSettings()
     end)
     container.maxHeight:SetPoint('TOPLEFT', container.spacing, 'TOPRIGHT', 15, 0)
 
-    container:SetHeight(70)
+    local closeBtn = CreateCheckBox("Close Button visible", container, ADDON.settings.categoryContainer.closeVisible, function(value)
+        ADDON.settings.categoryContainer.closeVisible = value
+        ADDON.eventManager:FireEvent('SETTINGS_UPDATE', true)
+    end)
+    closeBtn:SetPoint('TOPLEFT', container.padding, 'BOTTOMLEFT', -10, -15)
+
+    container:SetHeight(100)
     self:AddSettingsPanel(container)
 end
 
@@ -438,6 +444,11 @@ function settings:CreateAutoSettings()
         ADDON.eventManager:FireEvent('SETTINGS_UPDATE', true)
     end)
     autoDeposit:SetPoint('LEFT', autoSellJunk, 'RIGHT', 75, 0)
+    local autoClearNewItems = CreateCheckBox("Clear New Items on close", container, ADDON.settings.auto.clearNewItems, function(value)
+        ADDON.settings.auto.clearNewItems = value
+        ADDON.eventManager:FireEvent('SETTINGS_UPDATE', true)
+    end)
+    autoClearNewItems:SetPoint('LEFT', autoDeposit, 'RIGHT', 115, 0)
 
     container:SetHeight(55)
     self:AddSettingsPanel(container)

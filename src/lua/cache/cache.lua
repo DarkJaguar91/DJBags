@@ -16,17 +16,17 @@ function cache:GetItem(bag, slot)
 end
 
 function cache:GetBagItemContainer(name)
-    self.bagContainers[name] = self.bagContainers[name] or ADDON.itemContainer(name, name ~= ADDON.utils.EMPTY_BAG_NAME, nil, name == ADDON.utils.EMPTY_BAG_NAME)
+    self.bagContainers[name] = self.bagContainers[name] or ADDON.itemContainer(name, nil, nil, name == EMPTY)
     return self.bagContainers[name]
 end
 
 function cache:GetBankItemContainer(name)
-    self.bankContainers[name] = self.bankContainers[name] or ADDON.itemContainer(name, name ~= ADDON.utils.EMPTY_BAG_NAME, nil, name == ADDON.utils.EMPTY_BAG_NAME)
+    self.bankContainers[name] = self.bankContainers[name] or ADDON.itemContainer(name, nil, nil, name == EMPTY)
     return self.bankContainers[name]
 end
 
 function cache:GetReagentItemContainer(name)
-    self.reagentContainers[name] = self.reagentContainers[name] or ADDON.itemContainer(name, name ~= ADDON.utils.EMPTY_BAG_NAME, nil, name == ADDON.utils.EMPTY_BAG_NAME)
+    self.reagentContainers[name] = self.reagentContainers[name] or ADDON.itemContainer(name, nil, nil, name == EMPTY)
     return self.reagentContainers[name]
 end
 

@@ -139,6 +139,7 @@ function bank:Register()
     ADDON.eventManager:AddEvent(self, 'PLAYERREAGENTBANKSLOTS_CHANGED')
     ADDON.eventManager:AddEvent(self, 'PLAYERBANKBAGSLOTS_CHANGED')
     ADDON.eventManager:AddEvent(self, 'REAGENTBANK_PURCHASED')
+    ADDON.eventManager:AddEvent(self, 'BAG_UPDATE_DELAYED')
 end
 
 function bank:UnRegister()
@@ -150,9 +151,14 @@ function bank:UnRegister()
     ADDON.eventManager:RemoveEvent(self, 'PLAYERREAGENTBANKSLOTS_CHANGED')
     ADDON.eventManager:RemoveEvent(self, 'PLAYERBANKBAGSLOTS_CHANGED')
     ADDON.eventManager:RemoveEvent(self, 'REAGENTBANK_PURCHASED')
+    ADDON.eventManager:RemoveEvent(self, 'BAG_UPDATE_DELAYED')
 end
 
 function bank:PLAYERBANKBAGSLOTS_CHANGED()
+    self:UpdateBags()
+end
+
+function bank:BAG_UPDATE_DELAYED()
     self:UpdateBags()
 end
 
@@ -290,7 +296,7 @@ end
 function bank:UpdateBags()
     local numBankslots, full = GetNumBankSlots()
     for bag = #self.bags+1, numBankslots do
-        local item = ADDON.bagItem('DJBagsBankBagItem' .. bag, bag, BankButtonIDToInvSlotID(bag, 1))
+        local item = ADDON.bagItem('DJBagsBankBagItem' .. bag, NUM_BAG_SLOTS + bag, BankButtonIDToInvSlotID(bag, 1))
         item:SetParent(self.frame)
         tinsert(self.bags, item)
     end

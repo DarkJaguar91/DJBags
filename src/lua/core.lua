@@ -70,7 +70,6 @@ end
 
 SLASH_TDJBAGS1, SLASH_TDJBAGS2 = '/tt', '/ttt';
 function SlashCmdList.TDJBAGS(msg, editbox)
-
 end
 
 SLASH_RELOAD1 = '/rl'

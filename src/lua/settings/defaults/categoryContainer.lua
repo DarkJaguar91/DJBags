@@ -7,5 +7,7 @@ ADDON.settings.categoryContainer = {
     spacing = 3,
     maxHeight = 450,
     sortFunction = 'default',
+    closeVisible = false,
+    closeSize = 25,
 }
 

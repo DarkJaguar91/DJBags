@@ -22,6 +22,9 @@ function bag:Init()
     end)
     self.frame:HookScript('OnHide', function()
         self:UnRegister()
+        if ADDON.settings.auto.clearNewItems then
+            C_NewItems.ClearAll()
+        end
     end)
 
     ADDON.eventManager:AddEvent(self, 'MERCHANT_SHOW')

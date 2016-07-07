@@ -61,7 +61,6 @@ function item:Init()
     self.button:Show()
 
     self.button:HookScript('OnClick', self.OnClick)
-    self.button:SetScript('OnEnter', self.OnEnter)
 end
 
 function item:Setup()
@@ -81,7 +80,7 @@ function item:OnEnter(...)
     end
 end
 
-function item:OnEnterBag()
+function ContainerFrameItemButton_OnEnter(self)
     GameTooltip:SetOwner(self, "ANCHOR_NONE")
 
     local newItemTexture = self.NewItemTexture
