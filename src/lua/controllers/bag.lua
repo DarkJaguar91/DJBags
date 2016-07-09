@@ -148,10 +148,12 @@ function bag:BAG_UPDATE_COOLDOWN()
 end
 
 function bag:ITEM_LOCK_CHANGED(bag, slot)
-    if bag >= 0 and bag <= NUM_BAG_SLOTS then
-        ADDON.cache:GetItem(bag, slot):UpdateLock()
+    if bag then
+        if bag >= 0 and bag <= NUM_BAG_SLOTS and slot then
+            ADDON.cache:GetItem(bag, slot):UpdateLock()
+        end
+        self.frame.bagBar:UpdateLock(bag)
     end
-    self.frame.bagBar:UpdateLock(bag)
 end
 
 function bag:BAG_UPDATE_DELAYED()
