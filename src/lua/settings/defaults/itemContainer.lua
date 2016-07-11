@@ -10,4 +10,5 @@ ADDON.settings.itemContainer = {
     fontColor = { 0.5, 1, 0.5, 1 },
     titleMargin = 5,
     sortFunction = 'default',
+    showClassWithSub = true,
 }

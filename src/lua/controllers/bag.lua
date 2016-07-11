@@ -70,24 +70,16 @@ function bag:NewItemsUpdated()
 end
 
 function bag:UpdateAllItems()
-    local arrangeList = {}
     for bag = 0, NUM_BAG_SLOTS do
-        ADDON.utils:UpdateItemsForBag(self.frame, bag, arrangeList, ADDON.cache.GetBagItemContainer)
+        ADDON.utils:UpdateItemsForBag(self.frame, bag, ADDON.cache.GetBagItemContainer)
     end
-    self:CheckForRemovedItems(arrangeList)
-    for container, _ in pairs(arrangeList) do
-        container:Arrange()
-    end
+    self:CheckForRemovedItems()
     self.frame:Arrange()
 end
 
 function bag:UpdateAllItemsForBag(bag)
-    local arrangeList = {}
-    ADDON.utils:UpdateItemsForBag(self.frame, bag, arrangeList, ADDON.cache.GetBagItemContainer)
-    self:CheckForRemovedItems(arrangeList)
-    for container, _ in pairs(arrangeList) do
-        container:Arrange()
-    end
+    ADDON.utils:UpdateItemsForBag(self.frame, bag, ADDON.cache.GetBagItemContainer)
+    self:CheckForRemovedItems()
     self.frame:Arrange()
 end
 
@@ -160,10 +152,10 @@ function bag:BAG_UPDATE_DELAYED()
     self.frame.bagBar:Update()
 end
 
-function bag:CheckForRemovedItems(arrangeList)
+function bag:CheckForRemovedItems()
     for bag = 1, NUM_BAG_SLOTS do
         if GetContainerNumSlots(bag) == 0 and ADDON.cache.items[bag] then
-            ADDON.utils:UpdateItemsForBag(self.frame, bag, arrangeList, ADDON.cache.GetBagItemContainer)
+            ADDON.utils:UpdateItemsForBag(self.frame, bag, ADDON.cache.GetBagItemContainer)
         end
     end
 end

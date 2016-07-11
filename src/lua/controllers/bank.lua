@@ -92,13 +92,9 @@ function bank:OnHide()
 end
 
 function bank:UpdateAllItems()
-    local arrangeList = {}
-    ADDON.utils:UpdateItemsForBag(self.bankContainer, BANK_CONTAINER, arrangeList, ADDON.cache.GetBankItemContainer)
+    ADDON.utils:UpdateItemsForBag(self.bankContainer, BANK_CONTAINER, ADDON.cache.GetBankItemContainer)
     for bag = NUM_BAG_SLOTS + 1, NUM_BAG_SLOTS + GetNumBankSlots() do
-        ADDON.utils:UpdateItemsForBag(self.bankContainer, bag, arrangeList, ADDON.cache.GetBankItemContainer)
-    end
-    for container, _ in pairs(arrangeList) do
-        container:Arrange()
+        ADDON.utils:UpdateItemsForBag(self.bankContainer, bag, ADDON.cache.GetBankItemContainer)
     end
     self.bankContainer:Arrange()
 
@@ -107,11 +103,7 @@ end
 
 function bank:UpdateReagentBank()
     if IsReagentBankUnlocked() then
-        local arrangeList = {}
-        ADDON.utils:UpdateItemsForBag(self.reagentContainer, REAGENTBANK_CONTAINER, arrangeList, ADDON.cache.GetReagentItemContainer)
-        for container, _ in pairs(arrangeList) do
-            container:Arrange()
-        end
+        ADDON.utils:UpdateItemsForBag(self.reagentContainer, REAGENTBANK_CONTAINER, ADDON.cache.GetReagentItemContainer)
         self.reagentContainer:Arrange()
         self.reagentButton:SetText(REAGENTBANK_DEPOSIT)
         self.reagentButton:SetWidth(self.reagentButton:GetFontString():GetStringWidth() + 31)
@@ -122,11 +114,7 @@ function bank:UpdateReagentBank()
 end
 
 function bank:UpdateAllItemsForBag(bag)
-    local arrangeList = {}
-    ADDON.utils:UpdateItemsForBag(self.bankContainer, bag, arrangeList, ADDON.cache.GetBankItemContainer)
-    for container, _ in pairs(arrangeList) do
-        container:Arrange()
-    end
+    ADDON.utils:UpdateItemsForBag(self.bankContainer, bag, ADDON.cache.GetBankItemContainer)
     self.bankContainer:Arrange()
 end
 

@@ -27,7 +27,7 @@ end
 
 function settings:CreateFrame()
     self.frame = ADDON.container('DJBagsSettingsScreen')
-    self.frame:SetSize(520, 450)
+    self.frame:SetSize(520, 0.5 * GetScreenHeight())
     self.frame:SetPoint("TOPLEFT", 200, -200)
     self.frame:Hide()
     table.insert(UISpecialFrames, self.frame:GetName())
@@ -77,6 +77,7 @@ function settings:CreateFrame()
 
     self:CreateAutoSettings()
     self:CreateCategorySettings()
+    self:CreateFormatterSettings()
     self:CreateItemSettings()
     self:CreateContainerSettings()
     self:CreateItemContainerSettings()
@@ -257,21 +258,13 @@ function settings:CreateItemContainerSettings()
     end)
     container.fontSize:SetPoint('TOPLEFT', container.fontColor, 'TOPRIGHT', 15, 0)
 
-    container.colsSlider = CreateSlider('Columns', container, 4, 10, function()
-        return ADDON.settings.itemContainer.cols
-    end, function(value)
-        ADDON.settings.itemContainer.cols = value
-        ADDON.eventManager:FireEvent('SETTINGS_UPDATE', true)
-    end)
-    container.colsSlider:SetPoint('TOPLEFT', container.fontSize, 'TOPRIGHT', 15, 0)
-
     container.padding = CreateSlider('Padding', container, 1, 10, function()
         return ADDON.settings.itemContainer.padding
     end, function(value)
         ADDON.settings.itemContainer.padding = value
         ADDON.eventManager:FireEvent('SETTINGS_UPDATE', true)
     end)
-    container.padding:SetPoint('TOPLEFT', container.fontColor, 'BOTTOMLEFT', 2, -20)
+    container.padding:SetPoint('TOPLEFT', container.fontSize, 'TOPRIGHT', 15, 0)
 
     container.spacing = CreateSlider('Item Spacing', container, 1, 10, function()
         return ADDON.settings.itemContainer.spacing
@@ -279,7 +272,13 @@ function settings:CreateItemContainerSettings()
         ADDON.settings.itemContainer.spacing = value
         ADDON.eventManager:FireEvent('SETTINGS_UPDATE', true)
     end)
-    container.spacing:SetPoint('TOPLEFT', container.padding, 'TOPRIGHT', 15, 0)
+    container.spacing:SetPoint('TOPLEFT', container.fontColor, 'BOTTOMLEFT', 2, -20)
+
+    container.subClassWithClass = CreateCheckBox('Show Class With Subclass', container, ADDON.settings.itemContainer.showClassWithSub, function(value)
+        ADDON.settings.itemContainer.showClassWithSub = value
+        ADDON.eventManager:FireEvent('SETTINGS_UPDATE')
+    end)
+    container.subClassWithClass:SetPoint('LEFT', container.spacing, 'RIGHT', 10, 0)
 
     container:SetHeight(95)
     self:AddSettingsPanel(container)
@@ -306,21 +305,13 @@ function settings:CreateCategoryContainerSettings()
     end)
     container.spacing:SetPoint('TOPLEFT', container.padding, 'TOPRIGHT', 15, 0)
 
-    container.maxHeight = CreateSlider('Max height', container, 250, 1000, function()
-        return ADDON.settings.categoryContainer.maxHeight
-    end, function(value)
-        ADDON.settings.categoryContainer.maxHeight = value
-        ADDON.eventManager:FireEvent('SETTINGS_UPDATE', true)
-    end)
-    container.maxHeight:SetPoint('TOPLEFT', container.spacing, 'TOPRIGHT', 15, 0)
-
     local closeBtn = CreateCheckBox("Close Button visible", container, ADDON.settings.categoryContainer.closeVisible, function(value)
         ADDON.settings.categoryContainer.closeVisible = value
         ADDON.eventManager:FireEvent('SETTINGS_UPDATE', true)
     end)
-    closeBtn:SetPoint('TOPLEFT', container.padding, 'BOTTOMLEFT', -10, -15)
+    closeBtn:SetPoint('LEFT', container.spacing, 'RIGHT', 15, 0)
 
-    container:SetHeight(100)
+    container:SetHeight(65)
     self:AddSettingsPanel(container)
 end
 
@@ -353,7 +344,7 @@ function settings:CreateMainBarSettings()
     end)
     container.currencyFontSize:SetPoint('TOPLEFT', container.slotFontColor, 'TOPRIGHT', 15, 0)
 
-    container.slotFontSize = CreateSlider('Currency font size', container, 8, 18, function()
+    container.slotFontSize = CreateSlider('Slots font size', container, 8, 18, function()
         return ADDON.settings.mainBar.slotsFontSize
     end, function(value)
         ADDON.settings.mainBar.slotsFontSize = value
@@ -451,5 +442,88 @@ function settings:CreateAutoSettings()
     autoClearNewItems:SetPoint('LEFT', autoDeposit, 'RIGHT', 115, 0)
 
     container:SetHeight(55)
+    self:AddSettingsPanel(container)
+end
+
+function settings:CreateFormatterSettings()
+    local container = ADDON.container('DJBagsSettingsFormatter', nil)
+
+    CreateTitle('Format settings', container)
+
+    container.dropDown = CreateFrame("Button", "DJBagsCategoryDialogDropDown", container, "UIDropDownMenuTemplate")
+    container.dropDown:SetPoint('TOPLEFT', container, 5, -20)
+    UIDropDownMenu_SetWidth(container.dropDown, 100);
+    UIDropDownMenu_SetButtonWidth(container.dropDown, 124)
+    UIDropDownMenu_JustifyText(container.dropDown, "LEFT")
+
+    UIDropDownMenu_Initialize(container.dropDown, function(self, level)
+        local info
+        for k, _ in pairs(ADDON.formatters) do
+            info = UIDropDownMenu_CreateInfo()
+            info.text = k
+            info.value = k
+            info.func = function(self)
+                UIDropDownMenu_SetSelectedID(container.dropDown, self:GetID())
+                ADDON.settings.categoryContainer.formatter = tostring(self.value)
+                if self.value == 'vertical' then
+                    container.vertical:Show()
+                    container.horizontal:Hide()
+                else
+                    container.vertical:Hide()
+                    container.horizontal:Show()
+                end
+                ADDON.eventManager:FireEvent('SETTINGS_UPDATE', true)
+            end
+            UIDropDownMenu_AddButton(info, level)
+        end
+    end)
+
+    UIDropDownMenu_SetSelectedValue(container.dropDown, ADDON.settings.categoryContainer.formatter)
+
+    container.vertical = CreateFrame('FRAME', 'DJBagsSettingsFormatterVert', container)
+    container.vertical:SetPoint('TOPLEFT', 0, -50)
+    container.vertical:SetPoint('TOPRIGHT', 0, -50)
+    container.vertical:SetPoint('BOTTOMLEFT')
+    container.vertical:SetPoint('BOTTOMRIGHT')
+
+    container.colsVertical = CreateSlider('Columns', container.vertical, 4, 12, function()
+        return ADDON.settings.formatter.vertical.cols
+    end, function(value)
+        ADDON.settings.formatter.vertical.cols = value
+        ADDON.eventManager:FireEvent('SETTINGS_UPDATE', true)
+    end)
+    container.colsVertical:SetPoint('TOPLEFT', 10, -20)
+
+    container.maxHeight = CreateSlider('Max Height', container.vertical, 20, 100, function()
+        return ADDON.settings.formatter.vertical.maxHeight
+    end, function(value)
+        ADDON.settings.formatter.vertical.maxHeight = value
+        ADDON.eventManager:FireEvent('SETTINGS_UPDATE', true)
+    end)
+    container.maxHeight:SetPoint('TOPLEFT', container.colsVertical, 'TOPRIGHT', 15, 0)
+
+    container.horizontal = CreateFrame('FRAME', 'DJBagsSettingsFormatterHoz', container)
+    container.horizontal:SetPoint('TOPLEFT', 0, -50)
+    container.horizontal:SetPoint('TOPRIGHT', 0, -50)
+    container.horizontal:SetPoint('BOTTOMLEFT')
+    container.horizontal:SetPoint('BOTTOMRIGHT')
+
+    container.colsHorizontal = CreateSlider('Columns', container.horizontal, 4, 16, function()
+        return ADDON.settings.formatter.horizontal.cols
+    end, function(value)
+        ADDON.settings.formatter.horizontal.cols = value
+        ADDON.eventManager:FireEvent('SETTINGS_UPDATE', true)
+    end)
+    container.colsHorizontal:SetPoint('TOPLEFT', 10, -20)
+
+    if ADDON.settings.categoryContainer.formatter == 'vertical' then
+        container.vertical:Show()
+        container.horizontal:Hide()
+    else
+        container.vertical:Hide()
+        container.horizontal:Show()
+    end
+
+    container:SetHeight(100)
     self:AddSettingsPanel(container)
 end

@@ -48,7 +48,7 @@ function container:Setup()
 
     self.padding = settings.padding
     self.spacing = settings.spacing
-    self.sortFunction = ADDON.sorters.containers[settings.sortFunction]
+    self.formatter = ADDON.formatters[settings.formatter]
     self.maxHeight = settings.maxHeight
     if settings.closeVisible then
         self.closeBtn:Show()
@@ -64,33 +64,5 @@ function container:AddContainer(container)
 end
 
 function container:Arrange()
-    local list = self.containers
-
-    local x = -self.padding
-    local y = self.padding
-    local width = 0
-    local height = 0
-
-    for item in ADDON.utils:PairsByKey(list, self.sortFunction) do
-        item:ClearAllPoints()
-        item:SetParent(self)
-
-        if item:IsEmpty() then
-            item:Hide()
-        else
-            item:Show()
-            if (y + item:GetHeight() + self.spacing) > self.maxHeight then
-                y = self.padding
-                x = x - item:GetWidth() - self.spacing
-            end
-
-            item:SetPoint('BOTTOMRIGHT', x, y)
-
-            height = math.max(height, y + item:GetHeight() + self.padding)
-            width = math.max(width, -x + self.padding + item:GetWidth())
-            y = y + self.spacing + item:GetHeight()
-        end
-    end
-
-    self:SetSize(width, height)
+    self.formatter:Format(self)
 end

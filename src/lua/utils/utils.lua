@@ -59,7 +59,7 @@ function utils:GetItemContainerName(bag, slot)
 
         local subClassSplitList = ADDON.settings.categories.subClass
         if subClassSplitList[cId] then
-            return className .. ' ' .. subClassName
+            return className .. (subClassName == BAG_FILTER_JUNK and '' or '_' .. subClassName)
         end
 
         return className
@@ -67,7 +67,7 @@ function utils:GetItemContainerName(bag, slot)
     return EMPTY
 end
 
-function utils:UpdateItemsForBag(frame, bag, arrangeList, containerFunc)
+function utils:UpdateItemsForBag(frame, bag, containerFunc)
     local count = GetContainerNumSlots(bag)
     if count == 0 and ADDON.cache.items[bag] then
         for _, item in pairs(ADDON.cache.items[bag]) do
@@ -75,7 +75,6 @@ function utils:UpdateItemsForBag(frame, bag, arrangeList, containerFunc)
                 local previousContainer = item:GetParent()
                 previousContainer:RemoveItem(item)
                 item:SetParent(nil)
-                arrangeList[previousContainer] = true
                 item:Hide()
             end
         end
@@ -91,15 +90,27 @@ function utils:UpdateItemsForBag(frame, bag, arrangeList, containerFunc)
 
             local newContainer = containerFunc(ADDON.cache, ADDON.utils:GetItemContainerName(bag, slot))
             frame:AddContainer(newContainer)
-            arrangeList[newContainer] = true
 
             if previousContainer ~= newContainer then
                 if previousContainer then
                     previousContainer:RemoveItem(item)
-                    arrangeList[previousContainer] = true
                 end
                 newContainer:AddItem(item)
             end
+        end
+    end
+end
+
+function utils:PrintTable(tbl, lvl)
+    local prefix = ''
+    lvl = lvl or 0
+    for _ = 1, lvl do
+        prefix = prefix .. '\t'
+    end
+    for k, v in pairs(tbl) do
+        print(prefix, k, v)
+        if (type(v) == 'table') then
+            printTable(v, lvl + 1)
         end
     end
 end

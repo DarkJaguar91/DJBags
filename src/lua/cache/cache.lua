@@ -30,7 +30,7 @@ function cache:GetReagentItemContainer(name)
     return self.reagentContainers[name]
 end
 
-function cache:UpdateSettings(arrange)
+function cache:UpdateSettings()
     for _, slots in pairs(self.items) do
         for _, item in pairs(slots) do
             item:Setup()
@@ -38,8 +38,11 @@ function cache:UpdateSettings(arrange)
     end
     for _, container in pairs(cache.bagContainers) do
         container:Setup()
-        if arrange then
-            container:Arrange()
-        end
+    end
+    for _, container in pairs(cache.bankContainers) do
+        container:Setup()
+    end
+    for _, container in pairs(cache.reagentContainers) do
+        container:Setup()
     end
 end

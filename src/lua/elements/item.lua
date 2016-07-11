@@ -63,6 +63,10 @@ function item:Init()
     self.button:HookScript('OnClick', self.OnClick)
 end
 
+function item:ShowCountText(text)
+    SetItemButtonCount(self.button, text)
+end
+
 function item:Setup()
     local settings = ADDON.settings.item
     self:SetSize(settings.size, settings.size)

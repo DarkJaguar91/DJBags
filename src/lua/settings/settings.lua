@@ -50,7 +50,7 @@ end
 
 function settings:MigrateSettings(table, default)
     for k, v in pairs(default) do
-        if table[k] then
+        if table[k] ~= nil then
             if type(v) ~= type(table[k]) then
                 table[k] = v
             elseif type(v) == 'table' then

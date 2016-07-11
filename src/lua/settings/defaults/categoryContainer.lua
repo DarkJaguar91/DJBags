@@ -5,8 +5,7 @@ ADDON.settings = ADDON.settings or {}
 ADDON.settings.categoryContainer = {
     padding = 5,
     spacing = 3,
-    maxHeight = 450,
-    sortFunction = 'default',
+    formatter = 'vertical',
     closeVisible = false,
     closeSize = 25,
 }

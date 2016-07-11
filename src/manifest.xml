@@ -17,12 +17,17 @@
     <Script file="src/lua/settings/defaults/mainBar.lua"/>
     <Script file="src/lua/settings/defaults/bagItem.lua"/>
     <Script file="src/lua/settings/defaults/auto.lua"/>
+    <Script file="src/lua/settings/defaults/formatter.lua"/>
     <Script file="src/lua/settings/editor.lua"/>
     <Script file="src/lua/settings/settings.lua"/>
 
     <!-- sorters -->
     <Script file="src/lua/sorters/items.lua"/>
     <Script file="src/lua/sorters/containers.lua"/>
+
+    <!-- formatters -->
+    <Script file="src/lua/formatters/vertical.lua"/>
+    <Script file="src/lua/formatters/horizontal.lua"/>
 
     <!-- Tools -->
     <Script file="src/lua/event/eventManager.lua"/>
