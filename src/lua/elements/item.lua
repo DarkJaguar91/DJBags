@@ -218,19 +218,26 @@ local function UpdateCooldown(self)
 end
 
 function item:Update()
-    local texture, count, locked, quality, _, _, _, filtered, _, id = GetContainerItemInfo(self:GetID(), self.button:GetID())
+    local texture, count, locked, quality, _, _, link, filtered, _, id = GetContainerItemInfo(self:GetID(), self.button:GetID())
     local equipable = IsEquippableItem(id)
+    local name, level, classId
+    if id then
+        name, _, _, level, _, _, _, _, _, _, _, classId = GetItemInfo(id)
+    end
     self.id = id
-    self.name = id and select(1, GetItemInfo(id)) or ''
+    self.name = name or ''
     self.quality = quality or 0
-    self.ilevel = id and select(4, GetItemInfo(id)) or 0
+    self.ilevel = level or 0
     self.button.hasItem = nil
 
+    local isEquipment = equipable or classId == LE_ITEM_CLASS_ARMOR or classId == LE_ITEM_CLASS_WEAPON
+    if isEquipment then
+        count = count > 1 and count or (self:GetItemLevel(link) or level)
+    end
 
     if self:GetID() == BANK_CONTAINER or self:GetID() == REAGENTBANK_CONTAINER then
         BankFrameItemButton_Update(self.button)
-        if (equipable) then
-            count = count > 1 and count or select(4, GetItemInfo(id))
+        if isEquipment then
             SetItemButtonCount(self.button, count)
             UpdateCountcolour(self, equipable, quality)
         end
@@ -241,10 +248,6 @@ function item:Update()
         local shouldDoRelicChecks = not BagHelpBox:IsShown() and not GetCVarBitfield("closedInfoFrames", LE_FRAME_TUTORIAL_ARTIFACT_RELIC_MATCH)
 
         self.button.hasItem = true
-
-        if (equipable) then
-            count = count > 1 and count or select(4, GetItemInfo(id))
-        end
 
         SetItemButtonTexture(self.button, texture)
         SetItemButtonQuality(self.button, quality, id)
@@ -279,6 +282,33 @@ function item:OnClick(button)
             ADDON.categoryDialog(self:GetParent().id)
         end
     end
+end
+
+function item:GetItemLevel(link)
+    local tooltip = self:GetTooltip()
+
+    tooltip:SetOwner(UIParent, "ANCHOR_NONE")
+    tooltip:SetHyperlink(link)
+
+    for i = 2, tooltip:NumLines() do
+        local text = _G[tooltip:GetName() .. "TextLeft"..i]:GetText()
+        local UPGRADE_LEVEL = gsub(ITEM_LEVEL," %d","")
+
+        if text and text:find(UPGRADE_LEVEL) then
+            local itemLevel = string.match(text,"%d+")
+
+            if itemLevel then
+                return tonumber(itemLevel)
+            end
+        end
+    end
+end
+
+function item:GetTooltip()
+    if not ADDON.DJTooltip then
+        ADDON.DJTooltip = CreateFrame('GameTooltip', 'DJBagsTooltip', UIParent, 'GameTooltipTemplate')
+    end
+    return ADDON.DJTooltip
 end
 
 --endregion

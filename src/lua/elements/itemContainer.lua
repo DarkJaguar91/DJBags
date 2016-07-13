@@ -128,7 +128,7 @@ function container:IsEmpty()
 end
 
 function container:TitleEnter()
-    if (self:GetParent().title:IsTruncated()) then
+    if (self:GetParent().title:IsTruncated() or self:GetParent().title:GetText() ~= self:GetParent().name) then
         GameTooltip:SetOwner(self, 'ANCHOR_CURSOR')
         GameTooltip:SetText(self:GetParent().name)
         GameTooltip:Show()

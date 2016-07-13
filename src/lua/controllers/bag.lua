@@ -32,15 +32,18 @@ end
 
 function bag:MERCHANT_SHOW()
     if ADDON.settings.auto.sellJunk then
+        local price = 0
         for bag = 0, NUM_BAG_SLOTS do
             for slot = 1 , GetContainerNumSlots(bag) do
                 if select(4, GetContainerItemInfo(bag, slot)) == LE_ITEM_QUALITY_POOR then
                     ShowMerchantSellCursor(1)
                     UseContainerItem(bag, slot)
+                    price = price + select(11, GetItemInfo(GetContainerItemID(bag, slot)))
                 end
             end
         end
         ResetCursor()
+        DEFAULT_CHAT_FRAME:AddMessage("Sold junk for: " .. GetCoinTextureString(price))
     end
 end
 
