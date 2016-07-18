@@ -1,0 +1,11 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.blizzard.com/wow/ui/..\FrameXML\UI.xsd">
+    <Slider name="DJBagsSettingsSliderTemplate" inherits="OptionsSliderTemplate" virtual="true">
+        <Size x="460" y="15" />
+        <Scripts>
+            <OnValueChanged>
+                DJBagsSettingsSlider_OnChange(self, value)
+            </OnValueChanged>
+        </Scripts>
+    </Slider>
+</Ui>

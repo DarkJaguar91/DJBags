@@ -1,26 +1,38 @@
 local NAME, ADDON = ...
 
-local random = math.random
-ADDON.uuid = function()
-    local template = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'
-    return string.gsub(template, '[xy]', function(c)
-        local v = (c == 'x') and random(0, 0xf) or random(8, 0xb)
-        return string.format('%x', v)
-    end)
+function ADDON:IsBankBag(id)
+    if id == BANK_CONTAINER or id == REAGENTBANK_CONTAINER then
+        return true
+    end
+    return false
 end
 
-ADDON.utils = {}
-ADDON.utils.__index = ADDON.utils
-ADDON.utils.EMPTY_BAG_NAME = 'SUPER_RANDOM_EMPTY_BAG_NAME_123123'
+function ADDON:CreateAddon(obj, tbl, ...)
+    for k, v in pairs(tbl) do
+        obj[k] = v
+    end
 
-local utils = ADDON.utils
+    if obj.Init then
+        obj:Init(...)
+    end
+end
 
-function utils:PairsByKey(tbl, sortFunction)
+function ADDON:Count(table)
+    local cnt = 0;
+
+    for _ in pairs(table) do
+        cnt = cnt + 1
+    end
+
+    return cnt
+end
+
+function ADDON:PairsByKey(tbl, sorter)
     local keys = {}
     for k in pairs(tbl) do
         tinsert(keys, k)
     end
-    table.sort(keys, sortFunction)
+    table.sort(keys, sorter)
     local index = 0
     return function()
         index = index + 1
@@ -28,89 +40,32 @@ function utils:PairsByKey(tbl, sortFunction)
     end
 end
 
-function utils:GetItemContainerName(bag, slot)
-    local id = GetContainerItemID(bag, slot)
+function ADDON:UpdateBags(bags)
+    for _, bag in pairs(bags) do
+        local bagSlots = GetContainerNumSlots(bag)
 
-    if id then
-        local name, link, quality, iLevel, reqLevel, className, subClassName, maxStack, equipSlot, texture, vendorPrice, cId, sCId = GetItemInfo(id)
-        local isInSet, setName = GetContainerItemEquipmentSetInfo(bag, slot)
-
-        if quality == LE_ITEM_QUALITY_POOR then
-            return BAG_FILTER_JUNK
-        end
-
-        if isInSet then
-            return setName
-        end
-
-        if bag >= 0 and bag <= NUM_BAG_SLOTS and C_NewItems.IsNewItem(bag, slot) then
-            return NEW
-        end
-
-        local userDefinedList = ADDON.settings.categories.userDefined
-        if userDefinedList[id] then
-            return userDefinedList[id] .. '*'
-        end
-
-        local globalDefinedList = ADDON.globalCategories
-        if globalDefinedList[id] then
-            return globalDefinedList[id] .. '**'
-        end
-
-        local subClassSplitList = ADDON.settings.categories.subClass
-        if subClassSplitList[cId] then
-            return className .. (subClassName == BAG_FILTER_JUNK and '' or '_' .. subClassName)
-        end
-
-        return className
-    end
-    return EMPTY
-end
-
-function utils:UpdateItemsForBag(frame, bag, containerFunc)
-    local count = GetContainerNumSlots(bag)
-    if count == 0 and ADDON.cache.items[bag] then
-        for _, item in pairs(ADDON.cache.items[bag]) do
-            if item:GetParent() then
-                local previousContainer = item:GetParent()
-                previousContainer:RemoveItem(item)
-                item:SetParent(nil)
+        if ADDON.cache.items[bag] and bagSlots < ADDON:Count(ADDON.cache.items[bag]) then
+            for index = bagSlots + 1, ADDON:Count(ADDON.cache.items[bag]) do
+                local item = ADDON.cache:GetItem(bag, index)
+                local parent = item:GetParent() and item:GetParent():GetParent()
+                if parent and parent.RemoveItem then
+                    parent:RemoveItem(item)
+                end
                 item:Hide()
             end
         end
-    else
-        for slot = 1, count do
-            local item = ADDON.cache:GetItem(bag, slot)
-            local previousContainer
-            if item:GetParent() and item:GetParent().__class == ADDON.itemContainer.__class then
-                previousContainer = item:GetParent()
-            end
 
+        for slot = 1, bagSlots do
+            local item = ADDON.cache:GetItem(bag, slot)
             item:Update()
 
-            local newContainer = containerFunc(ADDON.cache, ADDON.utils:GetItemContainerName(bag, slot))
-            frame:AddContainer(newContainer)
-
-            if previousContainer ~= newContainer then
-                if previousContainer then
-                    previousContainer:RemoveItem(item)
-                end
-                newContainer:AddItem(item)
+            local currentParent = item:GetParent() and item:GetParent():GetParent()
+            if currentParent and currentParent.RemoveItem then
+                currentParent:RemoveItem(item)
             end
-        end
-    end
-end
+            local newParent = ADDON.cache:GetItemContainer(bag, item:GetContainerName())
 
-function utils:PrintTable(tbl, lvl)
-    local prefix = ''
-    lvl = lvl or 0
-    for _ = 1, lvl do
-        prefix = prefix .. '\t'
-    end
-    for k, v in pairs(tbl) do
-        print(prefix, k, v)
-        if (type(v) == 'table') then
-            printTable(v, lvl + 1)
+            newParent:AddItem(item)
         end
     end
 end

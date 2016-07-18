@@ -1,45 +1,24 @@
 local NAME, ADDON = ...
 
-ADDON.bagItem = {}
-ADDON.bagItem.__index = ADDON.bagItem
+local item = {}
 
-local item = ADDON.bagItem
-setmetatable(item, {
-    __call = function(tbl, name, slot, id)
-        local frame = CreateFrame('BUTTON', name, nil, 'ItemButtonTemplate')
-        frame:SetID(id)
-        frame.slot = slot
+function ADDON:NewBagItem(name, slot, id)
+    local frame = CreateFrame('Button', name, UIParent, 'ItemButtonTemplate')
 
-        for k, v in pairs(tbl) do
-            frame[k] = v
-        end
+    ADDON:CreateAddon(frame, item, id, slot)
 
-        frame:Init()
-        frame:Setup()
+    return frame
+end
 
-        return frame
-    end
-})
+function item:Init(id, slot)
+    self:SetID(id)
+    self.slot = slot
 
-function item:Init()
     self:SetScript('OnDragStart', self.DragItem)
     self:SetScript('OnReceiveDrag', self.PlaceOrPickup)
     self:SetScript('OnClick', self.PlaceOrPickup)
     self:SetScript('OnEnter', self.OnEnter)
     self:SetScript('OnLeave', self.OnLeave)
-
-    self.IconBorder:ClearAllPoints()
-    self.IconBorder:SetAllPoints()
-
-    self:SetNormalTexture([[Interface\Common\WhiteIconFrame]])
-    self:GetNormalTexture():ClearAllPoints()
-    self:GetNormalTexture():SetAllPoints()
-end
-
-function item:Setup()
-    local settings = ADDON.settings.bagItem or {size = 26}
-
-    self:SetSize(settings.size, settings.size)
 end
 
 function item:Update()
@@ -62,10 +41,6 @@ function item:PlaceOrPickup()
     if not placed then
         PickupBagFromSlot(self:GetID())
     end
-end
-
-function item:DragItem()
-    PickupBagFromSlot(self:GetID())
 end
 
 function item:OnEnter()
@@ -93,9 +68,13 @@ function item:OnEnter()
 
     GameTooltip:Show();
     CursorUpdate(self);
+
+    ADDON.events:Fire('DJBAGS_BAG_HOVER', self.slot, true)
 end
 
 function item:OnLeave()
     GameTooltip_Hide();
     ResetCursor();
+
+    ADDON.events:Fire('DJBAGS_BAG_HOVER', self.slot, false)
 end
