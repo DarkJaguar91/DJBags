@@ -37,7 +37,7 @@
                     </OnLeave>
                     <OnMouseUp>
                         if IsAltKeyDown() and button == 'RightButton' then
-                            DJBagsItemContainerSettings:Open(self:GetParent())
+                            DJBagsSettingsContainer:Open()
                         end
                     </OnMouseUp>
                 </Scripts>
@@ -46,7 +46,7 @@
         <Scripts>
             <OnMouseUp>
                 if IsAltKeyDown() and button == 'RightButton' then
-                    DJBagsItemContainerSettings:Open(self)
+                    DJBagsSettingsContainer:Open()
                 end
             </OnMouseUp>
         </Scripts>

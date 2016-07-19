@@ -36,7 +36,7 @@ function settings:Init()
             [DJBags_SETTING_PADDING] = 5,
             [DJBags_SETTING_SPACING] = 5,
             [DJBags_SETTING_SCALE] = 1,
-            [DJBags_SETTING_FORMATTER] = 'massonry',
+            [DJBags_SETTING_FORMATTER] = DJBags_FORMATTER_MASONRY,
             [DJBags_SETTING_FORMATTER_VERT] = false,
             [DJBags_SETTING_FORMATTER_MAX_ITEMS] = 12,
             [DJBags_SETTING_FORMATTER_MAX_HEIGHT] = 0.5,
@@ -50,34 +50,36 @@ function settings:Init()
             [DJBags_SETTING_PADDING] = 3,
             [DJBags_SETTING_SPACING] = 3,
         },
-    }
-    self.defaultSubclass = {
-        [LE_ITEM_CLASS_ARMOR] = false,
-        [LE_ITEM_CLASS_CONSUMABLE] = true,
-        [LE_ITEM_CLASS_GEM] = false,
-        [LE_ITEM_CLASS_GLYPH] = false,
-        [LE_ITEM_CLASS_ITEM_ENHANCEMENT] = false,
-        [LE_ITEM_CLASS_MISCELLANEOUS] = true,
-        [LE_ITEM_CLASS_RECIPE] = false,
-        [LE_ITEM_CLASS_TRADEGOODS] = true,
-        [LE_ITEM_CLASS_WEAPON] = false,
+        [DJBags_TYPE_SUB_CLASS] = {
+            [LE_ITEM_CLASS_ARMOR] = false,
+            [LE_ITEM_CLASS_CONSUMABLE] = true,
+            [LE_ITEM_CLASS_GEM] = false,
+            [LE_ITEM_CLASS_GLYPH] = false,
+            [LE_ITEM_CLASS_ITEM_ENHANCEMENT] = false,
+            [LE_ITEM_CLASS_MISCELLANEOUS] = true,
+            [LE_ITEM_CLASS_RECIPE] = false,
+            [LE_ITEM_CLASS_TRADEGOODS] = true,
+            [LE_ITEM_CLASS_WEAPON] = false,
+        },
     }
 
     self:Update()
 end
 
 function settings:Update(force)
-    self:UpdateBag(DJBagsBagContainer, ADDON.cache.bagContainers, force)
+    self:UpdateBag(DJBagsBagContainer, ADDON.bagController, ADDON.cache.bagContainers, force)
 end
 
-function settings:UpdateBag(bag, list, force)
+function settings:UpdateBag(bag, controller, list, force)
     bag:UpdateFromSettings()
     for _, container in pairs(list) do
         container:UpdateFromSettings()
     end
 
-    if bag:IsVisible() and force then
+    if bag:IsVisible() and force == 1 then
         bag:Arrange(true)
+    elseif bag:IsVisible() and force == 2 then
+        controller:Update()
     end
 end
 
@@ -102,10 +104,6 @@ end
 
 function settings:GetGlobalUserDefinedList()
     return DJBags_DB.global.userDefined
-end
-
-function settings:GetSubClassList()
-    return DJBags_DB[self.realm][self.player].subClass or self.defaultSubclass
 end
 
 function settings:MigrateSettings(table, default)

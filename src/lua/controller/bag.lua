@@ -35,9 +35,13 @@ function DJDBagsBagsButton_OnClick(self)
     end
 end
 
-function controller:Open()
+function controller:Update()
     ADDON:UpdateBags({0, 1, 2, 3, 4})
     DJBagsBagContainer:Arrange()
+end
+
+function controller:Open()
+    self:Update()
     DJBagsBagContainer:Show()
 end
 

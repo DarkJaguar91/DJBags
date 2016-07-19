@@ -66,7 +66,7 @@ function item:GetContainerName()
             return globalDefinedList[self.id] .. '**'
         end
 
-        local subClassSplitList = ADDON.settings:GetSubClassList()
+        local subClassSplitList = ADDON.settings:GetSettings(DJBags_TYPE_SUB_CLASS)
         if subClassSplitList[self.classId] then
             return self.class .. (self.subClass == BAG_FILTER_JUNK and '' or '_' .. self.subClass)
         end

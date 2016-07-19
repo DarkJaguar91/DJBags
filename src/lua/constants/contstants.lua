@@ -4,6 +4,10 @@ local NAME, ADDON = ...
 
 DJBags_TYPE_CONTAINER = 'container'
 DJBags_TYPE_ITEM_CONTAINER = 'itemContainer'
+DJBags_TYPE_SUB_CLASS = 'djbags_sub_classes'
+
+DJBags_FORMATTER_MASONRY = 'djbags_masonry'
+DJBags_FORMATTER_BLOCK = 'djbags_block'
 
 --endregion
 
@@ -29,12 +33,16 @@ DJBags_SETTING_TEXT_SIZE = 'djbags_truncate_text_size'
 local localeText= {}
 localeText['enUS'] = function()
     DJBags_LOCALE_ITEM_CONTAINER_SETTINGS = 'Item Container Settings:'
+    DJBags_LOCALE_CONTAINER_SETTINGS = 'Category Container Settings:'
+    DJBags_LOCALE_SUB_CLASS_SETTINGS = 'Sub Class Settings:'
+    DJBags_LOCALE_SETTINGS = 'DJBags Settings:'
     DJBags_LOCALE_CLEAR_NEW_ITEMS = 'Clear new items'
     DJBags_LOCALE_BACKGROUND_COLOR = 'Background color'
     DJBags_LOCALE_BORDER_COLOR = 'Border color'
     DJBags_LOCALE_TEXT_COLOR = 'Text color'
     DJBags_LOCALE_PADDING = 'Padding'
     DJBags_LOCALE_SPACING = 'Spacing'
+    DJBags_LOCALE_SCALE = 'Scale'
     DJBags_LOCALE_TEXT_SIZE = 'Text size'
 end
 

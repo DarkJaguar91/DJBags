@@ -1,0 +1,113 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.blizzard.com/wow/ui/..\FrameXML\UI.xsd">
+    <Frame name="DJBagsSubClassSettings" inherits="DJBagsContainerTemplate" hidden="false" virtual="true">
+        <Size x="500" y="125"/>
+        <Layers>
+            <Layer level="ARTWORK">
+                <FontString name="$parentName" inherits="GameFontNormal" text="DJBags_LOCALE_SUB_CLASS_SETTINGS">
+                    <Anchors>
+                        <Anchor point="TOPLEFT" x="15" y="-5"/>
+                    </Anchors>
+                </FontString>
+            </Layer>
+        </Layers>
+        <Frames>
+            <CheckButton name="$parentArmorCheckBox" inherits="DJBagsSettingsCheckBoxTemplate">
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeTo="$parentName" relativePoint="BOTTOMLEFT" x="5" y="-5" />
+                </Anchors>
+                <Scripts>
+                    <OnShow>
+                        DJBagsInitSettingsCheckBox(self, AUCTION_CATEGORY_ARMOR, DJBags_TYPE_SUB_CLASS, LE_ITEM_CLASS_ARMOR)
+                    </OnShow>
+                </Scripts>
+            </CheckButton>
+            <CheckButton name="$parentConsumableCheckBox" inherits="DJBagsSettingsCheckBoxTemplate">
+                <Anchors>
+                    <Anchor point="LEFT" relativeTo="$parentArmorCheckBox" relativePoint="RIGHT" x="140" />
+                </Anchors>
+                <Scripts>
+                    <OnShow>
+                        DJBagsInitSettingsCheckBox(self, AUCTION_CATEGORY_CONSUMABLES, DJBags_TYPE_SUB_CLASS, LE_ITEM_CLASS_CONSUMABLE)
+                    </OnShow>
+                </Scripts>
+            </CheckButton>
+            <CheckButton name="$parentGemsCheckBox" inherits="DJBagsSettingsCheckBoxTemplate">
+                <Anchors>
+                    <Anchor point="LEFT" relativeTo="$parentConsumableCheckBox" relativePoint="RIGHT" x="140" />
+                </Anchors>
+                <Scripts>
+                    <OnShow>
+                        DJBagsInitSettingsCheckBox(self, AUCTION_CATEGORY_GEMS, DJBags_TYPE_SUB_CLASS, LE_ITEM_CLASS_GEM)
+                    </OnShow>
+                </Scripts>
+            </CheckButton>
+            <CheckButton name="$parentGlyphCheckBox" inherits="DJBagsSettingsCheckBoxTemplate">
+                <Anchors>
+                    <Anchor point="TOP" relativeTo="$parentArmorCheckBox" relativePoint="BOTTOM" />
+                </Anchors>
+                <Scripts>
+                    <OnShow>
+                        DJBagsInitSettingsCheckBox(self, AUCTION_CATEGORY_GLYPHS, DJBags_TYPE_SUB_CLASS, LE_ITEM_CLASS_GLYPH)
+                    </OnShow>
+                </Scripts>
+            </CheckButton>
+            <CheckButton name="$parentItemEnhancementCheckBox" inherits="DJBagsSettingsCheckBoxTemplate">
+                <Anchors>
+                    <Anchor point="LEFT" relativeTo="$parentGlyphCheckBox" relativePoint="RIGHT" x="140" />
+                </Anchors>
+                <Scripts>
+                    <OnShow>
+                        DJBagsInitSettingsCheckBox(self, AUCTION_CATEGORY_ITEM_ENHANCEMENT, DJBags_TYPE_SUB_CLASS, LE_ITEM_CLASS_ITEM_ENHANCEMENT)
+                    </OnShow>
+                </Scripts>
+            </CheckButton>
+            <CheckButton name="$parentMiscCheckBox" inherits="DJBagsSettingsCheckBoxTemplate">
+                <Anchors>
+                    <Anchor point="LEFT" relativeTo="$parentItemEnhancementCheckBox" relativePoint="RIGHT" x="140" />
+                </Anchors>
+                <Scripts>
+                    <OnShow>
+                        DJBagsInitSettingsCheckBox(self, AUCTION_CATEGORY_MISCELLANEOUS, DJBags_TYPE_SUB_CLASS, LE_ITEM_CLASS_MISCELLANEOUS)
+                    </OnShow>
+                </Scripts>
+            </CheckButton>
+            <CheckButton name="$parentRecipesCheckBox" inherits="DJBagsSettingsCheckBoxTemplate">
+                <Anchors>
+                    <Anchor point="TOP" relativeTo="$parentGlyphCheckBox" relativePoint="BOTTOM" />
+                </Anchors>
+                <Scripts>
+                    <OnShow>
+                        DJBagsInitSettingsCheckBox(self, AUCTION_CATEGORY_RECIPES, DJBags_TYPE_SUB_CLASS, LE_ITEM_CLASS_RECIPE)
+                    </OnShow>
+                </Scripts>
+            </CheckButton>
+            <CheckButton name="$parentTradeGoodsCheckBox" inherits="DJBagsSettingsCheckBoxTemplate">
+                <Anchors>
+                    <Anchor point="LEFT" relativeTo="$parentRecipesCheckBox" relativePoint="RIGHT" x="140" />
+                </Anchors>
+                <Scripts>
+                    <OnShow>
+                        DJBagsInitSettingsCheckBox(self, AUCTION_CATEGORY_TRADE_GOODS, DJBags_TYPE_SUB_CLASS, LE_ITEM_CLASS_TRADEGOODS)
+                    </OnShow>
+                </Scripts>
+            </CheckButton>
+            <CheckButton name="$parentWeaponsCheckBox" inherits="DJBagsSettingsCheckBoxTemplate">
+                <Anchors>
+                    <Anchor point="LEFT" relativeTo="$parentTradeGoodsCheckBox" relativePoint="RIGHT" x="140" />
+                </Anchors>
+                <Scripts>
+                    <OnShow>
+                        DJBagsInitSettingsCheckBox(self, AUCTION_CATEGORY_WEAPONS, DJBags_TYPE_SUB_CLASS, LE_ITEM_CLASS_WEAPON)
+                    </OnShow>
+                </Scripts>
+            </CheckButton>
+        </Frames>
+        <Scripts>
+            <OnLoad>
+                self:SetBackdropColor(0, 0, 0, 0.6)
+                self:SetBackdropBorderColor(0.3, 0.3, 0.3, 1)
+            </OnLoad>
+        </Scripts>
+    </Frame>
+</Ui>

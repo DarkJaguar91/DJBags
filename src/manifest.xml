@@ -36,7 +36,11 @@
     <Script file="src/lua/settings/settingsElements.lua" />
     <Include file="src/xml/settings/colorPicker.xml" />
     <Include file="src/xml/settings/slider.xml" />
+    <Include file="src/xml/settings/checkBox.xml" />
     <Include file="src/xml/settings/itemContainerSettings.xml" />
+    <Include file="src/xml/settings/containerSettings.xml" />
+    <Include file="src/xml/settings/subClassSettings.xml" />
+    <Include file="src/xml/settings/settingsContainer.xml" />
 
     <!-- Core (Load last) -->
     <Script file="src/lua/core.lua"/>

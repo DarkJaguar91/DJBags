@@ -16,13 +16,16 @@ function DJBagsInitSettingsSlider(slider, name, min, max, step, type, setting)
     slider.setting = setting
     slider.name = name
 
+    local onChange = slider:GetScript('OnValueChanged')
+    slider:SetScript('OnValueChanged', nil)
     slider:SetValue(value)
     slider:SetValueStep(step)
+    slider:SetScript('OnValueChanged', onChange)
 end
 
 function DJBagsSettingsSlider_OnChange(self, value)
     _G[self:GetName() .. 'Text']:SetText(tostring(self.name) .. ' - ' .. round(value, 1))
-    ADDON.settings:SetSettings(self.type, self.setting, value, true)
+    ADDON.settings:SetSettings(self.type, self.setting, value, 1)
 end
 
 function DJBagsInitSettingsColorPicker(picker, type, setting)
@@ -52,4 +55,17 @@ function DJBagsSettingsColorPicker_OnClick(self)
     ColorPickerFrame.hasOpacity, ColorPickerFrame.opacity = (a ~= nil), a;
     ColorPickerFrame.previousValues = { r, g, b, a };
     ShowUIPanel(ColorPickerFrame)
+end
+
+function DJBagsInitSettingsCheckBox(checkbox, name, type, setting)
+    checkbox.type = type
+    checkbox.setting = setting
+
+    _G[checkbox:GetName() .. "Text"]:SetText(name)
+
+    checkbox:SetChecked(ADDON.settings:GetSettings(type)[setting])
+end
+
+function DJBagsSettingsCheckBox_OnChange(checkbox, checked)
+    ADDON.settings:SetSettings(checkbox.type, checkbox.setting, checked, 2)
 end

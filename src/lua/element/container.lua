@@ -65,7 +65,7 @@ function container:AddItem(item)
 end
 
 function container:Arrange(override)
-    ADDON.format['massonry'](
+    ADDON.format[ADDON.settings:GetSettings(self.__type)[DJBags_SETTING_FORMATTER]](
         self,
         ADDON.settings:GetSettings(self.__type)[DJBags_SETTING_FORMATTER_MAX_ITEMS],
         ADDON.settings:GetSettings(self.__type)[DJBags_SETTING_FORMATTER_MAX_HEIGHT],

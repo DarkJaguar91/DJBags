@@ -1,10 +1,10 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.blizzard.com/wow/ui/..\FrameXML\UI.xsd">
-    <Frame name="DJBagsItemContainerSettings" inherits="DJBagsContainerTemplate" hidden="false" virtual="true">
+    <Frame name="DJBagsContainerSettings" inherits="DJBagsContainerTemplate" hidden="false" virtual="true">
         <Size x="500" y="220"/>
         <Layers>
             <Layer level="ARTWORK">
-                <FontString name="$parentName" inherits="GameFontNormal" text="DJBags_LOCALE_ITEM_CONTAINER_SETTINGS">
+                <FontString name="$parentName" inherits="GameFontNormal" text="DJBags_LOCALE_CONTAINER_SETTINGS">
                     <Anchors>
                         <Anchor point="TOPLEFT" x="15" y="-5"/>
                     </Anchors>
@@ -18,7 +18,7 @@
                 </Anchors>
                 <Scripts>
                     <OnShow>
-                        DJBagsInitSettingsColorPicker(self, DJBags_TYPE_ITEM_CONTAINER, DJBags_SETTING_BACKGROUND_COLOR)
+                        DJBagsInitSettingsColorPicker(self, DJBags_TYPE_CONTAINER, DJBags_SETTING_BACKGROUND_COLOR)
                     </OnShow>
                 </Scripts>
             </Button>
@@ -28,17 +28,7 @@
                 </Anchors>
                 <Scripts>
                     <OnShow>
-                        DJBagsInitSettingsColorPicker(self, DJBags_TYPE_ITEM_CONTAINER, DJBags_SETTING_BORDER_COLOR)
-                    </OnShow>
-                </Scripts>
-            </Button>
-            <Button name="$parentTextColorSelect" inherits="DJBagsColorPickerTemplate" text="DJBags_LOCALE_TEXT_COLOR">
-                <Anchors>
-                    <Anchor point="LEFT" relativeTo="$parentBorderColorSelect" relativePoint="RIGHT" x="5" y="0" />
-                </Anchors>
-                <Scripts>
-                    <OnShow>
-                        DJBagsInitSettingsColorPicker(self, DJBags_TYPE_ITEM_CONTAINER, DJBags_SETTING_TEXT_COLOR)
+                        DJBagsInitSettingsColorPicker(self, DJBags_TYPE_CONTAINER, DJBags_SETTING_BORDER_COLOR)
                     </OnShow>
                 </Scripts>
             </Button>
@@ -53,7 +43,7 @@
                 </Anchors>
                 <Scripts>
                     <OnShow>
-                        DJBagsInitSettingsSlider(self, DJBags_LOCALE_PADDING, 2, 10, 1, DJBags_TYPE_ITEM_CONTAINER, DJBags_SETTING_PADDING)
+                        DJBagsInitSettingsSlider(self, DJBags_LOCALE_PADDING, 2, 10, 1, DJBags_TYPE_CONTAINER, DJBags_SETTING_PADDING)
                     </OnShow>
                 </Scripts>
             </Slider>
@@ -67,11 +57,11 @@
                 </Anchors>
                 <Scripts>
                     <OnShow>
-                        DJBagsInitSettingsSlider(self, DJBags_LOCALE_SPACING, 2, 10, 1, DJBags_TYPE_ITEM_CONTAINER, DJBags_SETTING_SPACING)
+                        DJBagsInitSettingsSlider(self, DJBags_LOCALE_SPACING, 2, 10, 1, DJBags_TYPE_CONTAINER, DJBags_SETTING_SPACING)
                     </OnShow>
                 </Scripts>
             </Slider>
-            <Slider name="$parentTextSize" inherits="DJBagsSettingsSliderTemplate">
+            <Slider name="$parentScaleSlider" inherits="DJBagsSettingsSliderTemplate">
                 <Anchors>
                     <Anchor point="TOPLEFT" relativeTo="$parentSpacingSlider" relativePoint="BOTTOMLEFT">
                         <Offset>
@@ -81,7 +71,7 @@
                 </Anchors>
                 <Scripts>
                     <OnShow>
-                        DJBagsInitSettingsSlider(self, DJBags_LOCALE_TEXT_SIZE, 8, 16, 1, DJBags_TYPE_ITEM_CONTAINER, DJBags_SETTING_TEXT_SIZE)
+                        DJBagsInitSettingsSlider(self, DJBags_LOCALE_SCALE, 0.5, 2, 0.1, DJBags_TYPE_CONTAINER, DJBags_SETTING_SCALE)
                     </OnShow>
                 </Scripts>
             </Slider>

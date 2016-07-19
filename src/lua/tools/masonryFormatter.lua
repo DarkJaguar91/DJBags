@@ -20,7 +20,7 @@ local sorter = function(A, B)
     end
 end
 
-ADDON.format['massonry'] = function(frame, maxItems, _, vert, override)
+ADDON.format[DJBags_FORMATTER_MASONRY] = function(frame, maxItems, _, vert, override)
     local h = 0
     local x = 0
     local mH = 0
