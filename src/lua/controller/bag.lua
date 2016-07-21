@@ -40,13 +40,21 @@ function controller:Update()
     DJBagsBagContainer:Arrange()
 end
 
+function controller:Toggle()
+    if DJBagsBagContainer:IsVisible() then
+        self:Close()
+    else
+        self:Open()
+    end
+end
+
 function controller:Open()
     self:Update()
     DJBagsBagContainer:Show()
 end
 
 function controller:Close()
-
+    DJBagsBagContainer:Hide()
 end
 
 function controller:BAG_UPDATE(bag)
