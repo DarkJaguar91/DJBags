@@ -40,6 +40,7 @@ function settings:Init()
             [DJBags_SETTING_FORMATTER_VERT] = false,
             [DJBags_SETTING_FORMATTER_MAX_ITEMS] = 12,
             [DJBags_SETTING_FORMATTER_MAX_HEIGHT] = 0.5,
+            [DJBags_SETTING_FORMATTER_BOX_COLS] = 4,
             [DJBags_SETTING_TRUNCATE_SUB_CLASS] = true,
         },
         [DJBags_TYPE_ITEM_CONTAINER] = {

@@ -27,6 +27,7 @@
     <!-- Formatters -->
     <Script file="src/lua/tools/itemFormatter.lua" />
     <Script file="src/lua/tools/masonryFormatter.lua" />
+    <Script file="src/lua/tools/boxFormatter.lua" />
 
     <!-- Controller -->
     <Script file="src/lua/controller/bag.lua" />

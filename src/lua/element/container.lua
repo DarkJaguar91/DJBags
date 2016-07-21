@@ -69,6 +69,7 @@ function container:Arrange(override)
         self,
         ADDON.settings:GetSettings(self.__type)[DJBags_SETTING_FORMATTER_MAX_ITEMS],
         ADDON.settings:GetSettings(self.__type)[DJBags_SETTING_FORMATTER_MAX_HEIGHT],
+        ADDON.settings:GetSettings(self.__type)[DJBags_SETTING_FORMATTER_BOX_COLS],
         ADDON.settings:GetSettings(self.__type)[DJBags_SETTING_FORMATTER_VERT],
         override
     )
