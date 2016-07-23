@@ -26,8 +26,7 @@ function settings:Init()
     DJBags_DB[self.realm][self.player] = DJBags_DB[self.realm][self.player] or {}
     DJBags_DB[self.realm][self.player].userDefined = DJBags_DB[self.realm][self.player].userDefined or {}
 
-    DJBags_DB.global = DJBags_DB.global or {}
-    DJBags_DB.global.userDefined = DJBags_DB.global.userDefined or {}
+    DJBags_DB.userDefined = DJBags_DB.userDefined or {}
 
     self.default = {
         [DJBags_TYPE_MAIN] = {
@@ -86,6 +85,10 @@ function settings:Update(force)
     self:UpdateBag(DJBagsReagentContainer, ADDON.bankController, ADDON.cache.reagentContainers, force)
     self:UpdateBar(DJBagsBagContainer.mainBar)
     self:UpdateBar(DJBagsBankBar)
+
+    local scale = self:GetSettings(DJBags_TYPE_MAIN)[DJBags_SETTING_SCALE]
+    DJBagsBagContainer:SetScale(scale)
+    DJBagsBankBar:SetScale(scale)
 end
 
 function settings:UpdateBar(bar)
@@ -107,7 +110,6 @@ end
 
 function settings:GetSettings(type)
     local settings = DJBags_DB[self.realm][self.player][type] or {}
-    self:MigrateSettings(settings, DJBags_DB.global[type] or {})
     self:MigrateSettings(settings, self.default[type]or {})
 
     return settings
@@ -125,7 +127,7 @@ function settings:GetUserDefinedList()
 end
 
 function settings:GetGlobalUserDefinedList()
-    return DJBags_DB.global.userDefined
+    return DJBags_DB.userDefined
 end
 
 function settings:MigrateSettings(table, default)

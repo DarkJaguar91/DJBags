@@ -33,6 +33,12 @@ function item:Init(id, slot)
 end
 
 function item:Update()
+    local numBankSlots, full = GetNumBankSlots()
+    if self.slot - NUM_BAG_SLOTS > numBankSlots  then
+        local cost = GetBankSlotCost(self.slot-1)
+        self:SetCost(cost)
+        return
+    end
     PaperDollItemSlotButton_Update(self)
     local slotcount = GetContainerNumSlots(self.slot)
     if slotcount > 0 then
@@ -41,6 +47,7 @@ function item:Update()
     else
         self.Count:Hide()
     end
+    self.buy = nil
 end
 
 function item:UpdateLock()
@@ -88,7 +95,7 @@ function item:SetCost(cost)
         self.IconBorder:Show()
         self.IconBorder:SetVertexColor(1, 0, 0, 1)
         self.Count:Show()
-        self.Count:SetText(cost)
+        self.Count:SetText(cost/10000 .. "|TInterface\\MoneyFrame\\UI-GoldIcon:12:12:2:0|t")
         self.buy = true
     end
 end

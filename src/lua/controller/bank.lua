@@ -9,6 +9,7 @@ local controller = ADDON.bankController
 function controller:Init()
     ADDON.events:Add('BANKFRAME_OPENED', self)
     ADDON.events:Add('BANKFRAME_CLOSED', self)
+    BankFrame:UnregisterAllEvents()
 end
 
 function DJBagsBankBar_OnShow(self)
@@ -134,11 +135,7 @@ end
 function controller:ITEM_LOCK_CHANGED(bag, slot)
     if bag ~= BANK_CONTAINER and bag ~= REAGENTBANK_CONTAINER and bag <= NUM_BAG_SLOTS then return end
 
-    if bag == BANK_CONTAINER and slot > NUM_BANKGENERIC_SLOTS then
-        _G[DJBagsBankBar:GetName() .. 'Bag' .. (slot-NUM_BANKGENERIC_SLOTS)]:UpdateLock()
-    elseif slot then
-        ADDON.cache:GetItem(bag, slot):UpdateLock()
-    end
+    ADDON.cache:GetItem(bag, slot):UpdateLock()
 end
 
 function controller:PLAYERREAGENTBANKSLOTS_CHANGED()
