@@ -57,9 +57,10 @@ function DJBagsSettingsColorPicker_OnClick(self)
     ShowUIPanel(ColorPickerFrame)
 end
 
-function DJBagsInitSettingsCheckBox(checkbox, name, type, setting)
+function DJBagsInitSettingsCheckBox(checkbox, name, type, setting, arrangeType)
     checkbox.type = type
     checkbox.setting = setting
+    checkbox.arrangeType = arrangeType
 
     _G[checkbox:GetName() .. "Text"]:SetText(name)
 
@@ -67,5 +68,5 @@ function DJBagsInitSettingsCheckBox(checkbox, name, type, setting)
 end
 
 function DJBagsSettingsCheckBox_OnChange(checkbox, checked)
-    ADDON.settings:SetSettings(checkbox.type, checkbox.setting, checked, 2)
+    ADDON.settings:SetSettings(checkbox.type, checkbox.setting, checked, checkbox.arrangeType)
 end

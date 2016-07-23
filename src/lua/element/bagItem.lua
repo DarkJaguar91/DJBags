@@ -10,13 +10,24 @@ function ADDON:NewBagItem(name, slot, id)
     return frame
 end
 
+function DJBagsBagItemLoad(button, slot, id)
+    ADDON:CreateAddon(button, item, id, slot)
+end
+
 function item:Init(id, slot)
     self:SetID(id)
     self.slot = slot
 
     self:SetScript('OnDragStart', self.DragItem)
     self:SetScript('OnReceiveDrag', self.PlaceOrPickup)
-    self:SetScript('OnClick', self.PlaceOrPickup)
+    self:SetScript('OnClick', function (self, ...)
+        if self.buy then
+            PlaySound("igMainMenuOption");
+            StaticPopup_Show("CONFIRM_BUY_BANK_SLOT");
+        else
+            self:PlaceOrPickup(...)
+        end
+    end)
     self:SetScript('OnEnter', self.OnEnter)
     self:SetScript('OnLeave', self.OnLeave)
 end
@@ -70,6 +81,16 @@ function item:OnEnter()
     CursorUpdate(self);
 
     ADDON.events:Fire('DJBAGS_BAG_HOVER', self.slot, true)
+end
+
+function item:SetCost(cost)
+    if cost > -1 then
+        self.IconBorder:Show()
+        self.IconBorder:SetVertexColor(1, 0, 0, 1)
+        self.Count:Show()
+        self.Count:SetText(cost)
+        self.buy = true
+    end
 end
 
 function item:OnLeave()

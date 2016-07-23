@@ -30,12 +30,17 @@ function settings:Init()
     DJBags_DB.global.userDefined = DJBags_DB.global.userDefined or {}
 
     self.default = {
+        [DJBags_TYPE_MAIN] = {
+            [DJBags_SETTING_STACK_ALL] = false,
+            [DJBags_SETTING_SELL_JUNK] = false,
+            [DJBags_SETTING_DEPOSIT_REAGENT] = false,
+            [DJBags_SETTING_SCALE] = 1,
+        },
         [DJBags_TYPE_CONTAINER] = {
             [DJBags_SETTING_BACKGROUND_COLOR] = {0, 0, 0, 0.6},
             [DJBags_SETTING_BORDER_COLOR] = {0.3, 0.3, 0.3, 1},
             [DJBags_SETTING_PADDING] = 5,
             [DJBags_SETTING_SPACING] = 5,
-            [DJBags_SETTING_SCALE] = 1,
             [DJBags_SETTING_FORMATTER] = DJBags_FORMATTER_MASONRY,
             [DJBags_SETTING_FORMATTER_VERT] = false,
             [DJBags_SETTING_FORMATTER_MAX_ITEMS] = 12,
@@ -62,6 +67,14 @@ function settings:Init()
             [LE_ITEM_CLASS_TRADEGOODS] = true,
             [LE_ITEM_CLASS_WEAPON] = false,
         },
+        [DJBags_TYPE_MAIN_BAR] = {
+            [DJBags_SETTING_BACKGROUND_COLOR] = {0, 0, 0, 0.6},
+            [DJBags_SETTING_BORDER_COLOR] = {0.3, 0.3, 0.3, 1},
+        },
+        [DJBags_TYPE_BANK_BAR] = {
+            [DJBags_SETTING_BACKGROUND_COLOR] = {0, 0, 0, 0.6},
+            [DJBags_SETTING_BORDER_COLOR] = {0.3, 0.3, 0.3, 1},
+        }
     }
 
     self:Update()
@@ -69,6 +82,14 @@ end
 
 function settings:Update(force)
     self:UpdateBag(DJBagsBagContainer, ADDON.bagController, ADDON.cache.bagContainers, force)
+    self:UpdateBag(DJBagsBankContainer, ADDON.bankController, ADDON.cache.bankContainers, force)
+    self:UpdateBag(DJBagsReagentContainer, ADDON.bankController, ADDON.cache.reagentContainers, force)
+    self:UpdateBar(DJBagsBagContainer.mainBar)
+    self:UpdateBar(DJBagsBankBar)
+end
+
+function settings:UpdateBar(bar)
+    bar:UpdateFromSettings()
 end
 
 function settings:UpdateBag(bag, controller, list, force)

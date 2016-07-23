@@ -1,0 +1,53 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.blizzard.com/wow/ui/..\FrameXML\UI.xsd">
+    <Frame name="DJBagsMainSettings" inherits="DJBagsContainerTemplate" hidden="false" virtual="true">
+        <Size x="500" y="65"/>
+        <Layers>
+            <Layer level="ARTWORK">
+                <FontString name="$parentName" inherits="GameFontNormal" text="DJBags_LOCALE_SUB_CLASS_SETTINGS">
+                    <Anchors>
+                        <Anchor point="TOPLEFT" x="15" y="-5"/>
+                    </Anchors>
+                </FontString>
+            </Layer>
+        </Layers>
+        <Frames>
+            <CheckButton name="$parentAutoSellJunk" inherits="DJBagsSettingsCheckBoxTemplate">
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeTo="$parentName" relativePoint="BOTTOMLEFT" x="5" y="-5" />
+                </Anchors>
+                <Scripts>
+                    <OnShow>
+                        DJBagsInitSettingsCheckBox(self, DJBags_LOCALE_SELL_JUNK, DJBags_TYPE_MAIN, DJBags_SETTING_SELL_JUNK)
+                    </OnShow>
+                </Scripts>
+            </CheckButton>
+            <CheckButton name="$parentDepositReagents" inherits="DJBagsSettingsCheckBoxTemplate">
+                <Anchors>
+                    <Anchor point="LEFT" relativeTo="$parentAutoSellJunk" relativePoint="RIGHT" x="140" />
+                </Anchors>
+                <Scripts>
+                    <OnShow>
+                        DJBagsInitSettingsCheckBox(self, DJBags_LOCALE_DEPOSIT_REAGENT, DJBags_TYPE_MAIN, DJBags_SETTING_DEPOSIT_REAGENT)
+                    </OnShow>
+                </Scripts>
+            </CheckButton>
+            <CheckButton name="$parentStackAllItems" inherits="DJBagsSettingsCheckBoxTemplate">
+                <Anchors>
+                    <Anchor point="LEFT" relativeTo="$parentDepositReagents" relativePoint="RIGHT" x="140" />
+                </Anchors>
+                <Scripts>
+                    <OnShow>
+                        DJBagsInitSettingsCheckBox(self, DJBags_LOCALE_STACK_ALL, DJBags_TYPE_MAIN, DJBags_SETTING_STACK_ALL, 2)
+                    </OnShow>
+                </Scripts>
+            </CheckButton>
+        </Frames>
+        <Scripts>
+            <OnLoad>
+                self:SetBackdropColor(0, 0, 0, 0.6)
+                self:SetBackdropBorderColor(0.3, 0.3, 0.3, 1)
+            </OnLoad>
+        </Scripts>
+    </Frame>
+</Ui>

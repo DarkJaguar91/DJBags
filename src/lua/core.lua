@@ -7,6 +7,7 @@ function core:ADDON_LOADED(name)
 
     ADDON.settings:Init()
     ADDON.bagController:Init()
+    ADDON.bankController:Init()
 
     ADDON.events:Remove('ADDON_LOADED', self)
 end
@@ -49,7 +50,7 @@ end
 
 SLASH_DJBAGS1 = '/djb';
 function SlashCmdList.DJBAGS(msg, editbox)
-    ADDON.bagController:Open()
+    DJBagsBankBar:Show()
 end
 
 SLASH_RL1 = '/rl';

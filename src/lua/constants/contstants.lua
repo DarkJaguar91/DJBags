@@ -5,6 +5,9 @@ local NAME, ADDON = ...
 DJBags_TYPE_CONTAINER = 'container'
 DJBags_TYPE_ITEM_CONTAINER = 'itemContainer'
 DJBags_TYPE_SUB_CLASS = 'djbags_sub_classes'
+DJBags_TYPE_MAIN = 'djbags_main_settings'
+DJBags_TYPE_MAIN_BAR = 'djbags_main_bar'
+DJBags_TYPE_BANK_BAR = 'djbags_bank_bar'
 
 DJBags_FORMATTER_MASONRY = 'Massonry'
 DJBags_FORMATTER_BOX = 'Box'
@@ -26,6 +29,9 @@ DJBags_SETTING_FORMATTER_MAX_HEIGHT = 'djbags_formatter_max_height'
 DJBags_SETTING_FORMATTER_BOX_COLS = 'djbags_formatter_box_cols'
 DJBags_SETTING_TRUNCATE_SUB_CLASS = 'djbags_truncate_sub_class'
 DJBags_SETTING_TEXT_SIZE = 'djbags_truncate_text_size'
+DJBags_SETTING_STACK_ALL = 'djbags_stack_all_items'
+DJBags_SETTING_SELL_JUNK = 'djbags_auto_sell_junk'
+DJBags_SETTING_DEPOSIT_REAGENT = 'djbags_auto_deposit_reagents'
 
 --endregion
 
@@ -45,6 +51,9 @@ localeText['enUS'] = function()
     DJBags_LOCALE_SPACING = 'Spacing'
     DJBags_LOCALE_SCALE = 'Scale'
     DJBags_LOCALE_TEXT_SIZE = 'Text size'
+    DJBags_LOCALE_STACK_ALL = 'Stack all items'
+    DJBags_LOCALE_SELL_JUNK = 'Auto sell junk'
+    DJBags_LOCALE_DEPOSIT_REAGENT = 'Auto deposit reagents'
     DJBags_LOCALE_MASONRY = 'Massonry'
     DJBags_LOCALE_BOX = 'Box'
 end

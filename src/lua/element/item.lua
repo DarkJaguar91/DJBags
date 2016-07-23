@@ -176,6 +176,7 @@ function item:Update()
     self.classId = classId
     self.class = class
     self.subClass = subClass
+    self.count = count or 1
     self.button.hasItem = nil
 
     if isEquipment then

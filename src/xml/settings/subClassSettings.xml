@@ -18,7 +18,7 @@
                 </Anchors>
                 <Scripts>
                     <OnShow>
-                        DJBagsInitSettingsCheckBox(self, AUCTION_CATEGORY_ARMOR, DJBags_TYPE_SUB_CLASS, LE_ITEM_CLASS_ARMOR)
+                        DJBagsInitSettingsCheckBox(self, AUCTION_CATEGORY_ARMOR, DJBags_TYPE_SUB_CLASS, LE_ITEM_CLASS_ARMOR, 2)
                     </OnShow>
                 </Scripts>
             </CheckButton>
@@ -28,7 +28,7 @@
                 </Anchors>
                 <Scripts>
                     <OnShow>
-                        DJBagsInitSettingsCheckBox(self, AUCTION_CATEGORY_CONSUMABLES, DJBags_TYPE_SUB_CLASS, LE_ITEM_CLASS_CONSUMABLE)
+                        DJBagsInitSettingsCheckBox(self, AUCTION_CATEGORY_CONSUMABLES, DJBags_TYPE_SUB_CLASS, LE_ITEM_CLASS_CONSUMABLE, 2)
                     </OnShow>
                 </Scripts>
             </CheckButton>
@@ -38,7 +38,7 @@
                 </Anchors>
                 <Scripts>
                     <OnShow>
-                        DJBagsInitSettingsCheckBox(self, AUCTION_CATEGORY_GEMS, DJBags_TYPE_SUB_CLASS, LE_ITEM_CLASS_GEM)
+                        DJBagsInitSettingsCheckBox(self, AUCTION_CATEGORY_GEMS, DJBags_TYPE_SUB_CLASS, LE_ITEM_CLASS_GEM, 2)
                     </OnShow>
                 </Scripts>
             </CheckButton>
@@ -48,7 +48,7 @@
                 </Anchors>
                 <Scripts>
                     <OnShow>
-                        DJBagsInitSettingsCheckBox(self, AUCTION_CATEGORY_GLYPHS, DJBags_TYPE_SUB_CLASS, LE_ITEM_CLASS_GLYPH)
+                        DJBagsInitSettingsCheckBox(self, AUCTION_CATEGORY_GLYPHS, DJBags_TYPE_SUB_CLASS, LE_ITEM_CLASS_GLYPH, 2)
                     </OnShow>
                 </Scripts>
             </CheckButton>
@@ -58,7 +58,7 @@
                 </Anchors>
                 <Scripts>
                     <OnShow>
-                        DJBagsInitSettingsCheckBox(self, AUCTION_CATEGORY_ITEM_ENHANCEMENT, DJBags_TYPE_SUB_CLASS, LE_ITEM_CLASS_ITEM_ENHANCEMENT)
+                        DJBagsInitSettingsCheckBox(self, AUCTION_CATEGORY_ITEM_ENHANCEMENT, DJBags_TYPE_SUB_CLASS, LE_ITEM_CLASS_ITEM_ENHANCEMENT, 2)
                     </OnShow>
                 </Scripts>
             </CheckButton>
@@ -68,7 +68,7 @@
                 </Anchors>
                 <Scripts>
                     <OnShow>
-                        DJBagsInitSettingsCheckBox(self, AUCTION_CATEGORY_MISCELLANEOUS, DJBags_TYPE_SUB_CLASS, LE_ITEM_CLASS_MISCELLANEOUS)
+                        DJBagsInitSettingsCheckBox(self, AUCTION_CATEGORY_MISCELLANEOUS, DJBags_TYPE_SUB_CLASS, LE_ITEM_CLASS_MISCELLANEOUS, 2)
                     </OnShow>
                 </Scripts>
             </CheckButton>
@@ -78,7 +78,7 @@
                 </Anchors>
                 <Scripts>
                     <OnShow>
-                        DJBagsInitSettingsCheckBox(self, AUCTION_CATEGORY_RECIPES, DJBags_TYPE_SUB_CLASS, LE_ITEM_CLASS_RECIPE)
+                        DJBagsInitSettingsCheckBox(self, AUCTION_CATEGORY_RECIPES, DJBags_TYPE_SUB_CLASS, LE_ITEM_CLASS_RECIPE, 2)
                     </OnShow>
                 </Scripts>
             </CheckButton>
@@ -88,7 +88,7 @@
                 </Anchors>
                 <Scripts>
                     <OnShow>
-                        DJBagsInitSettingsCheckBox(self, AUCTION_CATEGORY_TRADE_GOODS, DJBags_TYPE_SUB_CLASS, LE_ITEM_CLASS_TRADEGOODS)
+                        DJBagsInitSettingsCheckBox(self, AUCTION_CATEGORY_TRADE_GOODS, DJBags_TYPE_SUB_CLASS, LE_ITEM_CLASS_TRADEGOODS, 2)
                     </OnShow>
                 </Scripts>
             </CheckButton>
@@ -98,7 +98,7 @@
                 </Anchors>
                 <Scripts>
                     <OnShow>
-                        DJBagsInitSettingsCheckBox(self, AUCTION_CATEGORY_WEAPONS, DJBags_TYPE_SUB_CLASS, LE_ITEM_CLASS_WEAPON)
+                        DJBagsInitSettingsCheckBox(self, AUCTION_CATEGORY_WEAPONS, DJBags_TYPE_SUB_CLASS, LE_ITEM_CLASS_WEAPON, 2)
                     </OnShow>
                 </Scripts>
             </CheckButton>

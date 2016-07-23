@@ -10,6 +10,7 @@ function controller:Init()
 end
 
 function DJBagsBagContainer_OnShow()
+    DJBagsBagContainer.mainBar:Show()
     ADDON.events:Add('INVENTORY_SEARCH_UPDATE', controller)
     ADDON.events:Add('BAG_UPDATE', controller)
     ADDON.events:Add('BAG_UPDATE_COOLDOWN', controller)
@@ -63,19 +64,21 @@ function controller:BAG_UPDATE(bag)
 end
 
 function controller:MERCHANT_SHOW()
-    local price = 0
-    for bag = 0, NUM_BAG_SLOTS do
-        for slot = 1 , GetContainerNumSlots(bag) do
-            if select(4, GetContainerItemInfo(bag, slot)) == LE_ITEM_QUALITY_POOR then
-                ShowMerchantSellCursor(1)
-                UseContainerItem(bag, slot)
-                price = price + select(11, GetItemInfo(GetContainerItemID(bag, slot)))
+    if ADDON.settings:GetSettings(DJBags_TYPE_MAIN)[DJBags_SETTING_SELL_JUNK] then
+        local price = 0
+        for bag = 0, NUM_BAG_SLOTS do
+            for slot = 1 , GetContainerNumSlots(bag) do
+                if select(4, GetContainerItemInfo(bag, slot)) == LE_ITEM_QUALITY_POOR then
+                    ShowMerchantSellCursor(1)
+                    UseContainerItem(bag, slot)
+                    price = price + select(11, GetItemInfo(GetContainerItemID(bag, slot)))
+                end
             end
         end
-    end
-    ResetCursor()
-    if price ~= 0 then
-        DEFAULT_CHAT_FRAME:AddMessage("Sold junk for: " .. GetCoinTextureString(price))
+        ResetCursor()
+        if price ~= 0 then
+            DEFAULT_CHAT_FRAME:AddMessage("Sold junk for: " .. GetCoinTextureString(price))
+        end
     end
 end
 

@@ -12,9 +12,23 @@ function container:Init()
 
     table.insert(UISpecialFrames, self:GetName())
     self:RegisterForDrag("LeftButton")
-    self:SetScript("OnDragStart", self.StartMoving)
-    self:SetScript("OnDragStop", self.StopMovingOrSizing)
-    self:SetUserPlaced(true)
+    self:SetScript("OnDragStart", function(self, ...)
+        if self:GetParent() == UIParent then
+            self:StartMoving()
+        elseif self:GetParent():IsMovable() then
+            self:GetParent():StartMoving(...)
+        end
+    end)
+    self:SetScript("OnDragStop", function(self, ...)
+        if self:GetParent() == UIParent then
+            self:StopMovingOrSizing(...)
+        elseif self:GetParent():IsMovable() then
+            self:GetParent():StopMovingOrSizing(...)
+        end
+    end)
+    if self:GetParent() == UIParent then
+        self:SetUserPlaced(true)
+    end
 
     self:SetColors(
         {0, 0, 0, 0.6},
@@ -36,7 +50,6 @@ function container:UpdateFromSettings()
     )
     self:SetPadding(settings[DJBags_SETTING_PADDING])
     self:SetSpacing(settings[DJBags_SETTING_SPACING])
-    self:SetScale(settings[DJBags_SETTING_SCALE])
 end
 
 function container:SetPadding(padding)

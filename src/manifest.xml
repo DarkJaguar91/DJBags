@@ -9,20 +9,19 @@
     <!-- Events -->
     <Script file="src/lua/events/events.lua" />
 
-    <!-- Element XML-->
+    <!-- Elements-->
     <Include file="src/xml/element/tooltip.xml" />
-    <Include file="src/xml/element/mainBar.xml" />
-    <Include file="src/xml/element/itemContainer.xml" />
-
-    <!-- Element Script -->
     <Script file="src/lua/element/tooltip.lua" />
-    <Script file="src/lua/element/item.lua" />
-    <Script file="src/lua/element/itemContainer.lua" />
     <Script file="src/lua/element/bagItem.lua" />
-
-    <!-- Container special load -->
+    <Script file="src/lua/element/item.lua" />
+    <Include file="src/xml/element/itemContainer.xml" />
+    <Script file="src/lua/element/itemContainer.lua" />
+    <Script file="src/lua/element/mainBar.lua" />
+    <Include file="src/xml/element/mainBar.xml" />
     <Script file="src/lua/element/container.lua" />
     <Include file="src/xml/element/container.xml" />
+    <Script file="src/lua/element/bankBar.lua" />
+    <Include file="src/xml/element/bankBar.xml" />
 
     <!-- Formatters -->
     <Script file="src/lua/tools/itemFormatter.lua" />
@@ -31,6 +30,7 @@
 
     <!-- Controller -->
     <Script file="src/lua/controller/bag.lua" />
+    <Script file="src/lua/controller/bank.lua" />
 
     <!-- Settings -->
     <Script file="src/lua/settings/settingsController.lua" />
@@ -41,6 +41,7 @@
     <Include file="src/xml/settings/itemContainerSettings.xml" />
     <Include file="src/xml/settings/containerSettings.xml" />
     <Include file="src/xml/settings/subClassSettings.xml" />
+    <Include file="src/xml/settings/toggleSettings.xml" />
     <Include file="src/xml/settings/settingsContainer.xml" />
 
     <!-- Core (Load last) -->

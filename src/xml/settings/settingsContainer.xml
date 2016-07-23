@@ -1,6 +1,6 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.blizzard.com/wow/ui/..\FrameXML\UI.xsd">
-    <Frame name="DJBagsSettingsContainer" parent="UIParent" inherits="DJBagsContainerTemplate">
+    <Frame name="DJBagsSettingsContainer" parent="UIParent" movable="true" enableMouse="true"  inherits="DJBagsContainerTemplate">
         <Size x="545" y="600"/>
         <Anchors>
             <Anchor point="TOPLEFT" x="200" y="-100"/>
@@ -18,9 +18,14 @@
             <Frame name="DJBagsSettingsContent">
                 <Size x="500" y="565" />
                 <Frames>
-                    <Frame name="$parentSubClassSettings" inherits="DJBagsSubClassSettings">
+                    <Frame name="$parentMainSettings" inherits="DJBagsMainSettings">
                         <Anchors>
                             <Anchor point="TOP" />
+                        </Anchors>
+                    </Frame>
+                    <Frame name="$parentSubClassSettings" inherits="DJBagsSubClassSettings">
+                        <Anchors>
+                            <Anchor point="TOP" relativeTo="$parentMainSettings" relativePoint="BOTTOM" />
                         </Anchors>
                     </Frame>
                     <Frame name="$parentItemContainerSettings" inherits="DJBagsItemContainerSettings">
@@ -65,7 +70,7 @@
                     </OnMouseWheel>
                 </Scripts>
             </ScrollFrame>
-            <Slider name="$parentScrollBar" inherits="UIPanelScrollBarTemplate" minValue="0" maxValue="65" defaultValuie="1" valueStep="1">
+            <Slider name="$parentScrollBar" inherits="UIPanelScrollBarTemplate" minValue="0" maxValue="90" defaultValuie="1" valueStep="1">
                 <Backdrop bgFile="Interface\Buttons\UI-SliderBar-Background"
                           edgeFile="Interface\Buttons\UI-SliderBar-Border" tile="true">
                     <EdgeSize val="8"/>

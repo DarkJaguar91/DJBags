@@ -14,8 +14,6 @@ end
 function container:Init(name)
     self.__type = DJBags_TYPE_ITEM_CONTAINER
 
-    self:SetMovable(false)
-
     if string.match(name, '%a*_%a*') then
         local txt = string.match(name, '%a*_(%a*)')
         self.name:SetText(txt)
@@ -27,6 +25,7 @@ function container:Init(name)
     self.items = {}
 
     self:UpdateFromSettings()
+    self.container:EnableMouse(false)
 end
 
 function container:UpdateFromSettings()
