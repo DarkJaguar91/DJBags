@@ -21,7 +21,7 @@ function settings:Init()
     self.realm = GetRealmName()
     self.player = UnitName("player")
 
-    DJBags_DB = {}
+    DJBags_DB = DJBags_DB or {}
     DJBags_DB[self.realm] = DJBags_DB[self.realm] or {}
     DJBags_DB[self.realm][self.player] = DJBags_DB[self.realm][self.player] or {}
     DJBags_DB[self.realm][self.player].userDefined = DJBags_DB[self.realm][self.player].userDefined or {}
