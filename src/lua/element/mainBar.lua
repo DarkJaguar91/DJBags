@@ -22,6 +22,7 @@ function container:Init()
         {0, 0, 0, 0.6},
         {0.3, 0.3, 0.3, 1}
     )
+
     self:Show()
 end
 

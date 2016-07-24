@@ -20,7 +20,7 @@ local function alreadySorted(frame, max, vert)
     return false
 end
 
-function ADDON:ArrangeItemContainer(frame, max, vert, maxCnt)
+function ADDON:ArrangeItemContainer(frame, max, vert, maxCnt, force)
     if frame:IsEmpty() or alreadySorted(frame, max, vert) then return end
 
     local itemCount = 0
@@ -69,7 +69,9 @@ function ADDON:ArrangeItemContainer(frame, max, vert, maxCnt)
     end
 
     local colSize = math.ceil(itemCount / max) * (next(frame.items):GetWidth() + frame.spacing) - frame.spacing
-    local rowSize = (maxCnt and maxCnt or (itemCount < max and itemCount or max)) * (frame.spacing + next(frame.items):GetWidth()) - frame.spacing
+    local numCols = force and max or (maxCnt and maxCnt or (itemCount < max and itemCount or max))
+    print(numCols, force)
+    local rowSize = numCols * (frame.spacing + next(frame.items):GetWidth()) - frame.spacing
 
     frame:SetSize(
         (vert and colSize or rowSize) + frame.padding * 2,

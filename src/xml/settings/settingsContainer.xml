@@ -25,17 +25,32 @@
                     </Frame>
                     <Frame name="$parentSubClassSettings" inherits="DJBagsSubClassSettings">
                         <Anchors>
-                            <Anchor point="TOP" relativeTo="$parentMainSettings" relativePoint="BOTTOM" />
+                            <Anchor point="TOP" relativeTo="$parentMainSettings" relativePoint="BOTTOM" y="-5" />
+                        </Anchors>
+                    </Frame>
+                    <Frame name="$parentFormatSettings" inherits="DJBagsFormatSettings">
+                        <Anchors>
+                            <Anchor point="TOP" relativeTo="$parentSubClassSettings" relativePoint="BOTTOM" y="-5" />
                         </Anchors>
                     </Frame>
                     <Frame name="$parentItemContainerSettings" inherits="DJBagsItemContainerSettings">
                         <Anchors>
-                            <Anchor point="TOP" relativeTo="$parentSubClassSettings" relativePoint="BOTTOM" />
+                            <Anchor point="TOP" relativeTo="$parentFormatSettings" relativePoint="BOTTOM" y="-5" />
                         </Anchors>
                     </Frame>
                     <Frame name="$parentContainerSettings" inherits="DJBagsContainerSettings">
                         <Anchors>
-                            <Anchor point="TOP" relativeTo="$parentItemContainerSettings" relativePoint="BOTTOM" />
+                            <Anchor point="TOP" relativeTo="$parentItemContainerSettings" relativePoint="BOTTOM" y="-5" />
+                        </Anchors>
+                    </Frame>
+                    <Frame name="$parentMainBarSettings" inherits="DJBagsMainBarSettings">
+                        <Anchors>
+                            <Anchor point="TOP" relativeTo="$parentContainerSettings" relativePoint="BOTTOM" y="-5" />
+                        </Anchors>
+                    </Frame>
+                    <Frame name="$parentBankBarSettings" inherits="DJBagsBankBarSettings">
+                        <Anchors>
+                            <Anchor point="TOP" relativeTo="$parentMainBarSettings" relativePoint="BOTTOM" y="-5" />
                         </Anchors>
                     </Frame>
                 </Frames>
@@ -70,7 +85,7 @@
                     </OnMouseWheel>
                 </Scripts>
             </ScrollFrame>
-            <Slider name="$parentScrollBar" inherits="UIPanelScrollBarTemplate" minValue="0" maxValue="95" defaultValuie="1" valueStep="1">
+            <Slider name="$parentScrollBar" inherits="UIPanelScrollBarTemplate" minValue="0" maxValue="270" defaultValuie="1" valueStep="1">
                 <Backdrop bgFile="Interface\Buttons\UI-SliderBar-Background"
                           edgeFile="Interface\Buttons\UI-SliderBar-Border" tile="true">
                     <EdgeSize val="8"/>
@@ -99,8 +114,6 @@
                 self:SetScript("OnDragStop", self.StopMovingOrSizing)
                 self:SetUserPlaced(true)
 
-                self:SetBackdropColor(0, 0, 0, 0.6)
-                self:SetBackdropBorderColor(0.3, 0.3, 0.3, 1)
                 function self:Open()
                     self:Show()
                 end

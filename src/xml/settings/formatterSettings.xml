@@ -1,0 +1,109 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.blizzard.com/wow/ui/..\FrameXML\UI.xsd">
+    <Frame name="DJBagsFormatSettings" hidden="false" virtual="true">
+        <Size x="500" y="160"/>
+        <Backdrop bgFile="Interface\ChatFrame\ChatFrameBackground" edgeFile="Interface\Buttons\WHITE8x8">
+            <EdgeSize>
+                <AbsValue val="1" />
+            </EdgeSize>
+            <Color r="0" g="0" b="0" a="0.6" />
+            <BorderColor r="0.3" g="0.3" b="0.3" a="1" />
+        </Backdrop>
+        <Layers>
+            <Layer level="ARTWORK">
+                <FontString name="$parentName" inherits="GameFontNormal" text="DJBags_LOCALE_FORMAT_SETTINGS">
+                    <Anchors>
+                        <Anchor point="TOPLEFT" x="15" y="-5"/>
+                    </Anchors>
+                </FontString>
+            </Layer>
+        </Layers>
+        <Frames>
+            <Button name="$parentDropDown" parentKey="dropdown" inherits="UIDropDownMenuTemplate">
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeTo="$parentName" relativePoint="BOTTOMLEFT" y="-5" />
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+                        UIDropDownMenu_SetWidth(self, 100);
+                        UIDropDownMenu_SetButtonWidth(self, 124)
+                        UIDropDownMenu_JustifyText(self, "LEFT")
+                    </OnLoad>
+                </Scripts>
+            </Button>
+            <Frame name="$parentMasonry" parentKey="masonry">
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeTo="$parentDropDown" relativePoint="BOTTOMLEFT" y="-5"  />
+                    <Anchor point="BOTTOMRIGHT" relativeTo="$parent" x="-5" y="5" />
+                </Anchors>
+                <Frames>
+                    <CheckButton name="$parentVertical" inherits="DJBagsSettingsCheckBoxTemplate">
+                        <Anchors>
+                            <Anchor point="TOPLEFT" />
+                        </Anchors>
+                        <Scripts>
+                            <OnShow>
+                                DJBagsInitSettingsCheckBox(self, DJBags_LOCALE_VERTICAL, DJBags_TYPE_CONTAINER, DJBags_SETTING_FORMATTER_VERT, 2)
+                            </OnShow>
+                        </Scripts>
+                    </CheckButton>
+                    <Slider name="$parentItemsSlider" inherits="DJBagsSettingsSliderTemplate">
+                        <Anchors>
+                            <Anchor point="TOPLEFT" relativeTo="$parentVertical" relativePoint="BOTTOMLEFT">
+                                <Offset>
+                                    <AbsDimension x="0" y="-32"/>
+                                </Offset>
+                            </Anchor>
+                        </Anchors>
+                        <Scripts>
+                            <OnShow>
+                                DJBagsInitSettingsSlider(self, DJBags_LOCALE_MAX_ITEMS, 5, 20, 1, DJBags_TYPE_CONTAINER, DJBags_SETTING_FORMATTER_MAX_ITEMS, true)
+                            </OnShow>
+                        </Scripts>
+                    </Slider>
+                </Frames>
+            </Frame>
+            <Frame name="$parentBox" parentKey="box">
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeTo="$parentDropDown" relativePoint="BOTTOMLEFT" y="-5"  />
+                    <Anchor point="BOTTOMRIGHT" relativeTo="$parent" x="-5" y="5" />
+                </Anchors>
+                <Frames>
+                    <Slider name="$parentItemsSlider" inherits="DJBagsSettingsSliderTemplate">
+                        <Anchors>
+                            <Anchor point="TOPLEFT" >
+                                <Offset>
+                                    <AbsDimension x="0" y="-20"/>
+                                </Offset>
+                            </Anchor>
+                        </Anchors>
+                        <Scripts>
+                            <OnShow>
+                                DJBagsInitSettingsSlider(self, DJBags_LOCALE_MAX_ITEMS, 5, 20, 1, DJBags_TYPE_CONTAINER, DJBags_SETTING_FORMATTER_BOX_COLS, true)
+                            </OnShow>
+                        </Scripts>
+                    </Slider>
+                    <Slider name="$parentHeightSlider" inherits="DJBagsSettingsSliderTemplate">
+                        <Anchors>
+                            <Anchor point="TOPLEFT" relativeTo="$parentItemsSlider" relativePoint="BOTTOMLEFT">
+                                <Offset>
+                                    <AbsDimension x="0" y="-32"/>
+                                </Offset>
+                            </Anchor>
+                        </Anchors>
+                        <Scripts>
+                            <OnShow>
+                                DJBagsInitSettingsSlider(self, DJBags_LOCALE_MAX_HEIGHT, 30, 100, 1, DJBags_TYPE_CONTAINER, DJBags_SETTING_FORMATTER_MAX_HEIGHT)
+                            </OnShow>
+                        </Scripts>
+                    </Slider>
+                </Frames>
+            </Frame>
+        </Frames>
+        <Scripts>
+            <OnShow>
+                DJBagsFormatSettings_OnLoad(self)
+            </OnShow>
+        </Scripts>
+    </Frame>
+</Ui>

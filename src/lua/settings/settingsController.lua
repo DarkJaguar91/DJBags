@@ -43,7 +43,7 @@ function settings:Init()
             [DJBags_SETTING_FORMATTER] = DJBags_FORMATTER_MASONRY,
             [DJBags_SETTING_FORMATTER_VERT] = false,
             [DJBags_SETTING_FORMATTER_MAX_ITEMS] = 12,
-            [DJBags_SETTING_FORMATTER_MAX_HEIGHT] = 0.5,
+            [DJBags_SETTING_FORMATTER_MAX_HEIGHT] = 50,
             [DJBags_SETTING_FORMATTER_BOX_COLS] = 4,
             [DJBags_SETTING_TRUNCATE_SUB_CLASS] = true,
         },
@@ -65,6 +65,8 @@ function settings:Init()
             [LE_ITEM_CLASS_RECIPE] = false,
             [LE_ITEM_CLASS_TRADEGOODS] = true,
             [LE_ITEM_CLASS_WEAPON] = false,
+            [DJBags_SETTING_BOE] = false,
+            [DJBags_SETTING_BOA] = false,
         },
         [DJBags_TYPE_MAIN_BAR] = {
             [DJBags_SETTING_BACKGROUND_COLOR] = {0, 0, 0, 0.6},
@@ -126,8 +128,24 @@ function settings:GetUserDefinedList()
     return DJBags_DB[self.realm][self.player].userDefined
 end
 
+function settings:AddUserDefinedItem(id, name)
+    DJBags_DB[self.realm][self.player].userDefined[id] = name
+    self:Update(2)
+end
+
 function settings:GetGlobalUserDefinedList()
     return DJBags_DB.userDefined
+end
+
+function settings:AddGlobalDefinedItem(id, name)
+    DJBags_DB.userDefined[id] = name
+    self:Update(2)
+end
+
+function settings:ClearUserDefinedItem(id)
+    DJBags_DB[self.realm][self.player].userDefined[id] = nil
+    DJBags_DB.userDefined[id] = nil
+    self:Update(2)
 end
 
 function settings:MigrateSettings(table, default)

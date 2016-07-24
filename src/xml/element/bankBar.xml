@@ -80,11 +80,23 @@
                     </OnLoad>
                 </Scripts>
             </Button>
+            <Button name="$parentDepositReagent" inherits="UIPanelButtonTemplate" text="REAGENTBANK_DEPOSIT">
+                <Size x="150" y="25" />
+                <Anchors>
+                    <Anchor point="TOPRIGHT" relativeTo="$parentBag7" relativePoint="BOTTOMRIGHT" y="-5" />
+                </Anchors>
+                <Scripts>
+                    <OnClick>
+                        PlaySound("igMainMenuOption");
+                        DepositReagentBank();
+                    </OnClick>
+                </Scripts>
+            </Button>
             <EditBox name="$parentSearchBar" inherits="BagSearchBoxTemplate">
                 <Size y="25" />
                 <Anchors>
                     <Anchor point="TOPLEFT" relativeTo="$parentBag1" relativePoint="BOTTOMLEFT" x="5" y="-5"/>
-                    <Anchor point="TOPRIGHT" relativeTo="$parentBag7" relativePoint="BOTTOMRIGHT" y="-5" />
+                    <Anchor point="RIGHT" relativeTo="$parentDepositReagent" relativePoint="LEFT" x="-5" />
                 </Anchors>
             </EditBox>
             <Button name="$parentTab1" inherits="TabButtonTemplate" text="BANK">

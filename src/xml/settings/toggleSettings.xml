@@ -1,7 +1,14 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.blizzard.com/wow/ui/..\FrameXML\UI.xsd">
-    <Frame name="DJBagsMainSettings" inherits="DJBagsContainerTemplate" hidden="false" virtual="true">
+    <Frame name="DJBagsMainSettings" hidden="false" virtual="true">
         <Size x="500" y="115"/>
+        <Backdrop bgFile="Interface\ChatFrame\ChatFrameBackground" edgeFile="Interface\Buttons\WHITE8x8">
+            <EdgeSize>
+                <AbsValue val="1" />
+            </EdgeSize>
+            <Color r="0" g="0" b="0" a="0.6" />
+            <BorderColor r="0.3" g="0.3" b="0.3" a="1" />
+        </Backdrop>
         <Layers>
             <Layer level="ARTWORK">
                 <FontString name="$parentName" inherits="GameFontNormal" text="DJBags_LOCALE_SUB_CLASS_SETTINGS">
@@ -57,11 +64,5 @@
                 </Scripts>
             </Slider>
         </Frames>
-        <Scripts>
-            <OnLoad>
-                self:SetBackdropColor(0, 0, 0, 0.6)
-                self:SetBackdropBorderColor(0.3, 0.3, 0.3, 1)
-            </OnLoad>
-        </Scripts>
     </Frame>
 </Ui>

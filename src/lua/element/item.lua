@@ -35,7 +35,7 @@ end
 function item:OnClick(button)
     if self:GetParent().id then
         if IsAltKeyDown() and button == 'LeftButton' then
---            ADDON.categoryDialog(self:GetParent().id)
+            DJBagsCategoryDialogLoad(self:GetParent().id, self:GetParent().name)
         end
     end
 end
@@ -58,15 +58,21 @@ function item:GetContainerName()
 
         local userDefinedList = ADDON.settings:GetUserDefinedList()
         if userDefinedList[self.id] then
-            return userDefinedList[self.id] .. '*'
+            return userDefinedList[self.id]
         end
 
         local globalDefinedList = ADDON.settings:GetGlobalUserDefinedList()
         if globalDefinedList[self.id] then
-            return globalDefinedList[self.id] .. '**'
+            return globalDefinedList[self.id]
         end
 
         local subClassSplitList = ADDON.settings:GetSettings(DJBags_TYPE_SUB_CLASS)
+        if subClassSplitList[DJBags_SETTING_BOE] and DJBagsTooltip:IsItemBOE(self.link) then
+            return DJBags_LOCALE_BOE
+        end
+        if subClassSplitList[DJBags_SETTING_BOA] and DJBagsTooltip:IsItemBOA(self.link) then
+            return DJBags_LOCALE_BOA
+        end
         if subClassSplitList[self.classId] then
             return self.class .. (self.subClass == BAG_FILTER_JUNK and '' or '_' .. self.subClass)
         end

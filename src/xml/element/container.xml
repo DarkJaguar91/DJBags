@@ -4,6 +4,8 @@
             <EdgeSize>
                 <AbsValue val="1" />
             </EdgeSize>
+            <Color r="0" g="0" b="0" a="0.6" />
+            <BorderColor r="0.3" g="0.3" b="0.3" a="1" />
         </Backdrop>
         <Frames>
             <Frame name="$parentContainer" parentKey="container" />

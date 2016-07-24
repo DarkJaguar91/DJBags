@@ -9,8 +9,8 @@ DJBags_TYPE_MAIN = 'djbags_main_settings'
 DJBags_TYPE_MAIN_BAR = 'djbags_main_bar'
 DJBags_TYPE_BANK_BAR = 'djbags_bank_bar'
 
-DJBags_FORMATTER_MASONRY = 'Massonry'
-DJBags_FORMATTER_BOX = 'Box'
+DJBags_FORMATTER_MASONRY = 1
+DJBags_FORMATTER_BOX = 2
 
 --endregion
 
@@ -32,6 +32,8 @@ DJBags_SETTING_TEXT_SIZE = 'djbags_truncate_text_size'
 DJBags_SETTING_STACK_ALL = 'djbags_stack_all_items'
 DJBags_SETTING_SELL_JUNK = 'djbags_auto_sell_junk'
 DJBags_SETTING_DEPOSIT_REAGENT = 'djbags_auto_deposit_reagents'
+DJBags_SETTING_BOE = 'djbags_class_boe'
+DJBags_SETTING_BOA = 'djbags_class_boa'
 
 --endregion
 
@@ -42,6 +44,9 @@ localeText['enUS'] = function()
     DJBags_LOCALE_ITEM_CONTAINER_SETTINGS = 'Item Container Settings:'
     DJBags_LOCALE_CONTAINER_SETTINGS = 'Category Container Settings:'
     DJBags_LOCALE_SUB_CLASS_SETTINGS = 'Sub Class Settings:'
+    DJBags_LOCALE_MAIN_BAR_SETTINGS = 'Main Bar Settings:'
+    DJBags_LOCALE_BANK_BAR_SETTINGS = 'Bank Bar Settings:'
+    DJBags_LOCALE_FORMAT_SETTINGS = 'Format Settings:'
     DJBags_LOCALE_SETTINGS = 'DJBags Settings:'
     DJBags_LOCALE_CLEAR_NEW_ITEMS = 'Clear new items'
     DJBags_LOCALE_BACKGROUND_COLOR = 'Background color'
@@ -54,8 +59,15 @@ localeText['enUS'] = function()
     DJBags_LOCALE_STACK_ALL = 'Stack all items'
     DJBags_LOCALE_SELL_JUNK = 'Auto sell junk'
     DJBags_LOCALE_DEPOSIT_REAGENT = 'Auto deposit reagents'
-    DJBags_LOCALE_MASONRY = 'Massonry'
+    DJBags_LOCALE_MASONRY = 'Masonry'
     DJBags_LOCALE_BOX = 'Box'
+    DJBags_LOCALE_CATEGORY_DIALOG_TITLE = 'Set category for: %s'
+    DJBags_LOCALE_GLOBAL = 'Global'
+    DJBags_LOCALE_BOE = 'BoE'
+    DJBags_LOCALE_BOA = 'BoA'
+    DJBags_LOCALE_VERTICAL = 'Vertical'
+    DJBags_LOCALE_MAX_ITEMS = 'Max items'
+    DJBags_LOCALE_MAX_HEIGHT = 'Max height'
 end
 
 if localeText[GetLocale()] then

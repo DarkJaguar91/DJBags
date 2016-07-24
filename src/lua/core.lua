@@ -16,6 +16,11 @@ ADDON.events:Add('ADDON_LOADED', core)
 
 --region Bag commands
 
+function DJBags_ItemsCleared()
+    ADDON.bagController:OnItemsCleared()
+    ADDON.bankController:OnItemsCleared()
+end
+
 ToggleAllBags = function()
     ADDON.bagController:Toggle()
 end
@@ -48,9 +53,9 @@ end
 
 --endregion
 
-SLASH_DJBAGS1 = '/djb';
+SLASH_DJBAGS1, SLASH_DJBAGS2, SLASH_DJBAGS3 = '/djb', '/dj', 'djbags';
 function SlashCmdList.DJBAGS(msg, editbox)
-    DJBagsBankBar:Show()
+    DJBagsSettingsContainer:Show()
 end
 
 SLASH_RL1 = '/rl';

@@ -31,9 +31,9 @@ ADDON.format[DJBags_FORMATTER_BOX] = function(frame, _, maxHeight, cols, _, over
             item:Hide()
         else
             item:ClearAllPoints()
-            item:Arrange(cols, nil, (item.name:GetText() == EMPTY and 1), override)
+            item:Arrange(cols, nil, (item.name:GetText() == EMPTY and 1), override, true)
             item:Show()
-            if (y + item:GetHeight() + frame.spacing) > (maxHeight * GetScreenHeight()) then
+            if (y + item:GetHeight() + frame.spacing) > (maxHeight / 100 * GetScreenHeight()) then
                 y = 0
                 x = x - item:GetWidth() - frame.spacing
             end

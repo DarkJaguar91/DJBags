@@ -42,7 +42,11 @@
     <Include file="src/xml/settings/containerSettings.xml" />
     <Include file="src/xml/settings/subClassSettings.xml" />
     <Include file="src/xml/settings/toggleSettings.xml" />
+    <Include file="src/xml/settings/mainBarSettings.xml" />
+    <Include file="src/xml/settings/bankBarSettings.xml" />
+    <Include file="src/xml/settings/formatterSettings.xml" />
     <Include file="src/xml/settings/settingsContainer.xml" />
+    <Include file="src/xml/settings/categoryDialog.xml" />
 
     <!-- Core (Load last) -->
     <Script file="src/lua/core.lua"/>

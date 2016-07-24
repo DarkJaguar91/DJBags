@@ -58,6 +58,12 @@ function controller:Close()
     DJBagsBagContainer:Hide()
 end
 
+function controller:OnItemsCleared()
+    if DJBagsBagContainer:IsVisible() then
+        self:Update()
+    end
+end
+
 function controller:BAG_UPDATE(bag)
     ADDON:UpdateBags({bag})
     DJBagsBagContainer:Arrange()

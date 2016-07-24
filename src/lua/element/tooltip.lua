@@ -17,3 +17,33 @@ function DJBagsTooltip:GetItemLevel(link)
         end
     end
 end
+
+function DJBagsTooltip:IsItemBOE(link)
+    self:SetOwner(UIParent, "ANCHOR_NONE")
+    self:SetHyperlink(link)
+
+    for i = 2, self:NumLines() do
+        local text = _G[self:GetName() .. "TextLeft"..i]:GetText()
+
+        if text and text:find(ITEM_BIND_ON_EQUIP) then
+            return true
+        end
+    end
+
+    return false
+end
+
+function DJBagsTooltip:IsItemBOA(link)
+    self:SetOwner(UIParent, "ANCHOR_NONE")
+    self:SetHyperlink(link)
+
+    for i = 2, self:NumLines() do
+        local text = _G[self:GetName() .. "TextLeft"..i]:GetText()
+
+        if text and text:find(ITEM_BIND_TO_BNETACCOUNT) then
+            return true
+        end
+    end
+
+    return false
+end

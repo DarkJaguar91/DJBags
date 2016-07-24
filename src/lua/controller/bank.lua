@@ -19,6 +19,7 @@ function DJBagsBankBar_OnShow(self)
     self:Update()
     controller:Register()
     controller:Update()
+    controller:DepositReagents()
 end
 
 function DJBagsBankBar_OnHide(self)
@@ -37,10 +38,23 @@ function DJBagsBankTab_OnClick(tab)
     end
 end
 
+function controller:DepositReagents()
+    if ADDON.settings:GetSettings(DJBags_TYPE_MAIN)[DJBags_SETTING_DEPOSIT_REAGENT] then
+        PlaySound("igMainMenuOption");
+        DepositReagentBank();
+    end
+end
+
 function controller:Update()
     ADDON:UpdateBags({-1, 5, 6, 7, 8, 9, 10, 11, -3})
     DJBagsBankContainer:Arrange()
     self:ArrangeReagents()
+end
+
+function controller:OnItemsCleared()
+    if DJBagsBankBar:IsVisible() then
+        self:Update()
+    end
 end
 
 function controller:ArrangeReagents()

@@ -91,9 +91,9 @@ function container:GetCount()
     return ADDON:Count(self.items)
 end
 
-function container:Arrange(max, vert, maxCnt, override)
+function container:Arrange(max, vert, maxCnt, override, forceSize)
     if override then
         self.arrange = nil
     end
-    ADDON:ArrangeItemContainer(self, max, vert, maxCnt)
+    ADDON:ArrangeItemContainer(self, max, vert, maxCnt, forceSize)
 end
