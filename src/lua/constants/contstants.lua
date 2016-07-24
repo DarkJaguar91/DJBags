@@ -41,6 +41,7 @@ DJBags_SETTING_BOA = 'djbags_class_boa'
 
 local localeText= {}
 localeText['enUS'] = function()
+    DJBags_LOCALE_MAIN_SETTINGS = 'Main Settings:'
     DJBags_LOCALE_ITEM_CONTAINER_SETTINGS = 'Item Container Settings:'
     DJBags_LOCALE_CONTAINER_SETTINGS = 'Category Container Settings:'
     DJBags_LOCALE_SUB_CLASS_SETTINGS = 'Sub Class Settings:'

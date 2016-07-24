@@ -11,7 +11,7 @@
         </Backdrop>
         <Layers>
             <Layer level="ARTWORK">
-                <FontString name="$parentName" inherits="GameFontNormal" text="DJBags_LOCALE_SUB_CLASS_SETTINGS">
+                <FontString name="$parentName" inherits="GameFontNormal" text="DJBags_LOCALE_MAIN_SETTINGS">
                     <Anchors>
                         <Anchor point="TOPLEFT" x="15" y="-5"/>
                     </Anchors>

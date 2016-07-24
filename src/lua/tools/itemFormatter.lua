@@ -70,7 +70,6 @@ function ADDON:ArrangeItemContainer(frame, max, vert, maxCnt, force)
 
     local colSize = math.ceil(itemCount / max) * (next(frame.items):GetWidth() + frame.spacing) - frame.spacing
     local numCols = force and max or (maxCnt and maxCnt or (itemCount < max and itemCount or max))
-    print(numCols, force)
     local rowSize = numCols * (frame.spacing + next(frame.items):GetWidth()) - frame.spacing
 
     frame:SetSize(
