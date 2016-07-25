@@ -10,9 +10,12 @@ function controller:Init()
     ADDON.events:Add('BANKFRAME_OPENED', self)
     ADDON.events:Add('BANKFRAME_CLOSED', self)
     BankFrame:UnregisterAllEvents()
+    BankFrame:SetScript('OnShow', nil)
 end
 
 function DJBagsBankBar_OnShow(self)
+    BankFrame:Show()
+    BankFrame.selectedTab = 1
     PanelTemplates_SetTab(self, 1)
     DJBagsBankContainer:Show()
     DJBagsReagentContainer:Hide()
@@ -23,7 +26,10 @@ function DJBagsBankBar_OnShow(self)
 end
 
 function DJBagsBankBar_OnHide(self)
+    BankFrame:Hide()
     controller:UnRegister()
+    CloseBankFrame()
+    StaticPopup_Hide("CONFIRM_BUY_BANK_SLOT");
 end
 
 function DJBagsBankTab_OnClick(tab)
@@ -32,9 +38,11 @@ function DJBagsBankTab_OnClick(tab)
     if tab.tab == 1 then
         DJBagsBankContainer:Show()
         DJBagsReagentContainer:Hide()
+        BankFrame.selectedTab = 1
     else
         DJBagsBankContainer:Hide()
         DJBagsReagentContainer:Show()
+        BankFrame.selectedTab = 2
     end
 end
 

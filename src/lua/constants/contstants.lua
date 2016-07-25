@@ -70,6 +70,36 @@ localeText['enUS'] = function()
     DJBags_LOCALE_MAX_ITEMS = 'Max items'
     DJBags_LOCALE_MAX_HEIGHT = 'Max height'
 end
+localeText['zhTW'] = function()
+    DJBags_LOCALE_MAIN_SETTINGS = '主設定:'
+    DJBags_LOCALE_ITEM_CONTAINER_SETTINGS = '分類外觀設定:'
+    DJBags_LOCALE_CONTAINER_SETTINGS = '背包外觀設定:'
+    DJBags_LOCALE_SUB_CLASS_SETTINGS = '子分類設定:'
+    DJBags_LOCALE_MAIN_BAR_SETTINGS = '主要功能列設定:'
+    DJBags_LOCALE_BANK_BAR_SETTINGS = '銀行功能列設定:'
+    DJBags_LOCALE_FORMAT_SETTINGS = '排列方式設定:'
+    DJBags_LOCALE_SETTINGS = 'DJBags 背包設定:'
+    DJBags_LOCALE_CLEAR_NEW_ITEMS = '清理新物品'
+    DJBags_LOCALE_BACKGROUND_COLOR = '背景顏色'
+    DJBags_LOCALE_BORDER_COLOR = '邊框顏色'
+    DJBags_LOCALE_TEXT_COLOR = '文字顏色'
+    DJBags_LOCALE_PADDING = '內距'
+    DJBags_LOCALE_SPACING = '間距'
+    DJBags_LOCALE_SCALE = '縮放大小'
+    DJBags_LOCALE_TEXT_SIZE = '文字大小'
+    DJBags_LOCALE_STACK_ALL = '堆疊所有物品'
+    DJBags_LOCALE_SELL_JUNK = '自動賣垃圾'
+    DJBags_LOCALE_DEPOSIT_REAGENT = '自動存放材料'
+    DJBags_LOCALE_MASONRY = '磚牆'
+    DJBags_LOCALE_BOX = '方盒'
+    DJBags_LOCALE_CATEGORY_DIALOG_TITLE = '設定分類: %s'
+    DJBags_LOCALE_GLOBAL = '全部'
+    DJBags_LOCALE_BOE = '裝備綁定'
+    DJBags_LOCALE_BOA = '帳號綁定'
+    DJBags_LOCALE_VERTICAL = '垂直'
+    DJBags_LOCALE_MAX_ITEMS = '分類寬度最多物品數目'
+    DJBags_LOCALE_MAX_HEIGHT = '最大高度'
+end
 
 if localeText[GetLocale()] then
     localeText[GetLocale()]()

@@ -58,12 +58,12 @@ function ADDON:UpdateBags(bags)
         for slot = 1, bagSlots do
             local item = ADDON.cache:GetItem(bag, slot)
             item:Update()
+            local newParent = ADDON.cache:GetItemContainer(bag, item:GetContainerName())
 
             local currentParent = item:GetParent() and item:GetParent():GetParent()
             if currentParent and currentParent.RemoveItem then
                 currentParent:RemoveItem(item)
             end
-            local newParent = ADDON.cache:GetItemContainer(bag, item:GetContainerName())
 
             newParent:AddItem(item)
         end

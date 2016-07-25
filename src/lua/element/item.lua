@@ -33,10 +33,8 @@ function item:Init(bag, slot)
 end
 
 function item:OnClick(button)
-    if self:GetParent().id then
-        if IsAltKeyDown() and button == 'LeftButton' then
+    if self:GetParent().id and IsAltKeyDown() and button == 'LeftButton' then
             DJBagsCategoryDialogLoad(self:GetParent().id, self:GetParent().name)
-        end
     end
 end
 
