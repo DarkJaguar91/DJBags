@@ -74,7 +74,7 @@
                     <Anchor point="RIGHT" relativeTo="$parentClearButton" relativePoint="LEFT" x="-3" />
                 </Anchors>
             </EditBox>
-            <Frame name="$parentMoney" inherits="SmallMoneyFrameTemplate" hidden="false">
+            <Frame name="$parentMoney" parentKey="moneyFrame" inherits="SmallMoneyFrameTemplate" hidden="false">
                 <Anchors>
                     <Anchor point="RIGHT" relativeTo="$parentSearchBox" relativePoint="LEFT"/>
                 </Anchors>
@@ -84,6 +84,33 @@
                         MoneyFrame_SetType(self, "PLAYER");
                         MoneyFrame_SetMaxDisplayWidth(self, 168);
                     </OnLoad>
+                </Scripts>
+            </Frame>
+            <Frame name="$parentCurrencyDisplay" frameStrata="DIALOG" toplevel="true" frameLevel="10">
+                <Anchors>
+                    <Anchor point="TOPLEFT" />
+                    <Anchor point="BOTTOMRIGHT" relativeTo="$parentSearchBox" relativePoint="BOTTOMLEFT" />
+                </Anchors>
+                <Scripts>
+                    <OnEnter>
+                        local cnt = GetCurrencyListSize()
+                        GameTooltip:SetOwner(self, "ANCHOR_NONE")
+                        GameTooltip:SetPoint("BOTTOMLEFT", self, "TOPLEFT")
+                        GameTooltip:SetText("Currency")
+                        for index = 1, cnt do
+                            local name, _, _, _, _, count, texture, _, _, _, _ = GetCurrencyListInfo(index)
+                            if count ~= 0 and texture ~= nil then
+                                GameTooltip:AddDoubleLine(name, count .. " |T" .. texture .. ":16|t", 1, 1, 1, 1, 1, 1)
+                            end
+                        end
+                        GameTooltip:Show()
+                    </OnEnter>
+                    <OnLeave>
+                        GameTooltip:Hide()
+                    </OnLeave>
+                    <OnMouseDown>
+                        MoneyInputFrame_OpenPopup(self:GetParent().moneyFrame);
+                    </OnMouseDown>
                 </Scripts>
             </Frame>
         </Frames>
