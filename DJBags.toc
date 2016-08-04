@@ -1,8 +1,8 @@
 ## Interface: 70000
 ## Title: DJBags
 ## Author: DarkJaguar91
-## Notes: BagAddon - BETA
-## Version: 0.6.0
+## Notes: BagAddon
+## Version: 0.6.4
 ## SavedVariables: DJBags_DB
 
 src/manifest.xml
