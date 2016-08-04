@@ -65,12 +65,15 @@ function item:GetContainerName()
         end
 
         local subClassSplitList = ADDON.settings:GetSettings(DJBags_TYPE_SUB_CLASS)
-        if subClassSplitList[DJBags_SETTING_BOE] and DJBagsTooltip:IsItemBOE(self.link) then
-            return DJBags_LOCALE_BOE
+        if self.classId ~= LE_ITEM_CLASS_BATTLEPET then
+            if subClassSplitList[DJBags_SETTING_BOE] and DJBagsTooltip:IsItemBOE(self.link) then
+                return DJBags_LOCALE_BOE
+            end
+            if subClassSplitList[DJBags_SETTING_BOA] and DJBagsTooltip:IsItemBOA(self.link) then
+                return DJBags_LOCALE_BOA
+            end
         end
-        if subClassSplitList[DJBags_SETTING_BOA] and DJBagsTooltip:IsItemBOA(self.link) then
-            return DJBags_LOCALE_BOA
-        end
+
         if subClassSplitList[self.classId] then
             return self.class .. (self.subClass == BAG_FILTER_JUNK and '' or '_' .. self.subClass)
         end

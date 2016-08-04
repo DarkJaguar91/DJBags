@@ -80,10 +80,34 @@
                     </OnLoad>
                 </Scripts>
             </Button>
+            <Button name="$parentRestackButton">
+                <Size x="16" y="16" />
+                <Anchors>
+                    <Anchor point="TOPRIGHT" relativeTo="$parentBag7" relativePoint="BOTTOMRIGHT" y="-9.5" />
+                </Anchors>
+                <NormalTexture file="Interface\Buttons\UI-GuildButton-PublicNote-Disabled" />
+                <PushedTexture file="Interface\Buttons\UI-GuildButton-OfficerNote-Up" />
+                <HighlightTexture file="Interface\Buttons\UI-GuildButton-PublicNote-Up" alphaMode="ADD" />
+                <Scripts>
+                    <OnEnter>
+                        GameTooltip:SetOwner(self, 'TOPRIGHT')
+                        GameTooltip:SetText(BAG_CLEANUP_BANK)
+                        GameTooltip:Show()
+                    </OnEnter>
+                    <OnLeave>
+                        GameTooltip:Hide()
+                    </OnLeave>
+                    <OnClick>
+                        PlaySound("UI_BagSorting_01");
+                        SortBankBags()
+                        SortReagentBankBags()
+                    </OnClick>
+                </Scripts>
+            </Button>
             <Button name="$parentDepositReagent" inherits="UIPanelButtonTemplate" text="REAGENTBANK_DEPOSIT">
                 <Size x="150" y="25" />
                 <Anchors>
-                    <Anchor point="TOPRIGHT" relativeTo="$parentBag7" relativePoint="BOTTOMRIGHT" y="-5" />
+                    <Anchor point="RIGHT" relativeTo="$parentRestackButton" relativePoint="LEFT" x="-3" />
                 </Anchors>
                 <Scripts>
                     <OnClick>
@@ -150,6 +174,23 @@
                         PlaySound("igMainMenuOption");
                         StaticPopup_Show("CONFIRM_BUY_REAGENTBANK_TAB");
                     </OnClick>
+                </Scripts>
+            </Button>
+            <Button name="$parentClose" parentKey="close" inherits="UIPanelCloseButton">
+                <Anchors>
+                    <Anchor point="CENTER" relativePoint="TOPRIGHT" x="-2" y="-2"/>
+                </Anchors>
+                <NormalTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Disabled" />
+                <Scripts>
+                    <OnLoad>
+                        self:SetAlpha(0.2)
+                    </OnLoad>
+                    <OnEnter>
+                        self:SetAlpha(1)
+                    </OnEnter>
+                    <OnLeave>
+                        self:SetAlpha(0.2)
+                    </OnLeave>
                 </Scripts>
             </Button>
         </Frames>

@@ -53,7 +53,7 @@ end
 
 --endregion
 
-SLASH_DJBAGS1, SLASH_DJBAGS2, SLASH_DJBAGS3 = '/djb', '/dj', 'djbags';
+SLASH_DJBAGS1, SLASH_DJBAGS2, SLASH_DJBAGS3, SLASH_DJBAGS4 = '/djb', '/dj', '/djbags', '/db';
 function SlashCmdList.DJBAGS(msg, editbox)
     DJBagsSettingsContainer:Show()
 end

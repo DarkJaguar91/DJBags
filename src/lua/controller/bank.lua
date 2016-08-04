@@ -115,6 +115,7 @@ end
 function controller:BAG_UPDATE(bag)
     if bag > NUM_BAG_SLOTS then
         ADDON:UpdateBags({bag})
+        DJBagsBankContainer:Arrange()
     end
 end
 
@@ -155,9 +156,13 @@ function controller:BAG_UPDATE_COOLDOWN()
 end
 
 function controller:ITEM_LOCK_CHANGED(bag, slot)
-    if bag ~= BANK_CONTAINER and bag ~= REAGENTBANK_CONTAINER and bag <= NUM_BAG_SLOTS then return end
+    if (bag ~= BANK_CONTAINER and bag ~= REAGENTBANK_CONTAINER and bag <= NUM_BAG_SLOTS) or not slot then return end
 
-    ADDON.cache:GetItem(bag, slot):UpdateLock()
+    if bag == BANK_CONTAINER and slot > NUM_BANKGENERIC_SLOTS then
+        _G[DJBagsBankBar:GetName() .. 'Bag' .. slot-NUM_BANKGENERIC_SLOTS]:UpdateLock()
+    else
+        ADDON.cache:GetItem(bag, slot):UpdateLock()
+    end
 end
 
 function controller:PLAYERREAGENTBANKSLOTS_CHANGED()

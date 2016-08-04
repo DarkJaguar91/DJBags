@@ -83,7 +83,7 @@ function controller:MERCHANT_SHOW()
         end
         ResetCursor()
         if price ~= 0 then
-            DEFAULT_CHAT_FRAME:AddMessage("Sold junk for: " .. GetCoinTextureString(price))
+            DEFAULT_CHAT_FRAME:AddMessage(string.format(DJBags_LOCALE_SOLD_JUNK, GetCoinTextureString(price)))
         end
     end
 end

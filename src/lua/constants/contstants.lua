@@ -69,6 +69,7 @@ localeText['enUS'] = function()
     DJBags_LOCALE_VERTICAL = 'Vertical'
     DJBags_LOCALE_MAX_ITEMS = 'Max items'
     DJBags_LOCALE_MAX_HEIGHT = 'Max height'
+    DJBags_LOCALE_SOLD_JUNK = 'Sold junk for: %s'
 end
 localeText['zhTW'] = function()
     DJBags_LOCALE_MAIN_SETTINGS = '主設定:'
@@ -99,6 +100,7 @@ localeText['zhTW'] = function()
     DJBags_LOCALE_VERTICAL = '垂直'
     DJBags_LOCALE_MAX_ITEMS = '分類寬度最多物品數目'
     DJBags_LOCALE_MAX_HEIGHT = '最大高度'
+    DJBags_LOCALE_SOLD_JUNK = '賣出垃圾獲得: %s'
 end
 
 if localeText[GetLocale()] then

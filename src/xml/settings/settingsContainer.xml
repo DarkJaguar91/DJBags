@@ -105,6 +105,23 @@
                     </OnValueChanged>
                 </Scripts>
             </Slider>
+            <Button name="$parentClose" parentKey="close" inherits="UIPanelCloseButton">
+                <Anchors>
+                    <Anchor point="CENTER" relativePoint="TOPRIGHT" x="-2" y="-2"/>
+                </Anchors>
+                <NormalTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Disabled" />
+                <Scripts>
+                    <OnLoad>
+                        self:SetAlpha(0.2)
+                    </OnLoad>
+                    <OnEnter>
+                        self:SetAlpha(1)
+                    </OnEnter>
+                    <OnLeave>
+                        self:SetAlpha(0.2)
+                    </OnLeave>
+                </Scripts>
+            </Button>
         </Frames>
         <Scripts>
             <OnLoad>
