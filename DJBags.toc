@@ -2,7 +2,7 @@
 ## Title: DJBags
 ## Author: DarkJaguar91
 ## Notes: BagAddon
-## Version: 0.6.4
+## Version: 0.6.5
 ## SavedVariables: DJBags_DB
 
 src/manifest.xml

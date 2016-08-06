@@ -25,6 +25,7 @@ function settings:Init()
     DJBags_DB[self.realm] = DJBags_DB[self.realm] or {}
     DJBags_DB[self.realm][self.player] = DJBags_DB[self.realm][self.player] or {}
     DJBags_DB[self.realm][self.player].userDefined = DJBags_DB[self.realm][self.player].userDefined or {}
+    DJBags_DB[self.realm][self.player].hiddenContainers = DJBags_DB[self.realm][self.player].hiddenContainers or {}
 
     DJBags_DB.userDefined = DJBags_DB.userDefined or {}
 
@@ -34,6 +35,7 @@ function settings:Init()
             [DJBags_SETTING_SELL_JUNK] = false,
             [DJBags_SETTING_DEPOSIT_REAGENT] = false,
             [DJBags_SETTING_SCALE] = 1,
+            [DJBags_SETTING_CLEAR_NEW_ITEMS] = false,
         },
         [DJBags_TYPE_CONTAINER] = {
             [DJBags_SETTING_BACKGROUND_COLOR] = {0, 0, 0, 0.6},
@@ -108,6 +110,18 @@ function settings:UpdateBag(bag, controller, list, force)
     elseif bag:IsVisible() and force == 2 then
         controller:Update()
     end
+end
+
+function settings:IsContainerHidden(container)
+    return DJBags_DB[self.realm][self.player].hiddenContainers[container]
+end
+
+function settings:SetContainerHidden(container)
+    DJBags_DB[self.realm][self.player].hiddenContainers[container] = true
+end
+
+function settings:SetContainerVisible(container)
+    DJBags_DB[self.realm][self.player].hiddenContainers[container] = nil
 end
 
 function settings:GetSettings(type)

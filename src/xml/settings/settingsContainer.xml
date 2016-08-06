@@ -85,7 +85,7 @@
                     </OnMouseWheel>
                 </Scripts>
             </ScrollFrame>
-            <Slider name="$parentScrollBar" inherits="UIPanelScrollBarTemplate" minValue="0" maxValue="450" defaultValuie="1" valueStep="1">
+            <Slider name="$parentScrollBar" inherits="UIPanelScrollBarTemplate" minValue="0" maxValue="480" defaultValuie="1" valueStep="1">
                 <Backdrop bgFile="Interface\Buttons\UI-SliderBar-Background"
                           edgeFile="Interface\Buttons\UI-SliderBar-Border" tile="true">
                     <EdgeSize val="8"/>

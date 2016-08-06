@@ -27,7 +27,7 @@ ADDON.format[DJBags_FORMATTER_BOX] = function(frame, _, maxHeight, cols, _, over
     local height = 0
 
     for item in ADDON:PairsByKey(frame.items, sorter) do
-        if item:IsEmpty() then
+        if item:IsEmpty() or ADDON.settings:IsContainerHidden(item.name.text) then
             item:Hide()
         else
             item:ClearAllPoints()

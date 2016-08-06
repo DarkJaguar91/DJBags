@@ -26,6 +26,10 @@ function DJBagsBagContainer_OnHide()
     ADDON.events:Remove('ITEM_LOCK_CHANGED', controller)
     ADDON.events:Remove('BAG_UPDATE_DELAYED', controller)
     ADDON.events:Remove('DJBAGS_BAG_HOVER', controller)
+
+    if ADDON.settings:GetSettings(DJBags_TYPE_MAIN)[DJBags_SETTING_CLEAR_NEW_ITEMS] then
+        C_NewItems:ClearAll()
+    end
 end
 
 function DJDBagsBagsButton_OnClick(self)

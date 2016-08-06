@@ -35,7 +35,7 @@ ADDON.format[DJBags_FORMATTER_MASONRY] = function(frame, maxItems, _, _, vert, o
         end
         return ans
     end) do
-        if v:IsEmpty() then
+        if v:IsEmpty() or ADDON.settings:IsContainerHidden(v.name.text) then
             v:Hide()
         else
             v:Show()

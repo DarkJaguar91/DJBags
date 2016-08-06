@@ -22,6 +22,7 @@ DJBags_SETTING_TEXT_COLOR = 'djbags_text_color'
 DJBags_SETTING_PADDING = 'djbags_padding'
 DJBags_SETTING_SPACING = 'djbags_spacing'
 DJBags_SETTING_SCALE = 'djbags_scale'
+DJBags_SETTING_CLEAR_NEW_ITEMS = 'djbags_clear_new_items'
 DJBags_SETTING_FORMATTER = 'djbags_formatter'
 DJBags_SETTING_FORMATTER_VERT = 'djbags_formatter_vert'
 DJBags_SETTING_FORMATTER_MAX_ITEMS = 'djbags_formatter_max_items'
@@ -70,6 +71,7 @@ localeText['enUS'] = function()
     DJBags_LOCALE_MAX_ITEMS = 'Max items'
     DJBags_LOCALE_MAX_HEIGHT = 'Max height'
     DJBags_LOCALE_SOLD_JUNK = 'Sold junk for: %s'
+    DJBags_LOCALE_CLEAR_NEW_ITEMS = 'Clear new items on close'
 end
 
 localeText['deDE'] = function()
@@ -102,6 +104,7 @@ localeText['deDE'] = function()
     DJBags_LOCALE_MAX_ITEMS = 'Max. Gegenstände'
     DJBags_LOCALE_MAX_HEIGHT = 'Max. Höhe'
     DJBags_LOCALE_SOLD_JUNK = 'Schrott verkauft für: %s'
+    DJBags_LOCALE_CLEAR_NEW_ITEMS = 'Clear new items on close'
 end
 
 localeText['zhTW'] = function()
@@ -134,6 +137,7 @@ localeText['zhTW'] = function()
     DJBags_LOCALE_MAX_ITEMS = '分類寬度最多物品數目'
     DJBags_LOCALE_MAX_HEIGHT = '最大高度'
     DJBags_LOCALE_SOLD_JUNK = '賣出垃圾獲得: %s'
+    DJBags_LOCALE_CLEAR_NEW_ITEMS = 'Clear new items on close'
 end
 
 if localeText[GetLocale()] then

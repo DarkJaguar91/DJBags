@@ -1,7 +1,7 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.blizzard.com/wow/ui/..\FrameXML\UI.xsd">
     <Frame name="DJBagsMainSettings" hidden="false" virtual="true">
-        <Size x="500" y="115"/>
+        <Size x="500" y="145"/>
         <Backdrop bgFile="Interface\ChatFrame\ChatFrameBackground" edgeFile="Interface\Buttons\WHITE8x8">
             <EdgeSize>
                 <AbsValue val="1" />
@@ -49,9 +49,19 @@
                     </OnShow>
                 </Scripts>
             </CheckButton>
+            <CheckButton name="$parentClearNewItems" inherits="DJBagsSettingsCheckBoxTemplate">
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeTo="$parentAutoSellJunk" relativePoint="BOTTOMLEFT" />
+                </Anchors>
+                <Scripts>
+                    <OnShow>
+                        DJBagsInitSettingsCheckBox(self, DJBags_LOCALE_CLEAR_NEW_ITEMS, DJBags_TYPE_MAIN, DJBags_SETTING_CLEAR_NEW_ITEMS)
+                    </OnShow>
+                </Scripts>
+            </CheckButton>
             <Slider name="$parentScaleSlider" inherits="DJBagsSettingsSliderTemplate">
                 <Anchors>
-                    <Anchor point="TOPLEFT" relativeTo="$parentAutoSellJunk" relativePoint="BOTTOMLEFT">
+                    <Anchor point="TOPLEFT" relativeTo="$parentClearNewItems" relativePoint="BOTTOMLEFT">
                         <Offset>
                             <AbsDimension x="0" y="-32"/>
                         </Offset>
