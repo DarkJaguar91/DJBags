@@ -1,0 +1,4 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/">
+	<GameTooltip name="DJBagsTooltip" inherits="GameTooltipTemplate"/>
+    <Script file="src/tooltip/Tooltip.lua"/>
+</Ui>

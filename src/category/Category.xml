@@ -1,0 +1,4 @@
+<Ui xsi:schemaLocation="http://www.blizzard.com/wow/ui/  http://wowprogramming.com/FrameXML/UI.xsd">
+    <Script file="src/category/CategoryManager.lua"/>
+    <Script file="src/category/ArtifactPower.lua"/>
+</Ui>

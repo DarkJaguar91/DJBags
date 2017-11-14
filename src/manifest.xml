@@ -1,53 +1,15 @@
 <Ui xsi:schemaLocation="http://www.blizzard.com/wow/ui/  http://wowprogramming.com/FrameXML/UI.xsd">
-    <!-- Constants -->
-    <Script file="src/lua/constants/contstants.lua" />
-
-    <!-- Utils -->
-    <Script file="src/lua/cache/cache.lua" />
-    <Script file="src/lua/utils/utils.lua" />
-
-    <!-- Events -->
-    <Script file="src/lua/events/events.lua" />
-
-    <!-- Elements-->
-    <Include file="src/xml/element/tooltip.xml" />
-    <Script file="src/lua/element/tooltip.lua" />
-    <Script file="src/lua/element/bagItem.lua" />
-    <Script file="src/lua/element/item.lua" />
-    <Include file="src/xml/element/itemContainer.xml" />
-    <Script file="src/lua/element/itemContainer.lua" />
-    <Script file="src/lua/element/mainBar.lua" />
-    <Include file="src/xml/element/mainBar.xml" />
-    <Script file="src/lua/element/container.lua" />
-    <Include file="src/xml/element/container.xml" />
-    <Script file="src/lua/element/bankBar.lua" />
-    <Include file="src/xml/element/bankBar.xml" />
-
-    <!-- Formatters -->
-    <Script file="src/lua/tools/itemFormatter.lua" />
-    <Script file="src/lua/tools/masonryFormatter.lua" />
-    <Script file="src/lua/tools/boxFormatter.lua" />
-
-    <!-- Controller -->
-    <Script file="src/lua/controller/bag.lua" />
-    <Script file="src/lua/controller/bank.lua" />
-
-    <!-- Settings -->
-    <Script file="src/lua/settings/settingsController.lua" />
-    <Script file="src/lua/settings/settingsElements.lua" />
-    <Include file="src/xml/settings/colorPicker.xml" />
-    <Include file="src/xml/settings/slider.xml" />
-    <Include file="src/xml/settings/checkBox.xml" />
-    <Include file="src/xml/settings/itemContainerSettings.xml" />
-    <Include file="src/xml/settings/containerSettings.xml" />
-    <Include file="src/xml/settings/subClassSettings.xml" />
-    <Include file="src/xml/settings/toggleSettings.xml" />
-    <Include file="src/xml/settings/mainBarSettings.xml" />
-    <Include file="src/xml/settings/bankBarSettings.xml" />
-    <Include file="src/xml/settings/formatterSettings.xml" />
-    <Include file="src/xml/settings/settingsContainer.xml" />
-    <Include file="src/xml/settings/categoryDialog.xml" />
-
-    <!-- Core (Load last) -->
-    <Script file="src/lua/core.lua"/>
+    <Script file="src/Constants.lua"/>
+    <Include file="src/contants/Contants.xml"/>
+    <Include file="src/event/Event.xml"/>
+    <Include file="src/tooltip/Tooltip.xml"/>
+    <Include file="src/category/Category.xml"/>
+    <Include file="src/format/Format.xml"/>
+    <Include file="src/item/Item.xml"/>
+    <Include file="src/bagItem/BagItem.xml"/>
+    <Include file="src/titleContainer/TitleContainer.xml"/>
+    <Include file="src/base/Base.xml"/>
+    <Include file="src/bag/Bag.xml"/>
+    <Include file="src/bank/Bank.xml"/>
+    <Script file="src/DJBags.lua"/>
 </Ui>

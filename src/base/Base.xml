@@ -1,0 +1,3 @@
+<Ui xsi:schemaLocation="http://www.blizzard.com/wow/ui/  http://wowprogramming.com/FrameXML/UI.xsd">
+    <Script file="src/base/BaseBag.lua"/>
+</Ui>

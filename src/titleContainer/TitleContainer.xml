@@ -1,0 +1,55 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/">
+    <Frame name="DJBagsTitleContainerTemplate" virtual="true">
+        <Backdrop bgFile="Interface\ChatFrame\ChatFrameBackground" edgeFile="Interface\Buttons\WHITE8x8">
+            <EdgeSize>
+                <AbsValue val="1"/>
+            </EdgeSize>
+            <Color r="0" g="0" b="0" a="0.6"/>
+            <BorderColor r="0.3" g="0.3" b="0.3" a="1"/>
+        </Backdrop>
+        <Layers>
+            <Layer level="OVERLAY">
+                <FontString name="$parentName" parentKey="name" inherits="GameFontHighlight">
+                    <Anchors>
+                        <Anchor point="TOPLEFT">
+                            <Offset>
+                                <AbsDimension x="0" y="-5"/>
+                            </Offset>
+                        </Anchor>
+                        <Anchor point="TOPRIGHT">
+                            <Offset>
+                                <AbsDimension x="0" y="-5"/>
+                            </Offset>
+                        </Anchor>
+                    </Anchors>
+                </FontString>
+            </Layer>
+        </Layers>
+        <Frames>
+            <Frame name="$parentTextHover">
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeTo="$parentName" relativePoint="TOPLEFT"/>
+                    <Anchor point="BOTTOMRIGHT" relativeTo="$parentName" relativePoint="BOTTOMRIGHT"/>
+                </Anchors>
+                <Scripts>
+                    <OnEnter>
+                            if self:GetParent().name:IsTruncated() or self:GetParent().name:GetText() ~= self:GetParent().name.text then
+                                GameTooltip:SetOwner(self, 'ANCHOR_CURSOR')
+                                GameTooltip:SetText(self:GetParent().name.text)
+                                GameTooltip:Show()
+                            end
+                    </OnEnter>
+                    <OnLeave>
+                            GameTooltip:Hide()
+                    </OnLeave>
+                </Scripts>
+            </Frame>
+        </Frames>
+        <Scripts>
+            <OnLoad>
+                self.name:SetMaxLines(1)
+                self.name:SetWordWrap(false)
+            </OnLoad>
+        </Scripts>
+    </Frame>
+</Ui>

@@ -1,0 +1,249 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/..\FrameXML\UI.xsd">
+    <Script file="src/bank/BankFrame.lua"/>
+    <Script file="src/bank/Bank.lua"/>
+    <Script file="src/bank/Reagent.lua"/>
+
+    <Frame name="DJBagsBankBar" parent="UIParent" movable="true" enableMouse="true" hidden="true">
+        <Size x="299" y="77" />
+        <Anchors>
+            <Anchor point="TOPLEFT" x="150" y="-100" />
+        </Anchors>
+        <Backdrop bgFile="Interface\ChatFrame\ChatFrameBackground" edgeFile="Interface\Buttons\WHITE8x8">
+            <EdgeSize>
+                <AbsValue val="1"/>
+            </EdgeSize>
+            <Color r="0" g="0" b="0" a="0.6"/>
+            <BorderColor r="0.3" g="0.3" b="0.3" a="1"/>
+        </Backdrop>
+        <Frames>
+            <Button name="$parentBag1" parentKey="bag1" inherits="ItemButtonTemplate">
+                <Anchors>
+                    <Anchor point="TOPLEFT" x="5" y="-5" />
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+                        DJBagsBagItemLoad(self, NUM_BAG_SLOTS + 1, BankButtonIDToInvSlotID(1, 1))
+                    </OnLoad>
+                </Scripts>
+            </Button>
+            <Button name="$parentBag2" parentKey="bag2" inherits="ItemButtonTemplate">
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeTo="$parentBag1" relativePoint="TOPRIGHT" x="5" />
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+                        DJBagsBagItemLoad(self, NUM_BAG_SLOTS + 2, BankButtonIDToInvSlotID(2, 1))
+                    </OnLoad>
+                </Scripts>
+            </Button>
+            <Button name="$parentBag3" parentKey="bag3" inherits="ItemButtonTemplate">
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeTo="$parentBag2" relativePoint="TOPRIGHT" x="5" />
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+                        DJBagsBagItemLoad(self, NUM_BAG_SLOTS + 3, BankButtonIDToInvSlotID(3, 1))
+                    </OnLoad>
+                </Scripts>
+            </Button>
+            <Button name="$parentBag4" parentKey="bag4" inherits="ItemButtonTemplate">
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeTo="$parentBag3" relativePoint="TOPRIGHT" x="5" />
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+                        DJBagsBagItemLoad(self, NUM_BAG_SLOTS + 4, BankButtonIDToInvSlotID(4, 1))
+                    </OnLoad>
+                </Scripts>
+            </Button>
+            <Button name="$parentBag5" parentKey="bag5" inherits="ItemButtonTemplate">
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeTo="$parentBag4" relativePoint="TOPRIGHT" x="5" />
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+                        DJBagsBagItemLoad(self, NUM_BAG_SLOTS + 5, BankButtonIDToInvSlotID(5, 1))
+                    </OnLoad>
+                </Scripts>
+            </Button>
+            <Button name="$parentBag6" parentKey="bag6" inherits="ItemButtonTemplate">
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeTo="$parentBag5" relativePoint="TOPRIGHT" x="5" />
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+                        DJBagsBagItemLoad(self, NUM_BAG_SLOTS + 6, BankButtonIDToInvSlotID(6, 1))
+                    </OnLoad>
+                </Scripts>
+            </Button>
+            <Button name="$parentBag7" parentKey="bag7" inherits="ItemButtonTemplate">
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeTo="$parentBag6" relativePoint="TOPRIGHT" x="5" />
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+                        DJBagsBagItemLoad(self, NUM_BAG_SLOTS + 7, BankButtonIDToInvSlotID(7, 1))
+                    </OnLoad>
+                </Scripts>
+            </Button>
+            <Button name="$parentRestackButton">
+                <Size x="16" y="16" />
+                <Anchors>
+                    <Anchor point="TOPRIGHT" relativeTo="$parentBag7" relativePoint="BOTTOMRIGHT" y="-9.5" />
+                </Anchors>
+                <NormalTexture file="Interface\Buttons\UI-GuildButton-PublicNote-Disabled" />
+                <PushedTexture file="Interface\Buttons\UI-GuildButton-OfficerNote-Up" />
+                <HighlightTexture file="Interface\Buttons\UI-GuildButton-PublicNote-Up" alphaMode="ADD" />
+                <Scripts>
+                    <OnEnter>
+                        GameTooltip:SetOwner(self, 'TOPRIGHT')
+                        GameTooltip:SetText(BAG_CLEANUP_BANK)
+                        GameTooltip:Show()
+                    </OnEnter>
+                    <OnLeave>
+                        GameTooltip:Hide()
+                    </OnLeave>
+                    <OnClick>
+                        SortBankBags()
+                        SortReagentBankBags()
+                    </OnClick>
+                </Scripts>
+            </Button>
+            <Button name="$parentDepositReagent" inherits="UIPanelButtonTemplate" text="REAGENTBANK_DEPOSIT">
+                <Size x="150" y="25" />
+                <Anchors>
+                    <Anchor point="RIGHT" relativeTo="$parentRestackButton" relativePoint="LEFT" x="-3" />
+                </Anchors>
+                <Scripts>
+                    <OnClick>
+                        DepositReagentBank();
+                    </OnClick>
+                </Scripts>
+            </Button>
+            <EditBox name="$parentSearchBar" inherits="BagSearchBoxTemplate">
+                <Size y="25" />
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeTo="$parentBag1" relativePoint="BOTTOMLEFT" x="5" y="-5"/>
+                    <Anchor point="RIGHT" relativeTo="$parentDepositReagent" relativePoint="LEFT" x="-5" />
+                </Anchors>
+            </EditBox>
+            <Button name="$parentTab1" inherits="TabButtonTemplate" text="BANK">
+                <Anchors>
+                    <Anchor point="BOTTOMLEFT" relativeTo="$parent" relativePoint="TOPLEFT" />
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+                        PanelTemplates_TabResize(self, 0);
+                        self.HighlightTexture:SetWidth(self:GetTextWidth() + 31);
+                        self.tab = 1
+                    </OnLoad>
+                    <OnClick>
+                        DJBagsBankTab_OnClick(self)
+                    </OnClick>
+                </Scripts>
+            </Button>
+            <Button name="$parentTab2" inherits="TabButtonTemplate" text="REAGENT_BANK">
+                <Anchors>
+                    <Anchor point="BOTTOMLEFT" relativeTo="$parentTab1" relativePoint="BOTTOMRIGHT" />
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+                        PanelTemplates_TabResize(self, 0);
+                        self.HighlightTexture:SetWidth(self:GetTextWidth() + 31);
+                        self.tab = 2
+                    </OnLoad>
+                    <OnClick>
+                        DJBagsBankTab_OnClick(self)
+                    </OnClick>
+                </Scripts>
+            </Button>
+            <Frame name="DJBagsBank" frameStrata="MEDIUM" toplevel="true" movable="true" enableMouse="true"
+                   hidden="true" parent="DJBagsBankBar">
+                <Backdrop bgFile="Interface\ChatFrame\ChatFrameBackground" edgeFile="Interface\Buttons\WHITE8x8">
+                    <EdgeSize>
+                        <AbsValue val="1"/>
+                    </EdgeSize>
+                    <Color r="0" g="0" b="0" a="0.6"/>
+                    <BorderColor r="0.3" g="0.3" b="0.3" a="1"/>
+                </Backdrop>
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="BOTTOMLEFT" y="-5" />
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+                        DJBagsRegisterBankBagContainer(self, {BANK_CONTAINER, 5, 6, 7, 8, 9, 10, 11})
+                    </OnLoad>
+                    <OnShow>
+                        self:OnShow()
+                    </OnShow>
+                    <OnHide>
+                        self:OnHide()
+                    </OnHide>
+                </Scripts>
+            </Frame>
+            <Frame name="DJBagsReagents" frameStrata="MEDIUM" toplevel="true" movable="true" enableMouse="true"
+                   hidden="true" parent="DJBagsBankBar">
+                <Backdrop bgFile="Interface\ChatFrame\ChatFrameBackground" edgeFile="Interface\Buttons\WHITE8x8">
+                    <EdgeSize>
+                        <AbsValue val="1"/>
+                    </EdgeSize>
+                    <Color r="0" g="0" b="0" a="0.6"/>
+                    <BorderColor r="0.3" g="0.3" b="0.3" a="1"/>
+                </Backdrop>
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="BOTTOMLEFT" y="-5" />
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+                        DJBagsRegisterReagentBagContainer(self, {REAGENTBANK_CONTAINER})
+                    </OnLoad>
+                    <OnShow>
+                        self:OnShow()
+                    </OnShow>
+                    <OnHide>
+                        self:OnHide()
+                    </OnHide>
+                </Scripts>
+            </Frame>
+            <Button name="$parentReagentButton" parent="DJBagsReagentContainer" parentKey="reagentButton" inherits="UIPanelButtonTemplate" text="BANKSLOTPURCHASE" hidden="true">
+                <Size x="100" y="25"/>
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeTo="DJBagsReagentContainer" relativePoint="TOPLEFT" x="5" y="-5" />
+                </Anchors>
+                <Scripts>
+                    <OnClick>
+                        -- PlaySound("igMainMenuOption");
+                        StaticPopup_Show("CONFIRM_BUY_REAGENTBANK_TAB");
+                    </OnClick>
+                </Scripts>
+            </Button>
+            <Button name="$parentClose" parentKey="close" inherits="UIPanelCloseButton">
+                <Anchors>
+                    <Anchor point="CENTER" relativePoint="TOPRIGHT" x="-2" y="-2"/>
+                </Anchors>
+                <NormalTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Disabled" />
+                <Scripts>
+                    <OnLoad>
+                        self:SetAlpha(0.2)
+                    </OnLoad>
+                    <OnEnter>
+                        self:SetAlpha(1)
+                    </OnEnter>
+                    <OnLeave>
+                        self:SetAlpha(0.2)
+                    </OnLeave>
+                </Scripts>
+            </Button>
+        </Frames>
+        <Scripts>
+            <OnLoad>
+                PanelTemplates_SetNumTabs(self, 2)
+                DJBagsRegisterBankFrame(self)
+            </OnLoad>
+            <OnHide>
+                CloseBankFrame()
+                StaticPopup_Hide("CONFIRM_BUY_BANK_SLOT")
+            </OnHide>
+        </Scripts>
+    </Frame>
+</Ui>
