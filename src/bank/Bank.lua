@@ -22,7 +22,6 @@ end
 function bank:BANKFRAME_OPENED()
 	if BankFrame.selectedTab == 1 then
 		self:Show()
-		DJBagsBag:Show()
 	end
 end
 

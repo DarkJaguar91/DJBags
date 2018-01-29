@@ -29,15 +29,18 @@ function DJBagsBankTab_OnClick(tab)
         DJBagsBank:Show()
         DJBagsReagents:Hide()
         BankFrame.selectedTab = 1
+        BankFrame.activeTabIndex = 1
     else
         DJBagsBank:Hide()
         DJBagsReagents:Show()
         BankFrame.selectedTab = 2
+        BankFrame.activeTabIndex = 2
     end
 end
 
 function bankFrame:BANKFRAME_OPENED()
 	self:Show()
+    DJBagsBag:Show()
 end
 
 function bankFrame:BANKFRAME_CLOSED()

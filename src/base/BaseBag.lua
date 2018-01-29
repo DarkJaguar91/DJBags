@@ -57,6 +57,7 @@ local function CreateTitleContainer(self, item)
     if not self.titleContainers[item.type] then
         self.titleContainers[item.type] = CreateFrame('Frame', string.format('DJBagsTitleContainer_%s_%s', self:GetName(), item.type), self, 'DJBagsTitleContainerTemplate')
         self.titleContainers[item.type].name:SetText(item.type)
+        self.titleContainers[item.type].name.text = item.type
         MakeMoveable(self.titleContainers[item.type])
     end
 end
