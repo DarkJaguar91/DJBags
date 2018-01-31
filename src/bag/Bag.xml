@@ -96,8 +96,7 @@
                         GameTooltip:Hide()
                     </OnLeave>
                     <OnClick>
-                        -- PlaySound("UI_BagSorting_01");
-                        SortBags()
+                        self:GetParent():GetParent():SortBags()
                     </OnClick>
                 </Scripts>
             </Button>

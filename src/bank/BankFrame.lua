@@ -10,7 +10,6 @@ function DJBagsRegisterBankFrame(self, bags)
 
     ADDON.eventManager:Add('BANKFRAME_OPENED', self)
     ADDON.eventManager:Add('BANKFRAME_CLOSED', self)
-    ADDON.eventManager:Add('BAG_UPDATE_DELAYED', self)
 
     table.insert(UISpecialFrames, self:GetName())
     self:RegisterForDrag("LeftButton")

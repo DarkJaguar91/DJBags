@@ -11,6 +11,12 @@ function DJBagsRegisterBagBagContainer(self, bags)
     end
 end
 
+function bag:SortBags()    
+    ADDON.eventManager:Remove('BAG_UPDATE', self)
+    SortBags()
+    ADDON.eventManager:Add('BAG_UPDATE', self)
+end
+
 function bag:ClearNewItems()
     C_NewItems:ClearAll()
     self:Refresh()

@@ -160,7 +160,9 @@ end
 function bag:ITEM_LOCK_CHANGED(bag, slot)
     if bag then
         if self.bagsByKey[bag] and slot then
-            self.containers[bag].items[slot]:UpdateLock()
+            if (self.containers[bag].items[slot]) then
+                self.containers[bag].items[slot]:UpdateLock()
+            end
         end
     end
 end
