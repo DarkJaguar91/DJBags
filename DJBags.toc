@@ -1,4 +1,4 @@
-## Interface: 70000
+## Interface: 70300
 ## Title: DJBags
 ## Author: DarkJaguar91
 ## Notes: BagAddon
