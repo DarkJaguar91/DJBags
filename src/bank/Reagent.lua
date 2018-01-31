@@ -32,8 +32,8 @@ function bank:PLAYERREAGENTBANKSLOTS_CHANGED()
 end
 
 function bank:OnShow()
-	if (not IsReagentBankUnlocked()) then
-		if (not self.purchaseButton) then
+	if not IsReagentBankUnlocked() then
+		if not self.purchaseButton then
 			self.purchaseButton = CreateFrame("Button", "DJBagsReagentPurchase", self)
 			self.purchaseButton:SetAllPoints()
 			self.purchaseButton:SetText("Purchase")

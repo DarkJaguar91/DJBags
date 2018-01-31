@@ -6,6 +6,14 @@ local core = {}
 function core:ADDON_LOADED(name)
 	if ADDON_NAME ~= name then return end
 
+    -- Default Settings
+    DJBags_DB = DJBags_DB or {
+        categories = {
+            all = {},
+            player = {}
+        }
+    }
+
 	eventManager:Remove('ADDON_LOADED', core)
 end
 

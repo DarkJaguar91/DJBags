@@ -4,3 +4,12 @@ local ADDON_NAME, ADDON = ...
 ADDON.formats = {
 	MASONRY = 0,
 }
+
+-- Locale
+local locale = {
+	enUS = {
+		allCharacters = 'All Characters?'
+	}
+}
+
+ADDON.locale = locale[GetLocale()] or locale['enUS']

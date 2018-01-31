@@ -1,4 +1,98 @@
 <Ui xsi:schemaLocation="http://www.blizzard.com/wow/ui/  http://wowprogramming.com/FrameXML/UI.xsd">
     <Script file="src/category/CategoryManager.lua"/>
     <Script file="src/category/ArtifactPower.lua"/>
+    <Script file="src/category/PlayerDefined.lua"/>
+    <Script file="src/category/CategoryDialog.lua"/>
+
+    <Frame name="DJBagsCategoryDialog" parent="UIParent" inherits="DJBagsContainerTemplate" hidden="true">
+        <Size x="450" y="90"/>
+        <Anchors>
+            <Anchor point="CENTER" />
+        </Anchors>
+        <Layers>
+            <Layer level="ARTWORK">
+                <FontString name="$parentName" parentKey="name" inherits="GameFontNormal">
+                    <Anchors>
+                        <Anchor point="TOP" y="-5"/>
+                    </Anchors>
+                </FontString>
+            </Layer>
+        </Layers>
+        <Frames>
+            <EditBox name="$parentCategoryEdit" parentKey="edit">
+                <Backdrop bgFile="Interface\ChatFrame\ChatFrameBackground" edgeFile="Interface\Buttons\WHITE8x8">
+                    <EdgeSize>
+                        <AbsValue val="1" />
+                    </EdgeSize>
+                    <Color r="0" g="0" b="0" a="0.6" />
+                    <BorderColor r="0.3" g="0.3" b="0.3" a="1" />
+                </Backdrop>
+                <Size x="300" y="25" />
+                <Anchors>
+                    <Anchor point="TOPLEFT" x="5" y="-25" />
+                </Anchors>
+                <FontString inherits="GameFontNormal" />
+                <Scripts>
+                    <OnLoad>
+                        self:SetAutoFocus(false)
+                    </OnLoad>
+                    <OnEscapePressed>
+                        self:ClearFocus()
+                    </OnEscapePressed>
+                    <OnEnterPressed>
+                        self:GetParent():Done()
+                    </OnEnterPressed>
+                </Scripts>
+            </EditBox>
+            <Button name="$parentDropDown" parentKey="dropdown" inherits="UIDropDownMenuTemplate">
+                <Anchors>
+                    <Anchor point="LEFT" relativeTo="$parentCategoryEdit" relativePoint="RIGHT" x="5" y="-3" />
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+                        UIDropDownMenu_SetWidth(self, 100);
+                        UIDropDownMenu_SetButtonWidth(self, 124)
+                        UIDropDownMenu_JustifyText(self, "LEFT")
+                    </OnLoad>
+                </Scripts>
+            </Button>
+            <Button name="$parentOK" inherits="UIPanelButtonTemplate" text="DONE">
+                <Size x="75" y="25" />
+                <Anchors>
+                    <Anchor point="BOTTOMRIGHT" relativeTo="$parent" relativePoint="BOTTOMRIGHT" x="-5" y="5" />
+                </Anchors>
+                <Scripts>
+                    <OnClick>
+                        self:GetParent():Done()
+                    </OnClick>
+                </Scripts>
+            </Button>
+            <Button name="$parentClear" inherits="UIPanelButtonTemplate" text="RESET">
+                <Size x="75" y="25" />
+                <Anchors>
+                    <Anchor point="BOTTOMLEFT" relativeTo="$parent" relativePoint="BOTTOMLEFT" x="5" y="5" />
+                </Anchors>
+                <Scripts>
+                    <OnClick>
+                        self:GetParent():Done()
+                    </OnClick>
+                </Scripts>
+            </Button>
+            <CheckButton name="$parentAllCharacters" parentKey="allCharacters" inherits="UICheckButtonTemplate">
+                <Anchors>
+                    <Anchor point="RIGHT" relativeTo="$parentOK" relativePoint="LEFT" x="-50" />
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+                        _G[self:GetName() .. 'Text']:SetText(select(2, ...).locale['ALL_CHARACTERS'])
+                    </OnLoad>
+                </Scripts>
+            </CheckButton>
+        </Frames>
+        <Scripts>
+            <OnLoad>
+            	DJBagsCategoryDialogLoad(self)
+            </OnLoad>
+        </Scripts>
+    </Frame>
 </Ui>

@@ -63,7 +63,8 @@ function ADDON:NewItem(parent, slot)
 end
 
 function item:OnClick(button)
-    if self.id then
+    if self.id and IsAltKeyDown() and button == 'LeftButton' then
+        -- Open Category Dialogue
     end
 end
 
