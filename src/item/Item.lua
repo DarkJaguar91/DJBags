@@ -64,7 +64,7 @@ end
 
 function item:OnClick(button)
     if self.id and IsAltKeyDown() and button == 'LeftButton' then
-        -- Open Category Dialogue
+        DJBagsCategoryDialog:DisplayForItem(self.id, self.name)
     end
 end
 
@@ -142,9 +142,31 @@ local function UpdateCooldown(self)
     local start, duration, enable = GetContainerItemCooldown(self:GetParent():GetID(), self:GetID());
     CooldownFrame_Set(self.cooldown, start, duration, enable);
     if (duration > 0 and enable == 0) then
-        SetItemButtonTextureVertexColor(self, 0.4, 0.4, 0.4);
+        SetItemButtonTextureVertexColor(self, 0.4, 0.4, 0.4)
     else
-        SetItemButtonTextureVertexColor(self, 1, 1, 1);
+        SetItemButtonTextureVertexColor(self, 1, 1, 1)
+    end
+end
+
+local function UpdateUpgrade(self)
+    self.timeSinceUpgradeCheck = 0;
+    
+    local itemIsUpgrade = IsContainerItemAnUpgrade(self:GetParent():GetID(), self:GetID());
+    if ( itemIsUpgrade == nil ) then -- nil means not all the data was available to determine if this is an upgrade.
+        self.UpgradeIcon:SetShown(false);
+        self:SetScript("OnUpdate", OnItemUpdate);
+    else
+        self.UpgradeIcon:SetShown(itemIsUpgrade);
+        self:SetScript("OnUpdate", nil);
+    end
+end
+
+local ITEM_UPGRADE_CHECK_TIME = 0.5
+local function OnItemUpdate(self, elapsed)
+    self.timeSinceUpgradeCheck = self.timeSinceUpgradeCheck + elapsed
+
+    if (self.timeSinceUpgradeCheck >= ITEM_UPGRADE_CHECK_TIME) then
+        UpdateUpgrade(self)
     end
 end
 
@@ -206,6 +228,7 @@ function item:Update()
         UpdateNewItemAnimations(self, isNewItem, isBattlePayItem, quality)
         UpdateFiltered(self, filtered, shouldDoRelicChecks, id)
         UpdateCooldown(self)
+        UpdateUpgrade(self)
     end
 end
 

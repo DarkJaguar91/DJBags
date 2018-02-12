@@ -18,7 +18,7 @@ function item:Init(id, slot)
     self:SetScript('OnReceiveDrag', self.PlaceOrPickup)
     self:SetScript('OnClick', function (self, ...)
         if self.buy then
-            -- PlaySound("igMainMenuOption");
+            PlaySound(SOUNDKIT.IG_MAINMENU_OPTION)
             StaticPopup_Show("CONFIRM_BUY_BANK_SLOT")
         else
             self:PlaceOrPickup(...)
@@ -92,6 +92,7 @@ function item:SetCost(cost)
         self.IconBorder:SetVertexColor(1, 0, 0, 1)
         self.Count:Show()
         self.Count:SetText(cost/10000 .. "|TInterface\\MoneyFrame\\UI-GoldIcon:12:12:2:0|t")
+        BankFrame.nextSlotCost = cost
         self.buy = true
     end
 end

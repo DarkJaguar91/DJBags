@@ -31,15 +31,22 @@ function bank:PLAYERREAGENTBANKSLOTS_CHANGED()
 	self:BAG_UPDATE(REAGENTBANK_CONTAINER)
 end
 
+local function BuyReagentTab()
+	PlaySound(SOUNDKIT.IG_MAINMENU_OPTION)
+	StaticPopup_Show("CONFIRM_BUY_REAGENTBANK_TAB")
+end
+
 function bank:OnShow()
 	if not IsReagentBankUnlocked() then
 		if not self.purchaseButton then
-			self.purchaseButton = CreateFrame("Button", "DJBagsReagentPurchase", self)
-			self.purchaseButton:SetAllPoints()
+			self.purchaseButton = CreateFrame("Button", "DJBagsReagentPurchase", self, 'UIPanelButtonTemplate')
+        	self.purchaseButton:SetPoint('TOPLEFT', 5, -5)
+        	self.purchaseButton:SetPoint('BOTTOMRIGHT', -5, 5)
 			self.purchaseButton:SetText("Purchase")
+    		self.purchaseButton:SetScript('OnClick', BuyReagentTab)
 		end
 		self.purchaseButton:Show()
-		self:SetSize(125, 50)
+		self:SetSize(125, 35)
 	else
 		if (self.purchaseButton) then
 			self.purchaseButton:Hide()

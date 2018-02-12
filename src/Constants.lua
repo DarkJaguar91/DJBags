@@ -8,7 +8,7 @@ ADDON.formats = {
 -- Locale
 local locale = {
 	enUS = {
-		allCharacters = 'All Characters?'
+		ALL_CHARACTERS = 'All Characters?'
 	}
 }
 

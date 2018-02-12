@@ -20,7 +20,7 @@ function DJBagsRegisterBankBagContainer(self, bags)
 end
 
 function bank:BANKFRAME_OPENED()
-	if BankFrame.selectedTab == 1 then
+	if (BankFrame.selectedTab or 1) == 1 then
 		self:Show()
 	end
 end

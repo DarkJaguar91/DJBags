@@ -25,13 +25,13 @@ local itemSorter = function(A, B)
         if A.quality == B.quality then
             if A.ilevel == B.ilevel then
                 if A.name == B.name then
-                    return A.count > B.count
+                    return (A.count or 1) > (B.count or 1)
                 end
-                return A.name < B.name
+                return (A.name or '') < (B.name or '')
             end
-            return A.ilevel > B.ilevel
+            return (A.ilevel or 1) > (B.ilevel or 1)
         end
-        return A.quality > B.quality
+        return (A.quality or 0) > (B.quality or 0)
     end
     return typeSorter(A.type, B.type)
 end

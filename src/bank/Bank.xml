@@ -116,6 +116,7 @@
                 </Anchors>
                 <Scripts>
                     <OnClick>
+                        PlaySound(SOUNDKIT.IG_MAINMENU_OPTION);
                         DepositReagentBank();
                     </OnClick>
                 </Scripts>
