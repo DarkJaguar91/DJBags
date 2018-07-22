@@ -8,15 +8,29 @@ function core:ADDON_LOADED(name)
 
     -- Default Settings
     DJBags_DB = DJBags_DB or {
-        categories = {
-        },
-        newItems = {}
-    }
-    DJBags_DB_Char = DJBags_DB_Char or {
-        categories = {
-        },
-        newItems = {}
-    }
+            VERSION = 0.76,
+            categories = {
+            },
+            newItems = {}
+        }
+        DJBags_DB_Char = DJBags_DB_Char or {
+            categories = {
+            },
+            newItems = {}
+        }
+    if ((not DJBags_DB.VERSION) or DJBags_DB.VERSION < 0.76) then
+        DJBags_DB = {
+            VERSION = 0.76,
+            categories = {
+            },
+            newItems = {}
+        }
+        DJBags_DB_Char = {
+            categories = {
+            },
+            newItems = {}
+        }
+    end
 
 	eventManager:Remove('ADDON_LOADED', core)
 end

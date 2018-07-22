@@ -48,7 +48,7 @@ function dialog:DisplayForItem(id, name)
 
     if current then
         self.edit:SetText(current)
-        self.allCharacters:SetChecked(DJBags_DB.categories.all[id])
+        self.allCharacters:SetChecked(DJBags_DB.categories[id])
         for i=1,#categories do
             if categories[i] == current then
                 UIDropDownMenu_SetSelectedID(self.dropdown, i)
