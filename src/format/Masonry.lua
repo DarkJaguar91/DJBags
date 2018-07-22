@@ -44,7 +44,7 @@ ADDON.formatter[ADDON.formats.MASONRY] = function(bag)
     local padding = bag.settings.padding
     local containerSpacing = bag.settings.containerSpacing
     local itemSpacing = bag.settings.itemSpacing
-    local maxCols = bag.settings.maxColumns
+    local maxCols = bag.settings.maxColumns > 0 and bag.settings.maxColumns or 1
 
     -- Format the containers
     local containers = {}

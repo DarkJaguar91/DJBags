@@ -102,7 +102,6 @@ function bag:OnLoad(bags)
     self.items = {}
     self.containers = CreateBagContainers(self)
     self.titleContainers = {}
-    self.settings = settings -- TODO get this from user defined settings...
     self.Format = ADDON.formatter[ADDON.formats.MASONRY]
 
     ADDON.eventManager:Add('PLAYER_ENTERING_WORLD', self)
@@ -118,7 +117,7 @@ function bag:OnShow()
     ADDON.eventManager:Add('BAG_UPDATE_COOLDOWN', self)
     ADDON.eventManager:Add('ITEM_LOCK_CHANGED', self)
     ADDON.eventManager:Add('BAG_UPDATE_DELAYED', self)    
-    ADDON.eventManager:Add('DJBAGS_BAG_HOVER', self) -- some hover stuff...
+    ADDON.eventManager:Add('DJBAGS_BAG_HOVER', self)
 end
 
 function bag:OnHide()
@@ -137,6 +136,11 @@ end
 
 function bag:PLAYER_ENTERING_WORLD()
     ADDON.eventManager:Add('BAG_UPDATE', self)
+
+    -- Have to do this here to ensure the settings are loaded.
+    DJBags_DB.bagSettings = DJBags_DB.bagSettings or {}
+    DJBags_DB.bagSettings[self:GetName()] = DJBags_DB.bagSettings[self:GetName()] or settings
+    self.settings = DJBags_DB.bagSettings[self:GetName()]
 end
 
 function bag:BAG_UPDATE(bag)

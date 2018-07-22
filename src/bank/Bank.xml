@@ -206,10 +206,10 @@
                     </OnHide>
                 </Scripts>
             </Frame>
-            <Button name="$parentReagentButton" parent="DJBagsReagentContainer" parentKey="reagentButton" inherits="UIPanelButtonTemplate" text="BANKSLOTPURCHASE" hidden="true">
+            <Button name="$parentReagentButton" parent="DJBagsReagents" parentKey="reagentButton" inherits="UIPanelButtonTemplate" text="BANKSLOTPURCHASE" hidden="true">
                 <Size x="100" y="25"/>
                 <Anchors>
-                    <Anchor point="TOPLEFT" relativeTo="DJBagsReagentContainer" relativePoint="TOPLEFT" x="5" y="-5" />
+                    <Anchor point="TOPLEFT" relativeTo="DJBagsReagents" relativePoint="TOPLEFT" x="5" y="-5" />
                 </Anchors>
                 <Scripts>
                     <OnClick>

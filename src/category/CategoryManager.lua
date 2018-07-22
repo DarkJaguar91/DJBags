@@ -30,8 +30,9 @@ function categoryManager:GetTitle(item)
             return setName
         end
 
-        if bag >= 0 and bag <= NUM_BAG_SLOTS and C_NewItems.IsNewItem(bag, slot) then
-            return NEW
+        if bag >= 0 and bag <= NUM_BAG_SLOTS and (C_NewItems.IsNewItem(bag, slot) or DJBags_DB_Char.newItems[item.id]) then
+          DJBags_DB_Char.newItems[item.id] = true
+          return NEW
         end
 
        	for k, v in pairs(self.filters) do

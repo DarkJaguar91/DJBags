@@ -100,6 +100,6 @@ end
 function item:OnLeave()
     GameTooltip_Hide()
     ResetCursor()
-
+    
     ADDON.eventManager:Fire('DJBAGS_BAG_HOVER', self.slot, false)
 end

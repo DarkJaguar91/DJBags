@@ -1,5 +1,12 @@
 local ADDON_NAME, ADDON = ...
 
+function try(f, catch_f)
+    local status, exception = pcall(f)
+    if not status then
+        catch_f(exception)
+    end
+end
+
 local eventManager = CreateFrame('FRAME')
 ADDON.eventManager = eventManager
 eventManager.events = {}
@@ -15,7 +22,14 @@ function eventManager:Add(event, object)
 
     if not self.events[event] then
         self.events[event] = {}
-        self:RegisterEvent(event)
+        try(
+            function() 
+                self:RegisterEvent(event)
+            end,
+            function(_)
+                -- do nothing for now
+            end
+        ) -- use pcall so that blizzard doesnt stop my personal events
     end
 
     self.events[event][object] = true
@@ -51,6 +65,14 @@ function eventManager:Remove(event, object)
     if next(self.events[event]) == nil and Count(self.events[event]) == 0 then
         self.events[event] = nil
 
-        self:UnregisterEvent(event)
+        try(
+            function() 
+                self:UnregisterEvent(event)
+            end,
+            function(_)
+                -- do nothing for now
+            end
+        ) -- use pcall so that blizzard doesnt stop my personal events
+        
     end
 end

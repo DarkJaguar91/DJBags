@@ -55,7 +55,7 @@
     </Frame>
 
     <Frame name="DJBagsMainBarTemplate" virtual="true" movable="true" enableMouse="true">
-        <Size x="345" y="25"/>
+        <Size x="365" y="25"/>
         <Backdrop bgFile="Interface\ChatFrame\ChatFrameBackground" edgeFile="Interface\Buttons\WHITE8x8">
             <EdgeSize>
                 <AbsValue val="1"/>
@@ -64,9 +64,35 @@
             <BorderColor r="0.3" g="0.3" b="0.3" a="1"/>
         </Backdrop>
         <Frames>
-            <CheckButton name="$parentBagBtn" inherits="UIRadioButtonTemplate">
+            <Button name="$parentSettingsBtn">
+                <Size x="16" y="16"/>
                 <Anchors>
                     <Anchor point="RIGHT" relativePoint="RIGHT" relativeTo="$parent" x="-5"/>
+                </Anchors>
+                <NormalTexture file="Interface\Buttons\UI-GuildButton-PublicNote-Disabled"/>
+                <PushedTexture file="Interface\Buttons\UI-GuildButton-OfficerNote-Up"/>
+                <HighlightTexture file="Interface\Buttons\UI-GuildButton-PublicNote-Up" alphaMode="ADD"/>
+                <Scripts>
+                    <OnEnter>
+                        GameTooltip:SetOwner(self, 'TOPRIGHT')
+                        GameTooltip:SetText(SETTINGS)
+                        GameTooltip:Show()
+                    </OnEnter>
+                    <OnLeave>
+                        GameTooltip:Hide()
+                    </OnLeave>
+                    <OnClick>
+                        if self:GetParent():GetParent().settingsMenu:IsVisible() then
+                            self:GetParent():GetParent().settingsMenu:Hide()
+                        else
+                            self:GetParent():GetParent().settingsMenu:Show()
+                        end
+                    </OnClick>
+                </Scripts>
+            </Button>
+            <CheckButton name="$parentBagBtn" inherits="UIRadioButtonTemplate">
+                <Anchors>
+                    <Anchor point="RIGHT" relativePoint="LEFT" relativeTo="$parentSettingsBtn" x="-5"/>
                 </Anchors>
                 <Scripts>
                     <OnClick>
@@ -215,16 +241,21 @@
                     </OnLeave>
                 </Scripts>
             </Button>
+            <Frame name="$parentSettings" parentKey="settingsMenu" inherits="DJBagsSettings" hidden="true">
+                <Anchors>
+                    <Anchor point="BOTTOMLEFT" relativeTo="$parent" relativePoint="BOTTOMRIGHT" />
+                </Anchors>
+            </Frame>
         </Frames>
         <Scripts>
             <OnLoad>
-                    DJBagsRegisterBagBagContainer(self, {0, 1, 2, 3, 4})
+                DJBagsRegisterBagBagContainer(self, {0, 1, 2, 3, 4})
             </OnLoad>
             <OnShow>
-                    self:OnShow()
+                self:OnShow()
             </OnShow>
             <OnHide>
-                    self:OnHide()
+                self:OnHide()
             </OnHide>
         </Scripts>
     </Frame>

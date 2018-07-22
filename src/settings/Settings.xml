@@ -1,0 +1,102 @@
+<Ui xsi:schemaLocation="http://www.blizzard.com/wow/ui/  http://wowprogramming.com/FrameXML/UI.xsd">
+	<Script file="src/settings/Settings.lua"/>
+
+	<Frame name="DJBagsNumberSelectTemplate" virtual="true">
+		<Size y="29" />
+		<Backdrop bgFile="Interface\ChatFrame\ChatFrameBackground" edgeFile="Interface\Buttons\WHITE8x8">
+            <EdgeSize>
+                <AbsValue val="1" />
+            </EdgeSize>
+            <Color r="0" g="0" b="0" a="0" />
+            <BorderColor r="0.3" g="0.3" b="0.3" a="1" />
+        </Backdrop>
+		<Layers>
+            <Layer level="OVERLAY">
+                <FontString name="$parentName" parentKey="name" inherits="GameFontHighlight">
+                    <Anchors>
+                        <Anchor point="LEFT">
+                            <Offset>
+                                <AbsDimension x="3"/>
+                            </Offset>
+                        </Anchor>
+                        <Anchor point="RIGHT">
+                            <Offset>
+                                <AbsDimension x="-16"/>
+                            </Offset>
+                        </Anchor>
+                    </Anchors>
+                </FontString>
+            </Layer>
+        </Layers>
+		<Frames>
+			<Button name="$parentUp" parentKey="up" inherits="UIPanelScrollUpButtonTemplate">
+				<Size x="10" y="10" />
+				<Anchors>
+					<Anchor point="TOPRIGHT">
+						<Offset>
+							<AbsDimension x="-3" y="-3" />
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						if (self.process) then
+							self:process()
+						end
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="$parentDown" parentKey="down" inherits="UIPanelScrollDownButtonTemplate">
+				<Size x="10" y="10" />
+				<Anchors>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="$parentUp">
+						<Offset>
+							<AbsDimension y="-3" />
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						if (self.process) then
+							self:process()
+						end
+					</OnClick>
+				</Scripts>
+			</Button>
+		</Frames>
+	</Frame>
+    <Frame name="DJBagsSettings" virtual="true" movable="true" enableMouse="true">
+    	<Size x="100" y="40" />
+    	<Backdrop bgFile="Interface\ChatFrame\ChatFrameBackground" edgeFile="Interface\Buttons\WHITE8x8">
+            <EdgeSize>
+                <AbsValue val="1" />
+            </EdgeSize>
+            <Color r="0" g="0" b="0" a="0.6" />
+            <BorderColor r="0.3" g="0.3" b="0.3" a="1" />
+        </Backdrop>
+        <Frames>
+        	<Frame name="$parentColumnsSettings" parentKey="columns" inherits="DJBagsNumberSelectTemplate">
+        		<Anchors>
+        			<Anchor point="TOPLEFT">
+        				<Offset>
+        					<AbsDimension x="5" y="-5" />
+        				</Offset>
+        			</Anchor>
+        			<Anchor point="TOPRIGHT">
+        				<Offset>
+        					<AbsDimension x="-5" y="-5" />
+        				</Offset>
+        			</Anchor>
+        		</Anchors>
+        		<Scripts>
+        			<OnLoad>
+        				DJBagsSettingsColumnsLoad(self)
+        			</OnLoad>
+        			<OnShow>
+        				self.name:SetText("Columns: " .. self:GetParent():GetParent().settings.maxColumns)
+        			</OnShow>
+        		</Scripts>
+        	</Frame>
+        </Frames>
+    </Frame>
+</Ui>

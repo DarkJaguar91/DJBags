@@ -30,7 +30,7 @@ function dialog:DisplayForItem(id, name)
 	self.id = id
 	self:Show()
 
-    local current = DJBags_DB.categories.all[id] or DJBags_DB.categories.player[id]
+    local current = DJBags_DB_Char.categories[id] or DJBags_DB.categories[id]
     local categories = ADDON:GetAllPlayerDefinedCategories()
 
     UIDropDownMenu_Initialize(self.dropdown, function(self, level)
@@ -67,9 +67,9 @@ function dialog:Reset()
     local global = self.allCharacters:GetChecked()
 
     if global then
-        DJBags_DB.categories.all[self.id] = nil
+        DJBags_DB.categories[self.id] = nil
     else
-        DJBags_DB.categories.player[self.id] = nil
+        DJBags_DB_Char.categories[self.id] = nil
     end
     self:Hide()
     self:RefreshBags()
@@ -80,9 +80,9 @@ function dialog:Done()
     local text = self.edit:GetText()
 
     if global then
-        DJBags_DB.categories.all[self.id] = text
+        DJBags_DB.categories[self.id] = text
     else
-        DJBags_DB.categories.player[self.id] = text
+        DJBags_DB_Char.categories[self.id] = text
     end
 
     self:Hide()

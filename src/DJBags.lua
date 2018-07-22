@@ -9,9 +9,13 @@ function core:ADDON_LOADED(name)
     -- Default Settings
     DJBags_DB = DJBags_DB or {
         categories = {
-            all = {},
-            player = {}
-        }
+        },
+        newItems = {}
+    }
+    DJBags_DB_Char = DJBags_DB_Char or {
+        categories = {
+        },
+        newItems = {}
     }
 
 	eventManager:Remove('ADDON_LOADED', core)
@@ -66,8 +70,11 @@ end
 
 SLASH_DJBAGS1, SLASH_DJBAGS2, SLASH_DJBAGS3, SLASH_DJBAGS4 = '/djb', '/dj', '/djbags', '/db';
 function SlashCmdList.DJBAGS(msg, editbox)
-	DJBagsBank:SetSize(100, 100)
-	DJBagsBank:Show()
+	for i, v in pairs(DJBagsBank) do
+        if (string.find(string.lower(tostring(i)), "event")) then
+            print(i, v)
+        end
+    end
 end
 
 SLASH_RL1 = '/rl';

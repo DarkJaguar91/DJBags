@@ -18,6 +18,7 @@ function bag:SortBags()
 end
 
 function bag:ClearNewItems()
+    DJBags_DB_Char.newItems = {}
     C_NewItems:ClearAll()
     self:Refresh()
 end

@@ -1,12 +1,12 @@
 <Ui xsi:schemaLocation="http://www.blizzard.com/wow/ui/  http://wowprogramming.com/FrameXML/UI.xsd">
     <Script file="src/Constants.lua"/>
     <Include file="src/titleContainer/TitleContainer.xml"/>
-    <Include file="src/contants/Contants.xml"/>
     <Include file="src/event/Event.xml"/>
     <Include file="src/tooltip/Tooltip.xml"/>
     <Include file="src/category/Category.xml"/>
     <Include file="src/format/Format.xml"/>
     <Include file="src/item/Item.xml"/>
+    <Include file="src/settings/Settings.xml" />
     <Include file="src/bagItem/BagItem.xml"/>
     <Include file="src/base/Base.xml"/>
     <Include file="src/bag/Bag.xml"/>
