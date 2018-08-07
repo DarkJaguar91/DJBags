@@ -12,7 +12,10 @@ local function migrate()
             },
             newItems = {}
         }
-        DJBags_DB_Char = DJBags_DB_Char or {
+    end
+    if (DJBags_DB_Char == nil or not DJBags_DB_Char.VERSION or DJBags_DB_Char.VERSION < 0.76) then
+        DJBags_DB_Char = {
+            VERSION = 0.8,
             categories = {
             },
             newItems = {}
