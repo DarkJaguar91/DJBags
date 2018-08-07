@@ -4,8 +4,6 @@ local eventManager = ADDON.eventManager
 local core = {}
 
 local function migrate()
-    local newSettings = 
-
     -- V 0.76 or less must reset settings
     if (DJBags_DB == nil or not DJBags_DB.VERSION or DJBags_DB.VERSION < 0.76) then
         DJBags_DB = {
