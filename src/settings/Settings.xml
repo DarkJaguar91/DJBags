@@ -1,5 +1,6 @@
 <Ui xsi:schemaLocation="http://www.blizzard.com/wow/ui/  http://wowprogramming.com/FrameXML/UI.xsd">
 	<Script file="src/settings/Settings.lua"/>
+    <Include file="src/settings/CategorySettings.xml"/>
 
 	<Frame name="DJBagsNumberSelectTemplate" virtual="true">
 		<Size y="29" />
@@ -66,7 +67,7 @@
 		</Frames>
 	</Frame>
     <Frame name="DJBagsSettings" virtual="true" movable="true" enableMouse="true">
-    	<Size x="100" y="40" />
+    	<Size x="100" y="70" />
     	<Backdrop bgFile="Interface\ChatFrame\ChatFrameBackground" edgeFile="Interface\Buttons\WHITE8x8">
             <EdgeSize>
                 <AbsValue val="1" />
@@ -93,10 +94,21 @@
         				DJBagsSettingsColumnsLoad(self)
         			</OnLoad>
         			<OnShow>
-        				self.name:SetText("Columns: " .. self:GetParent():GetParent().settings.maxColumns)
+        				self.name:SetText("Columns: " .. self:GetParent().bag.settings.maxColumns)
         			</OnShow>
         		</Scripts>
         	</Frame>
+        	<Button name="$parentCategorySettings" parentKey="categorySettings" inherits="UIPanelButtonTemplate" text="DJBAGS_CATEGORY_SETTINGS">
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeTo="$parentColumnsSettings" relativePoint="BOTTOMLEFT" y="-5" />
+                    <Anchor point="BOTTOMRIGHT" relativeTo="$parentColumnsSettings" relativePoint="BOTTOMRIGHT" y="-25" />
+                </Anchors>
+                <Scripts>
+                	<OnClick>
+                		DJBagsSettingsOpenCategorySettingsForBag(self:GetParent().bag)
+                	</OnClick>
+                </Scripts>
+            </Button>
         </Frames>
     </Frame>
 </Ui>

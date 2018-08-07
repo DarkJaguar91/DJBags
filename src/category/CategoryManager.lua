@@ -7,16 +7,13 @@ categoryManager.filters = {}
 
 function DJBags_AddCategoryFilter(filter, name)
 	assert(filter, 'Filter is required')
+  assert(name, 'A name for the filter is required')
 
-	if not name then
-		table.insert(categoryManager.filters, filter)
-	else
-		categoryManager.filters[name] = filter
-	end
+	categoryManager.filters[name] = filter
 end
 
-function categoryManager:GetTitle(item)
-	local bag = item:GetParent():GetID()
+function categoryManager:GetTitle(item, filters)
+	  local bag = item:GetParent():GetID()
     local slot = item:GetID()
 
     if item.id then
@@ -36,10 +33,12 @@ function categoryManager:GetTitle(item)
         end
 
        	for k, v in pairs(self.filters) do
-       		local output = v(bag, slot)
-       		if output then
-       			return output
-       		end
+          if (filters[k] == nil or filters[k]) then
+         		local output = v(bag, slot)
+         		if output then
+         		 	return output
+       		  end
+          end
        	end
 
         return item.class

@@ -66,6 +66,10 @@ function item:OnClick(button)
     if self.id and IsAltKeyDown() and button == 'LeftButton' then
         DJBagsCategoryDialog:DisplayForItem(self.id, self.name)
     end
+    if self.id and IsAltKeyDown() and button == 'RightButton' then
+        DJBags_DB_Char.newItems[self.id] = false
+        ADDON.eventManager:Fire("NewItemCleared")
+    end
 end
 
 local function UpdateQuest(self, isQuestItem, questId, isActive)

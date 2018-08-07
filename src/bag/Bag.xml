@@ -245,6 +245,11 @@
                 <Anchors>
                     <Anchor point="BOTTOMLEFT" relativeTo="$parent" relativePoint="BOTTOMRIGHT" />
                 </Anchors>
+                <Scripts>
+                    <OnLoad>
+                        self.bag = self:GetParent()
+                    </OnLoad>
+                </Scripts>
             </Frame>
         </Frames>
         <Scripts>

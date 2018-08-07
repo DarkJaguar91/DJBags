@@ -121,10 +121,38 @@
                     </OnClick>
                 </Scripts>
             </Button>
+            <Button name="$parentSettingsBtn">
+                <Size x="16" y="16"/>
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeTo="$parentBag1" relativePoint="BOTTOMLEFT" x="0" y="-5"/>
+                </Anchors>
+                <NormalTexture file="Interface\Buttons\UI-GuildButton-PublicNote-Disabled"/>
+                <PushedTexture file="Interface\Buttons\UI-GuildButton-OfficerNote-Up"/>
+                <HighlightTexture file="Interface\Buttons\UI-GuildButton-PublicNote-Up" alphaMode="ADD"/>
+                <Scripts>
+                    <OnEnter>
+                        GameTooltip:SetOwner(self, 'TOPRIGHT')
+                        GameTooltip:SetText(SETTINGS)
+                        GameTooltip:Show()
+                    </OnEnter>
+                    <OnLeave>
+                        GameTooltip:Hide()
+                    </OnLeave>
+                    <OnClick>
+                        if self:GetParent().bankSettingsMenu:IsVisible() then
+                            self:GetParent().bankSettingsMenu:Hide()
+                            self:GetParent().reagentsSettingsMenu:Hide()
+                        else
+                            self:GetParent().bankSettingsMenu:Show()
+                            self:GetParent().reagentsSettingsMenu:Show()
+                        end
+                    </OnClick>
+                </Scripts>
+            </Button>
             <EditBox name="$parentSearchBar" inherits="BagSearchBoxTemplate">
                 <Size y="25" />
                 <Anchors>
-                    <Anchor point="TOPLEFT" relativeTo="$parentBag1" relativePoint="BOTTOMLEFT" x="5" y="-5"/>
+                    <Anchor point="LEFT" relativeTo="$parentSettingsBtn" relativePoint="RIGHT" x="5"/>
                     <Anchor point="RIGHT" relativeTo="$parentDepositReagent" relativePoint="LEFT" x="-5" />
                 </Anchors>
             </EditBox>
@@ -158,7 +186,7 @@
                     </OnClick>
                 </Scripts>
             </Button>
-            <Frame name="DJBagsBank" frameStrata="MEDIUM" toplevel="true" movable="true" enableMouse="true"
+            <Frame name="DJBagsBank" parentKey="bankBag" frameStrata="MEDIUM" toplevel="true" movable="true" enableMouse="true"
                    hidden="true" parent="DJBagsBankBar">
                 <Backdrop bgFile="Interface\ChatFrame\ChatFrameBackground" edgeFile="Interface\Buttons\WHITE8x8">
                     <EdgeSize>
@@ -182,7 +210,7 @@
                     </OnHide>
                 </Scripts>
             </Frame>
-            <Frame name="DJBagsReagents" frameStrata="MEDIUM" toplevel="true" movable="true" enableMouse="true"
+            <Frame name="DJBagsReagents" parentKey="reagentsBag" frameStrata="MEDIUM" toplevel="true" movable="true" enableMouse="true"
                    hidden="true" parent="DJBagsBankBar">
                 <Backdrop bgFile="Interface\ChatFrame\ChatFrameBackground" edgeFile="Interface\Buttons\WHITE8x8">
                     <EdgeSize>
@@ -235,6 +263,66 @@
                     </OnLeave>
                 </Scripts>
             </Button>
+            <Frame name="$parentSettingsBank" parentKey="bankSettingsMenu" inherits="DJBagsSettings" hidden="true">
+                <Anchors>
+                    <Anchor point="TOPRIGHT" relativeTo="$parent" relativePoint="TOPLEFT" />
+                </Anchors>
+                <Layers>
+                    <Layer level="OVERLAY">
+                        <FontString name="$parentName" parentKey="name" inherits="GameFontHighlight" text="BANK">
+                            <Anchors>
+                                <Anchor point="TOPLEFT">
+                                    <Offset>
+                                        <AbsDimension x="0" y="10"/>
+                                    </Offset>
+                                </Anchor>
+                                <Anchor point="TOPRIGHT">
+                                    <Offset>
+                                        <AbsDimension x="0" y="10"/>
+                                    </Offset>
+                                </Anchor>
+                            </Anchors>
+                        </FontString>
+                    </Layer>
+                </Layers>
+                <Scripts>
+                    <OnLoad>
+                        self.bag = self:GetParent().bankBag
+                    </OnLoad>
+                </Scripts>
+            </Frame>
+            <Frame name="$parentSettingsReagents" parentKey="reagentsSettingsMenu" inherits="DJBagsSettings" hidden="true">
+                <Anchors>
+                    <Anchor point="TOP" relativeTo="$parentSettingsBank" relativePoint="BOTTOM">
+                        <Offset>
+                            <AbsDimension y="-10"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Layers>
+                    <Layer level="OVERLAY">
+                        <FontString name="$parentName" parentKey="name" inherits="GameFontHighlight" text="REAGENT_BANK">
+                            <Anchors>
+                                <Anchor point="TOPLEFT">
+                                    <Offset>
+                                        <AbsDimension x="0" y="10"/>
+                                    </Offset>
+                                </Anchor>
+                                <Anchor point="TOPRIGHT">
+                                    <Offset>
+                                        <AbsDimension x="0" y="10"/>
+                                    </Offset>
+                                </Anchor>
+                            </Anchors>
+                        </FontString>
+                    </Layer>
+                </Layers>
+                <Scripts>
+                    <OnLoad>
+                        self.bag = self:GetParent().reagentsBag
+                    </OnLoad>
+                </Scripts>
+            </Frame>
         </Frames>
         <Scripts>
             <OnLoad>

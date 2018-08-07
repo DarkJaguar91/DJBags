@@ -4,7 +4,7 @@ DJBags_AddCategoryFilter(function(bag, slot)
     local _, _, _, _, _, _, _, _, _, id = GetContainerItemInfo(bag, slot)
 
     return DJBags_DB_Char.categories[id] or DJBags_DB.categories[id]
-end)
+end, 'Player defined categories')
 
 function ADDON:GetAllPlayerDefinedCategories()
 	local flags = {}

@@ -1,6 +1,6 @@
 <Ui xsi:schemaLocation="http://www.blizzard.com/wow/ui/  http://wowprogramming.com/FrameXML/UI.xsd">
     <Script file="src/category/CategoryManager.lua"/>
-    <Script file="src/category/ArtifactPower.lua"/>
+    <Script file="src/category/EquipmentBindings.lua"/>
     <Script file="src/category/PlayerDefined.lua"/>
     <Script file="src/category/CategoryDialog.lua"/>
 

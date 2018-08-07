@@ -1,8 +1,13 @@
 local ADDON_NAME, ADDON = ...
 
 function DJBagsTooltip:GetItemLevel(bag, slot)
+    self:ClearLines()
     self:SetOwner(UIParent, "ANCHOR_NONE")
-    self:SetBagItem(bag, slot)
+    if bag < 0 then
+        self:SetInventoryItem("player", BankButtonIDToInvSlotID(slot))
+    else
+        self:SetBagItem(bag, slot)
+    end
 
     for i = 2, self:NumLines() do
         local text = _G[self:GetName() .. "TextLeft" .. i]:GetText()
@@ -19,8 +24,14 @@ function DJBagsTooltip:GetItemLevel(bag, slot)
 end
 
 function DJBagsTooltip:IsItemBOE(bag, slot)
+    self:ClearLines()
     self:SetOwner(UIParent, "ANCHOR_NONE")
-    self:SetBagItem(bag, slot)
+    if bag < 0 then
+        self:SetInventoryItem("player", BankButtonIDToInvSlotID(slot))
+    else
+        self:SetBagItem(bag, slot)
+    end
+
 
     for i = 2, self:NumLines() do
         local text = _G[self:GetName() .. "TextLeft" .. i]:GetText()
@@ -34,13 +45,18 @@ function DJBagsTooltip:IsItemBOE(bag, slot)
 end
 
 function DJBagsTooltip:IsItemBOA(bag, slot)
+    self:ClearLines()
     self:SetOwner(UIParent, "ANCHOR_NONE")
-    self:SetBagItem(bag, slot)
+    if bag < 0 then
+        self:SetInventoryItem("player", BankButtonIDToInvSlotID(slot))
+    else
+        self:SetBagItem(bag, slot)
+    end
 
     for i = 2, self:NumLines() do
         local text = _G[self:GetName() .. "TextLeft" .. i]:GetText()
 
-        if text and text:find(ITEM_BIND_TO_BNETACCOUNT) then
+        if text and (text:find(ITEM_ACCOUNTBOUND) or text:find(ITEM_BIND_TO_ACCOUNT)) then
             return true
         end
     end
@@ -48,17 +64,22 @@ function DJBagsTooltip:IsItemBOA(bag, slot)
     return false
 end
 
-function DJBagsTooltip:IsItemArtifactPower(bag, slot)
+-- Extra for Bind on Battlenet account
+function DJBagsTooltip:IsItemBOBA(bag, slot)
+    self:ClearLines()
     self:SetOwner(UIParent, "ANCHOR_NONE")
-    self:SetBagItem(bag, slot)
+    if bag < 0 then
+        self:SetInventoryItem("player", BankButtonIDToInvSlotID(slot))
+    else
+        self:SetBagItem(bag, slot)
+    end
 
     for i = 2, self:NumLines() do
         local text = _G[self:GetName() .. "TextLeft" .. i]:GetText()
 
-        if text and text:find(ARTIFACT_POWER) then
+        if text and (text:find(ITEM_BNETACCOUNTBOUND) or text:find(ITEM_BIND_TO_BNETACCOUNT)) then
             return true
         end
     end
-
     return false
 end

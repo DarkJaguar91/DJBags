@@ -9,6 +9,8 @@ function DJBagsRegisterBagBagContainer(self, bags)
     for k, v in pairs(bag) do
         self[k] = v
     end
+
+    ADDON.eventManager:Add("NewItemCleared", self)
 end
 
 function bag:SortBags()    
@@ -20,6 +22,10 @@ end
 function bag:ClearNewItems()
     DJBags_DB_Char.newItems = {}
     C_NewItems:ClearAll()
+    self:Refresh()
+end
+
+function bag:NewItemCleared()
     self:Refresh()
 end
 

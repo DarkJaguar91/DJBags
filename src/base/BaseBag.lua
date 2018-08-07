@@ -75,7 +75,7 @@ local function GetAllItems(self, bags)
             local item = container.items[slot]
             local idBefore = item.id
             item:Update()
-            item.type = ADDON.categoryManager:GetTitle(item)
+            item.type = ADDON.categoryManager:GetTitle(item, self.settings.filters)
             CreateTitleContainer(self, item)
             if idBefore ~= item.id and item.id ~= nil then
                 updateOccured = true
@@ -141,6 +141,8 @@ function bag:PLAYER_ENTERING_WORLD()
     DJBags_DB.bagSettings = DJBags_DB.bagSettings or {}
     DJBags_DB.bagSettings[self:GetName()] = DJBags_DB.bagSettings[self:GetName()] or settings
     self.settings = DJBags_DB.bagSettings[self:GetName()]
+    -- Filters feature - ensure there is a table
+    self.settings.filters = self.settings.filters or {}
 end
 
 function bag:BAG_UPDATE(bag)

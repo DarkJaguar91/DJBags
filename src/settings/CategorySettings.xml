@@ -1,0 +1,56 @@
+<Ui xsi:schemaLocation="http://www.blizzard.com/wow/ui/  http://wowprogramming.com/FrameXML/UI.xsd">
+    <Script file="src/settings/CategorySettings.lua"/>
+
+    <Frame name="DJBagsCategorySettings" virtual="true" movable="true" enableMouse="true">
+        <Size x="100" y="100" />
+        <Backdrop bgFile="Interface\ChatFrame\ChatFrameBackground" edgeFile="Interface\Buttons\WHITE8x8">
+            <EdgeSize>
+                <AbsValue val="1" />
+            </EdgeSize>
+            <Color r="0" g="0" b="0" a="0.6" />
+            <BorderColor r="0.3" g="0.3" b="0.3" a="1" />
+        </Backdrop>
+        <Layers>
+            <Layer level="OVERLAY">
+                <FontString name="$parentName" parentKey="name" inherits="GameFontHighlight">
+                    <Anchors>
+                        <Anchor point="TOPLEFT">
+                            <Offset>
+                                <AbsDimension y="-5"/>
+                            </Offset>
+                        </Anchor>
+                        <Anchor point="TOPRIGHT">
+                            <Offset>
+                                <AbsDimension y="-5"/>
+                            </Offset>
+                        </Anchor>
+                    </Anchors>
+                </FontString>
+            </Layer>
+        </Layers>
+        <Frames>
+            <Button name="$parentClose" parentKey="close" inherits="UIPanelCloseButton">
+                <Anchors>
+                    <Anchor point="CENTER" relativePoint="TOPRIGHT" x="-2" y="-2"/>
+                </Anchors>
+                <NormalTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Disabled" />
+                <Scripts>
+                    <OnLoad>
+                        self:SetAlpha(0.2)
+                    </OnLoad>
+                    <OnEnter>
+                        self:SetAlpha(1)
+                    </OnEnter>
+                    <OnLeave>
+                        self:SetAlpha(0.2)
+                    </OnLeave>
+                </Scripts>
+            </Button>
+        </Frames>
+        <Scripts>
+            <OnShow>
+                if self.Update then self:Update() end
+            </OnShow>
+        </Scripts>
+    </Frame>
+</Ui>

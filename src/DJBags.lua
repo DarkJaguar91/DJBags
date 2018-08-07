@@ -3,12 +3,13 @@ local eventManager = ADDON.eventManager
 
 local core = {}
 
-function core:ADDON_LOADED(name)
-	if ADDON_NAME ~= name then return end
+local function migrate()
+    local newSettings = 
 
-    -- Default Settings
-    DJBags_DB = DJBags_DB or {
-            VERSION = 0.76,
+    -- V 0.76 or less must reset settings
+    if (DJBags_DB == nil or not DJBags_DB.VERSION or DJBags_DB.VERSION < 0.76) then
+        DJBags_DB = {
+            VERSION = 0.8,
             categories = {
             },
             newItems = {}
@@ -18,19 +19,13 @@ function core:ADDON_LOADED(name)
             },
             newItems = {}
         }
-    if ((not DJBags_DB.VERSION) or DJBags_DB.VERSION < 0.76) then
-        DJBags_DB = {
-            VERSION = 0.76,
-            categories = {
-            },
-            newItems = {}
-        }
-        DJBags_DB_Char = {
-            categories = {
-            },
-            newItems = {}
-        }
     end
+end
+
+function core:ADDON_LOADED(name)
+	if ADDON_NAME ~= name then return end
+
+    migrate()
 
 	eventManager:Remove('ADDON_LOADED', core)
 end
@@ -84,10 +79,9 @@ end
 
 SLASH_DJBAGS1, SLASH_DJBAGS2, SLASH_DJBAGS3, SLASH_DJBAGS4 = '/djb', '/dj', '/djbags', '/db';
 function SlashCmdList.DJBAGS(msg, editbox)
-	for i, v in pairs(DJBagsBank) do
-        if (string.find(string.lower(tostring(i)), "event")) then
-            print(i, v)
-        end
+    print("DJ Script")
+	for i, v in pairs(GameTooltip) do
+        print(i, v)
     end
 end
 
