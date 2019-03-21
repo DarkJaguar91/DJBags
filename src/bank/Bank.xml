@@ -16,7 +16,7 @@
             <BorderColor r="0.3" g="0.3" b="0.3" a="1"/>
         </Backdrop>
         <Frames>
-            <Button name="$parentBag1" parentKey="bag1" inherits="ItemButtonTemplate">
+            <ItemButton name="$parentBag1" parentKey="bag1" inherits="ItemButtonTemplate">
                 <Anchors>
                     <Anchor point="TOPLEFT" x="5" y="-5" />
                 </Anchors>
@@ -25,8 +25,8 @@
                         DJBagsBagItemLoad(self, NUM_BAG_SLOTS + 1, BankButtonIDToInvSlotID(1, 1))
                     </OnLoad>
                 </Scripts>
-            </Button>
-            <Button name="$parentBag2" parentKey="bag2" inherits="ItemButtonTemplate">
+            </ItemButton>
+            <ItemButton name="$parentBag2" parentKey="bag2" inherits="ItemButtonTemplate">
                 <Anchors>
                     <Anchor point="TOPLEFT" relativeTo="$parentBag1" relativePoint="TOPRIGHT" x="5" />
                 </Anchors>
@@ -35,8 +35,8 @@
                         DJBagsBagItemLoad(self, NUM_BAG_SLOTS + 2, BankButtonIDToInvSlotID(2, 1))
                     </OnLoad>
                 </Scripts>
-            </Button>
-            <Button name="$parentBag3" parentKey="bag3" inherits="ItemButtonTemplate">
+            </ItemButton>
+            <ItemButton name="$parentBag3" parentKey="bag3" inherits="ItemButtonTemplate">
                 <Anchors>
                     <Anchor point="TOPLEFT" relativeTo="$parentBag2" relativePoint="TOPRIGHT" x="5" />
                 </Anchors>
@@ -45,8 +45,8 @@
                         DJBagsBagItemLoad(self, NUM_BAG_SLOTS + 3, BankButtonIDToInvSlotID(3, 1))
                     </OnLoad>
                 </Scripts>
-            </Button>
-            <Button name="$parentBag4" parentKey="bag4" inherits="ItemButtonTemplate">
+            </ItemButton>
+            <ItemButton name="$parentBag4" parentKey="bag4" inherits="ItemButtonTemplate">
                 <Anchors>
                     <Anchor point="TOPLEFT" relativeTo="$parentBag3" relativePoint="TOPRIGHT" x="5" />
                 </Anchors>
@@ -55,8 +55,8 @@
                         DJBagsBagItemLoad(self, NUM_BAG_SLOTS + 4, BankButtonIDToInvSlotID(4, 1))
                     </OnLoad>
                 </Scripts>
-            </Button>
-            <Button name="$parentBag5" parentKey="bag5" inherits="ItemButtonTemplate">
+            </ItemButton>
+            <ItemButton name="$parentBag5" parentKey="bag5" inherits="ItemButtonTemplate">
                 <Anchors>
                     <Anchor point="TOPLEFT" relativeTo="$parentBag4" relativePoint="TOPRIGHT" x="5" />
                 </Anchors>
@@ -65,8 +65,8 @@
                         DJBagsBagItemLoad(self, NUM_BAG_SLOTS + 5, BankButtonIDToInvSlotID(5, 1))
                     </OnLoad>
                 </Scripts>
-            </Button>
-            <Button name="$parentBag6" parentKey="bag6" inherits="ItemButtonTemplate">
+            </ItemButton>
+            <ItemButton name="$parentBag6" parentKey="bag6" inherits="ItemButtonTemplate">
                 <Anchors>
                     <Anchor point="TOPLEFT" relativeTo="$parentBag5" relativePoint="TOPRIGHT" x="5" />
                 </Anchors>
@@ -75,8 +75,8 @@
                         DJBagsBagItemLoad(self, NUM_BAG_SLOTS + 6, BankButtonIDToInvSlotID(6, 1))
                     </OnLoad>
                 </Scripts>
-            </Button>
-            <Button name="$parentBag7" parentKey="bag7" inherits="ItemButtonTemplate">
+            </ItemButton>
+            <ItemButton name="$parentBag7" parentKey="bag7" inherits="ItemButtonTemplate">
                 <Anchors>
                     <Anchor point="TOPLEFT" relativeTo="$parentBag6" relativePoint="TOPRIGHT" x="5" />
                 </Anchors>
@@ -85,7 +85,7 @@
                         DJBagsBagItemLoad(self, NUM_BAG_SLOTS + 7, BankButtonIDToInvSlotID(7, 1))
                     </OnLoad>
                 </Scripts>
-            </Button>
+            </ItemButton>
             <Button name="$parentRestackButton">
                 <Size x="16" y="16" />
                 <Anchors>

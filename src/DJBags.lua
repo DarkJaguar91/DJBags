@@ -4,8 +4,6 @@ local eventManager = ADDON.eventManager
 local core = {}
 
 local function migrate()
-    local newSettings = 
-
     -- V 0.76 or less must reset settings
     if (DJBags_DB == nil or not DJBags_DB.VERSION or DJBags_DB.VERSION < 0.76) then
         DJBags_DB = {
@@ -14,7 +12,10 @@ local function migrate()
             },
             newItems = {}
         }
-        DJBags_DB_Char = DJBags_DB_Char or {
+    end
+    if (DJBags_DB_Char == nil or not DJBags_DB_Char.VERSION or DJBags_DB_Char.VERSION < 0.76) then
+        DJBags_DB_Char = {
+            VERSION = 0.8,
             categories = {
             },
             newItems = {}
@@ -79,10 +80,7 @@ end
 
 SLASH_DJBAGS1, SLASH_DJBAGS2, SLASH_DJBAGS3, SLASH_DJBAGS4 = '/djb', '/dj', '/djbags', '/db';
 function SlashCmdList.DJBAGS(msg, editbox)
-    print("DJ Script")
-	for i, v in pairs(GameTooltip) do
-        print(i, v)
-    end
+    ToggleBackpack()
 end
 
 SLASH_RL1 = '/rl';

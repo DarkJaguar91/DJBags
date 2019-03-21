@@ -11,7 +11,7 @@
             <BorderColor r="0.3" g="0.3" b="0.3" a="1" />
         </Backdrop>
         <Frames>
-            <Button name="$parentBag1" parentKey="bag1" inherits="ItemButtonTemplate">
+            <ItemButton name="$parentBag1" parentKey="bag1" inherits="ItemButtonTemplate">
                 <Anchors>
                     <Anchor point="TOPLEFT" x="5" y="-5" />
                 </Anchors>
@@ -20,8 +20,8 @@
                         DJBagsBagItemLoad(self, 1, ContainerIDToInventoryID(1))
                     </OnLoad>
                 </Scripts>
-            </Button>
-            <Button name="$parentBag2" parentKey="bag2" inherits="ItemButtonTemplate">
+            </ItemButton>
+            <ItemButton name="$parentBag2" parentKey="bag2" inherits="ItemButtonTemplate">
                 <Anchors>
                     <Anchor point="TOPLEFT" relativeTo="$parentBag1" relativePoint="TOPRIGHT" x="5" />
                 </Anchors>
@@ -30,8 +30,8 @@
                         DJBagsBagItemLoad(self, 2, ContainerIDToInventoryID(2))
                     </OnLoad>
                 </Scripts>
-            </Button>
-            <Button name="$parentBag3" parentKey="bag3" inherits="ItemButtonTemplate">
+            </ItemButton>
+            <ItemButton name="$parentBag3" parentKey="bag3" inherits="ItemButtonTemplate">
                 <Anchors>
                     <Anchor point="TOPLEFT" relativeTo="$parentBag2" relativePoint="TOPRIGHT" x="5" />
                 </Anchors>
@@ -40,8 +40,8 @@
                         DJBagsBagItemLoad(self, 3, ContainerIDToInventoryID(3))
                     </OnLoad>
                 </Scripts>
-            </Button>
-            <Button name="$parentBag4" parentKey="bag4" inherits="ItemButtonTemplate">
+            </ItemButton>
+            <ItemButton name="$parentBag4" parentKey="bag4" inherits="ItemButtonTemplate">
                 <Anchors>
                     <Anchor point="TOPLEFT" relativeTo="$parentBag3" relativePoint="TOPRIGHT" x="5" />
                 </Anchors>
@@ -50,7 +50,7 @@
                         DJBagsBagItemLoad(self, 4, ContainerIDToInventoryID(4))
                     </OnLoad>
                 </Scripts>
-            </Button>
+            </ItemButton>
         </Frames>
     </Frame>
 
