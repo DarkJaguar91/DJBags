@@ -1,6 +1,6 @@
 # Dark Jaguar Bags
 
-A bag addon that sorts items into categories defined by Blizzard. 
+A bag addon that sorts items into categories defined by Blizzard or user specified categories. 
 
 ## Features:
 * Shows item level.

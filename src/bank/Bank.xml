@@ -16,7 +16,7 @@
             <BorderColor r="0.3" g="0.3" b="0.3" a="1"/>
         </Backdrop>
         <Frames>
-            <ItemButton name="$parentBag1" parentKey="bag1" inherits="ItemButtonTemplate">
+            <ItemButton name="$parentBag1" parentKey="bag1">
                 <Anchors>
                     <Anchor point="TOPLEFT" x="5" y="-5" />
                 </Anchors>
@@ -26,7 +26,7 @@
                     </OnLoad>
                 </Scripts>
             </ItemButton>
-            <ItemButton name="$parentBag2" parentKey="bag2" inherits="ItemButtonTemplate">
+            <ItemButton name="$parentBag2" parentKey="bag2">
                 <Anchors>
                     <Anchor point="TOPLEFT" relativeTo="$parentBag1" relativePoint="TOPRIGHT" x="5" />
                 </Anchors>
@@ -36,7 +36,7 @@
                     </OnLoad>
                 </Scripts>
             </ItemButton>
-            <ItemButton name="$parentBag3" parentKey="bag3" inherits="ItemButtonTemplate">
+            <ItemButton name="$parentBag3" parentKey="bag3">
                 <Anchors>
                     <Anchor point="TOPLEFT" relativeTo="$parentBag2" relativePoint="TOPRIGHT" x="5" />
                 </Anchors>
@@ -46,7 +46,7 @@
                     </OnLoad>
                 </Scripts>
             </ItemButton>
-            <ItemButton name="$parentBag4" parentKey="bag4" inherits="ItemButtonTemplate">
+            <ItemButton name="$parentBag4" parentKey="bag4">
                 <Anchors>
                     <Anchor point="TOPLEFT" relativeTo="$parentBag3" relativePoint="TOPRIGHT" x="5" />
                 </Anchors>
@@ -56,7 +56,7 @@
                     </OnLoad>
                 </Scripts>
             </ItemButton>
-            <ItemButton name="$parentBag5" parentKey="bag5" inherits="ItemButtonTemplate">
+            <ItemButton name="$parentBag5" parentKey="bag5">
                 <Anchors>
                     <Anchor point="TOPLEFT" relativeTo="$parentBag4" relativePoint="TOPRIGHT" x="5" />
                 </Anchors>
@@ -66,7 +66,7 @@
                     </OnLoad>
                 </Scripts>
             </ItemButton>
-            <ItemButton name="$parentBag6" parentKey="bag6" inherits="ItemButtonTemplate">
+            <ItemButton name="$parentBag6" parentKey="bag6">
                 <Anchors>
                     <Anchor point="TOPLEFT" relativeTo="$parentBag5" relativePoint="TOPRIGHT" x="5" />
                 </Anchors>
@@ -76,7 +76,7 @@
                     </OnLoad>
                 </Scripts>
             </ItemButton>
-            <ItemButton name="$parentBag7" parentKey="bag7" inherits="ItemButtonTemplate">
+            <ItemButton name="$parentBag7" parentKey="bag7">
                 <Anchors>
                     <Anchor point="TOPLEFT" relativeTo="$parentBag6" relativePoint="TOPRIGHT" x="5" />
                 </Anchors>
