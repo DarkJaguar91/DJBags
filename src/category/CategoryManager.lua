@@ -7,13 +7,13 @@ categoryManager.filters = {}
 
 function DJBags_AddCategoryFilter(filter, name)
 	assert(filter, 'Filter is required')
-  assert(name, 'A name for the filter is required')
+    assert(name, 'A name for the filter is required')
 
-	categoryManager.filters[name] = filter
+    categoryManager.filters[name] = filter
 end
 
 function categoryManager:GetTitle(item, filters)
-	  local bag = item:GetParent():GetID()
+    local bag = item:GetParent():GetID()
     local slot = item:GetID()
 
     if item.id then
@@ -40,6 +40,10 @@ function categoryManager:GetTitle(item, filters)
        		  end
           end
        	end
+
+        if DJBags_DB_Char.useSubClass[item.classId] or DJBags_DB.useSubClass[item.classId] then
+            return item.subClass
+        end
 
         return item.class
     end

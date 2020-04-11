@@ -39,9 +39,6 @@
                     <OnEscapePressed>
                         self:ClearFocus()
                     </OnEscapePressed>
-                    <OnEnterPressed>
-                        self:GetParent():Done()
-                    </OnEnterPressed>
                 </Scripts>
             </EditBox>
             <Button name="$parentDropDown" parentKey="dropdown" inherits="UIDropDownMenuTemplate">
@@ -56,14 +53,25 @@
                     </OnLoad>
                 </Scripts>
             </Button>
-            <Button name="$parentOK" inherits="UIPanelButtonTemplate" text="DONE">
+            <Button name="$parentGlobal" inherits="UIPanelButtonTemplate" text="Global">
                 <Size x="75" y="25" />
                 <Anchors>
                     <Anchor point="BOTTOMRIGHT" relativeTo="$parent" relativePoint="BOTTOMRIGHT" x="-5" y="5" />
                 </Anchors>
                 <Scripts>
                     <OnClick>
-                        self:GetParent():Done()
+                        self:GetParent():Done(true)
+                    </OnClick>
+                </Scripts>
+            </Button>
+            <Button name="$parentCharacter" inherits="UIPanelButtonTemplate" text="Character Only">
+                <Size x="75" y="25" />
+                <Anchors>
+                    <Anchor point="BOTTOMRIGHT" relativeTo="$parentGlobal" relativePoint="BOTTOMLEFT" x="-5" />
+                </Anchors>
+                <Scripts>
+                    <OnClick>
+                        self:GetParent():Done(false)
                     </OnClick>
                 </Scripts>
             </Button>
@@ -78,11 +86,6 @@
                     </OnClick>
                 </Scripts>
             </Button>
-            <CheckButton name="$parentAllCharacters" parentKey="allCharacters" inherits="UICheckButtonTemplate">
-                <Anchors>
-                    <Anchor point="RIGHT" relativeTo="$parentOK" relativePoint="LEFT" x="-75" />
-                </Anchors>
-            </CheckButton>
             <Button name="$parentClose" parentKey="close" inherits="UIPanelCloseButton">
                 <Anchors>
                     <Anchor point="CENTER" relativePoint="TOPRIGHT" x="-2" y="-2"/>

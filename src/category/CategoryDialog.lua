@@ -16,8 +16,6 @@ function dialog:Init()
     self:SetScript("OnDragStart", self.StartMoving)
     self:SetScript("OnDragStop", self.StopMovingOrSizing)
     self:SetUserPlaced(true)
-
-    _G[self.allCharacters:GetName() .. 'Text']:SetText(ADDON.locale.ALL_CHARACTERS)
 end
 
 local function DropDownClick(self)
@@ -48,7 +46,6 @@ function dialog:DisplayForItem(id, name)
 
     if current then
         self.edit:SetText(current)
-        self.allCharacters:SetChecked(DJBags_DB.categories[id])
         for i=1,#categories do
             if categories[i] == current then
                 UIDropDownMenu_SetSelectedID(self.dropdown, i)
@@ -56,7 +53,6 @@ function dialog:DisplayForItem(id, name)
         end
     else
         self.edit:SetText('')
-        self.allCharacters:SetChecked(false)
         UIDropDownMenu_SetSelectedID(self.dropdown, 0)
     end
 
@@ -64,19 +60,18 @@ function dialog:DisplayForItem(id, name)
 end
 
 function dialog:Reset()
-    local global = self.allCharacters:GetChecked()
+    local characterSpecific = DJBags_DB_Char.categories[self.id]
 
-    if global then
-        DJBags_DB.categories[self.id] = nil
-    else
+    if characterSpecific then
         DJBags_DB_Char.categories[self.id] = nil
+    else
+        DJBags_DB.categories[self.id] = nil
     end
     self:Hide()
     self:RefreshBags()
 end
 
-function dialog:Done()
-    local global = self.allCharacters:GetChecked()
+function dialog:Done(global)
     local text = self.edit:GetText()
 
     if global then

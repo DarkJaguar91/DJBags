@@ -36,17 +36,7 @@ local itemSorter = function(A, B)
     return typeSorter(A.type, B.type)
 end
 
-local function emptySlotCount(items)
-    local cnt = 0
-    for _, item in pairs(items) do
-        if item.type == EMPTY then
-            cnt = cnt + 1
-        end
-    end
-    return cnt
-end
-
-ADDON.formatter[ADDON.formats.MASONRY] = function(bag)
+ADDON.formatter[ADDON.formats.MASONRY_STACKED] = function(bag)
     table.sort(bag.items, itemSorter)
     for _, container in pairs(bag.titleContainers) do
         container:Hide()
@@ -55,7 +45,6 @@ ADDON.formatter[ADDON.formats.MASONRY] = function(bag)
     local containerSpacing = bag.settings.containerSpacing
     local itemSpacing = bag.settings.itemSpacing
     local maxCols = bag.settings.maxColumns > 0 and bag.settings.maxColumns or 1
-    local numEmpty = emptySlotCount(bag.items)
 
     -- Format the containers
     local containers = {}
@@ -71,15 +60,12 @@ ADDON.formatter[ADDON.formats.MASONRY] = function(bag)
             tinsert(containers, container)
         end
 
-        if not (item.type == EMPTY) or cnt == 0 then
+        if not prevItem or prevItem.isEquipable or prevItem.name ~= item.name then
             item:ClearAllPoints()
             item:SetPoint('TOPLEFT', container, 'TOPLEFT', x, -y)
             item:Show()
-            if item.type == EMPTY then
-                item:SetCount(numEmpty)
-            end
             prevItem = item
-
+            
             x = x + itemSpacing + item:GetWidth()
             cnt = cnt + 1
             if cnt % maxCols == 0 then
@@ -87,8 +73,10 @@ ADDON.formatter[ADDON.formats.MASONRY] = function(bag)
                 y = y + itemSpacing + item:GetHeight()
             end
         else
-            item:SetCount(numEmpty)
+            prevItem:IncrementCount(item.count)
         end
+
+        
 
         local cols = item.type == EMPTY and 1 or math.min(cnt, maxCols)
         local rows = item.type == EMPTY and 1 or math.ceil(cnt / maxCols)

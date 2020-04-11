@@ -153,25 +153,7 @@ local function UpdateCooldown(self)
 end
 
 local function UpdateUpgrade(self)
-    self.timeSinceUpgradeCheck = 0;
-    
-    local itemIsUpgrade = IsContainerItemAnUpgrade(self:GetParent():GetID(), self:GetID());
-    if ( itemIsUpgrade == nil ) then -- nil means not all the data was available to determine if this is an upgrade.
-        self.UpgradeIcon:SetShown(false);
-        self:SetScript("OnUpdate", OnItemUpdate);
-    else
-        self.UpgradeIcon:SetShown(itemIsUpgrade);
-        self:SetScript("OnUpdate", nil);
-    end
-end
-
-local ITEM_UPGRADE_CHECK_TIME = 0.5
-local function OnItemUpdate(self, elapsed)
-    self.timeSinceUpgradeCheck = self.timeSinceUpgradeCheck + elapsed
-
-    if (self.timeSinceUpgradeCheck >= ITEM_UPGRADE_CHECK_TIME) then
-        UpdateUpgrade(self)
-    end
+    ContainerFrameItemButton_UpdateItemUpgradeIcon(self)
 end
 
 function item:Update()
@@ -180,10 +162,11 @@ function item:Update()
 
     local name, level, classId, class, subClass
     if id then
-        name, _, _, level, _, class, subClass, _, _, _, _, classId = GetItemInfo(id)
+        name, _, _, level, _, class, subClass, _, _, _, _, classId, subClassId = GetItemInfo(id)
     end
     local isEquipment = equipable or classId == LE_ITEM_CLASS_ARMOR or classId == LE_ITEM_CLASS_WEAPON
     local bag = self:GetParent():GetID()
+
 
     self.id = id
     self.name = name or ''
@@ -191,10 +174,12 @@ function item:Update()
     self.ilevel = level or 0
     self.link = link
     self.classId = classId
+    self.subClassId = subClassId
     self.class = class
     self.subClass = subClass
     self.count = id and (count or 1) or (self.count or 1)
     self.hasItem = nil
+    self.isEquipment = isEquipment
 
     if isEquipment then
         level = DJBagsTooltip:GetItemLevel(bag, self:GetID()) or level
@@ -262,5 +247,10 @@ function item:IncrementCount(count)
     count = count == 0 and 1 or count or 1
 
     self.count = self.count + count
+    SetItemButtonCount(self, self.count)
+end
+
+function item:SetCount(count)
+    self.count = count
     SetItemButtonCount(self, self.count)
 end

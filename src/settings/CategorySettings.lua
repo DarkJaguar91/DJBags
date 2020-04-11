@@ -17,7 +17,6 @@ local function Update(self)
 end
 
 function CreateSettingsForBag(bag)
-	print("Creating")
 	local settings = CreateFrame('Frame', string.format('DJBagsCategorySettings_%s', bag:GetName()), UIParent, 'DJBagsCategorySettings')
 
 	local x = 5

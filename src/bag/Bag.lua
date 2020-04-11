@@ -14,9 +14,12 @@ function DJBagsRegisterBagBagContainer(self, bags)
 end
 
 function bag:SortBags()    
+    ADDON.eventManager:Remove('BAG_UPDATE_DELAYED', self)
     ADDON.eventManager:Remove('BAG_UPDATE', self)
     SortBags()
+    ADDON.eventManager:Add('BAG_UPDATE_DELAYED', self)
     ADDON.eventManager:Add('BAG_UPDATE', self)
+    self:Refresh()
 end
 
 function bag:ClearNewItems()
