@@ -66,8 +66,8 @@
 			</Button>
 		</Frames>
 	</Frame>
-    <Frame name="DJBagsSettings" virtual="true" movable="true" enableMouse="true">
-    	<Size x="100" y="70" />
+    <Frame name="DJBagsSettings" inherits="DJBagsBackgroundTemplate" virtual="true" movable="true" enableMouse="true">
+    	<Size x="150" y="105" />
     	<Backdrop bgFile="Interface\ChatFrame\ChatFrameBackground" edgeFile="Interface\Buttons\WHITE8x8">
             <EdgeSize>
                 <AbsValue val="1" />
@@ -98,10 +98,32 @@
         			</OnShow>
         		</Scripts>
         	</Frame>
+			<Frame name="$parentScaleSettings" parentKey="scale" inherits="DJBagsNumberSelectTemplate">
+        		<Anchors>
+        			<Anchor point="TOPLEFT" relativeTo="$parentColumnsSettings" relativePoint="BOTTOMLEFT">
+        				<Offset>
+        					<AbsDimension x="0" y="-5" />
+        				</Offset>
+        			</Anchor>
+        			<Anchor point="TOPRIGHT" relativeTo="$parentColumnsSettings" relativePoint="BOTTOMRIGHT">
+        				<Offset>
+        					<AbsDimension x="0" y="-5" />
+        				</Offset>
+        			</Anchor>
+        		</Anchors>
+        		<Scripts>
+        			<OnLoad>
+        				DJBagsSettingsScaleLoad(self)
+        			</OnLoad>
+        			<OnShow>
+        				self.name:SetText("Scale: " .. (self:GetParent().bag.settings.scale or 1))
+        			</OnShow>
+        		</Scripts>
+        	</Frame>
         	<Button name="$parentCategorySettings" parentKey="categorySettings" inherits="UIPanelButtonTemplate" text="DJBAGS_CATEGORY_SETTINGS">
                 <Anchors>
-                    <Anchor point="TOPLEFT" relativeTo="$parentColumnsSettings" relativePoint="BOTTOMLEFT" y="-5" />
-                    <Anchor point="BOTTOMRIGHT" relativeTo="$parentColumnsSettings" relativePoint="BOTTOMRIGHT" y="-25" />
+                    <Anchor point="TOPLEFT" relativeTo="$parentScaleSettings" relativePoint="BOTTOMLEFT" y="-5" />
+                    <Anchor point="BOTTOMRIGHT" relativeTo="$parentScaleSettings" relativePoint="BOTTOMRIGHT" y="-25" />
                 </Anchors>
                 <Scripts>
                 	<OnClick>

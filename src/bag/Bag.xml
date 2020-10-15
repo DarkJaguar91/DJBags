@@ -1,19 +1,12 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/">
     <Script file="src/bag/bag.lua"/>
 
-    <Frame name="DJBagsBagBarTemplate" virtual="true" movable="true" enableMouse="true">
-        <Size x="173" y="47" />
-        <Backdrop bgFile="Interface\ChatFrame\ChatFrameBackground" edgeFile="Interface\Buttons\WHITE8x8">
-            <EdgeSize>
-                <AbsValue val="1" />
-            </EdgeSize>
-            <Color r="0" g="0" b="0" a="0.6" />
-            <BorderColor r="0.3" g="0.3" b="0.3" a="1" />
-        </Backdrop>
+    <Frame name="DJBagsBagBarTemplate" inherits="DJBagsBackgroundTemplate" virtual="true" movable="true" enableMouse="true">
+        <Size x="183" y="58" />
         <Frames>
             <ItemButton name="$parentBag1" parentKey="bag1">
                 <Anchors>
-                    <Anchor point="TOPLEFT" x="5" y="-5" />
+                    <Anchor point="TOPLEFT" x="10" y="-10" />
                 </Anchors>
                 <Scripts>
                     <OnLoad>
@@ -54,20 +47,13 @@
         </Frames>
     </Frame>
 
-    <Frame name="DJBagsMainBarTemplate" virtual="true" movable="true" enableMouse="true">
-        <Size x="365" y="25"/>
-        <Backdrop bgFile="Interface\ChatFrame\ChatFrameBackground" edgeFile="Interface\Buttons\WHITE8x8">
-            <EdgeSize>
-                <AbsValue val="1"/>
-            </EdgeSize>
-            <Color r="0" g="0" b="0" a="0.6"/>
-            <BorderColor r="0.3" g="0.3" b="0.3" a="1"/>
-        </Backdrop>
+    <Frame name="DJBagsMainBarTemplate" inherits="DJBagsBackgroundTemplate" virtual="true" movable="true" enableMouse="true">
+        <Size x="365" y="33"/>
         <Frames>
             <Button name="$parentSettingsBtn">
                 <Size x="16" y="16"/>
                 <Anchors>
-                    <Anchor point="RIGHT" relativePoint="RIGHT" relativeTo="$parent" x="-5"/>
+                    <Anchor point="RIGHT" relativePoint="RIGHT" relativeTo="$parent" x="-9"/>
                 </Anchors>
                 <NormalTexture file="Interface\Buttons\UI-GuildButton-PublicNote-Disabled"/>
                 <PushedTexture file="Interface\Buttons\UI-GuildButton-OfficerNote-Up"/>
@@ -206,22 +192,15 @@
         </Frames>
     </Frame>
 
-    <Frame name="DJBagsBag" frameStrata="MEDIUM" toplevel="true" movable="true" enableMouse="true"
+    <Frame name="DJBagsBag" inherits="DJBagsBackgroundTemplate" frameStrata="MEDIUM" toplevel="true" movable="true" enableMouse="true"
            hidden="true" parent="UIParent">
-        <Backdrop bgFile="Interface\ChatFrame\ChatFrameBackground" edgeFile="Interface\Buttons\WHITE8x8">
-            <EdgeSize>
-                <AbsValue val="1"/>
-            </EdgeSize>
-            <Color r="0" g="0" b="0" a="0.6"/>
-            <BorderColor r="0.3" g="0.3" b="0.3" a="1"/>
-        </Backdrop>
         <Anchors>
             <Anchor point="CENTER" />
         </Anchors>
         <Frames>
             <Frame name="$parentMainBar" parentKey="mainBar" inherits="DJBagsMainBarTemplate">
                 <Anchors>
-                    <Anchor point="TOPRIGHT" relativeTo="$parent" relativePoint="BOTTOMRIGHT" x="0" y="-5"/>
+                    <Anchor point="TOPRIGHT" relativeTo="$parent" relativePoint="BOTTOMRIGHT" x="0" y="0"/>
                 </Anchors>
             </Frame>                        
             <Button name="$parentClose" parentKey="close" inherits="UIPanelCloseButton">
@@ -263,5 +242,13 @@
                 self:OnHide()
             </OnHide>
         </Scripts>
+    </Frame>
+
+    <Frame name="DJBagsBag2" inhertis="DJBagsBackgroundTemplate" frameStrata="MEDIUM" toplevel="true" movable="true" enableMouse="true"
+           hidden="true" parent="UIParent">
+        <Size x="100" y="100" />
+        <Anchors>
+            <Anchor point="CENTER" relativeTo="UIParent" relativePoint="CENTER" />
+        </Anchors>
     </Frame>
 </Ui>

@@ -5,6 +5,7 @@ bag.__index = bag
 
 local settings = {
     padding = 5,
+    scale = 1,
     containerSpacing = 5,
     itemSpacing = 5,
     maxColumns = 10,
@@ -143,6 +144,8 @@ function bag:PLAYER_ENTERING_WORLD()
     self.settings = DJBags_DB.bagSettings[self:GetName()]
     -- Filters feature - ensure there is a table
     self.settings.filters = self.settings.filters or {}
+    
+    self:SetScale(self.settings.scale or 1)
 end
 
 function bag:BAG_UPDATE(bag)

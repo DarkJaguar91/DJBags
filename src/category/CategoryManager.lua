@@ -19,7 +19,7 @@ function categoryManager:GetTitle(item, filters)
     if item.id then
         local isInSet, setName = GetContainerItemEquipmentSetInfo(bag, slot)
 
-        if item.quality == LE_ITEM_QUALITY_POOR then
+        if item.quality == Enum.ItemQuality.Poor then
             return BAG_FILTER_JUNK
         end
 

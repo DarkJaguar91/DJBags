@@ -10,6 +10,7 @@ local locale = {
 	enUS = {
 		ALL_CHARACTERS = 'All Characters?',
 		COLUMNS = 'Columns: %d',
+		SCALE = 'Scale: %.2f',
 		CATEGORY_SETTINGS = "Category Settings",
 		CATEGORY_SETTINGS_FOR = "%s Category Settings"
 	}

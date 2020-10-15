@@ -24,6 +24,26 @@ function DJBagsSettingsColumnsLoad(self)
 	end
 end
 
-function DJBagsSettingsColumnsShow(self)
-	self:Update()
+function DJBagsSettingsScaleLoad(self)
+	function self:Update()
+		self.name:SetText(ADDON.locale.SCALE:format(self:GetParent().bag.settings.scale))
+	end
+	self.up.process = function() 
+		local currentCount = self:GetParent().bag.settings.scale or 1
+		if (currentCount < 1.7) then
+			self:GetParent().bag.settings.scale = currentCount + 0.02
+
+			self:Update()
+			self:GetParent().bag:SetScale(self:GetParent().bag.settings.scale)
+		end
+	end
+	self.down.process = function()
+		local currentCount = self:GetParent().bag.settings.scale or 1
+		if (currentCount > 0.2) then
+			self:GetParent().bag.settings.scale = currentCount - 0.02
+
+			self:Update()
+			self:GetParent().bag:SetScale(self:GetParent().bag.settings.scale)
+		end
+	end
 end

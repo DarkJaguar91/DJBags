@@ -112,20 +112,17 @@ local function UpdateNewItemAnimations(self, isNewItem, isBattlePayItem, quality
     end
 end
 
-local function UpdateFiltered(self, filtered, shouldDoRelicChecks, itemID)
+local function UpdateFiltered(self, filtered)
     if (filtered) then
         self.searchOverlay:Show();
     else
         self.searchOverlay:Hide();
-        if shouldDoRelicChecks then
-            ContainerFrame_ConsiderItemButtonForRelicTutorial(self, itemID);
-        end
     end
 end
 
 local function UpdateILevel(self, equipable, quality, level)
     if equipable then
-        if quality and quality >= LE_ITEM_QUALITY_COMMON then
+        if quality and quality >= Enum.ItemQuality.Common then
             self.itemLevel:SetVertexColor(BAG_ITEM_QUALITY_COLORS[quality].r, BAG_ITEM_QUALITY_COLORS[quality].g, BAG_ITEM_QUALITY_COLORS[quality].b)
         else
             self.itemLevel:SetVertexColor(1, 1, 1, 1)
@@ -209,12 +206,11 @@ function item:Update()
         local isQuestItem, questId, isActive = GetContainerItemQuestInfo(bag, self:GetID())
         local isNewItem = C_NewItems.IsNewItem(bag, self:GetID())
         local isBattlePayItem = IsBattlePayItem(bag, self:GetID())
-        local shouldDoRelicChecks = not BagHelpBox:IsShown() and not GetCVarBitfield("closedInfoFrames", LE_FRAME_TUTORIAL_ARTIFACT_RELIC_MATCH)
 
         self.hasItem = true
 
         if quality and MSQ then
-            if quality >= LE_ITEM_QUALITY_COMMON and BAG_ITEM_QUALITY_COLORS[quality] then
+            if quality >= Enum.ItemQuality.Common and BAG_ITEM_QUALITY_COLORS[quality] then
                 self.IconBorder:Show();
                 self.IconBorder:SetVertexColor(BAG_ITEM_QUALITY_COLORS[quality].r, BAG_ITEM_QUALITY_COLORS[quality].g, BAG_ITEM_QUALITY_COLORS[quality].b);
             else
@@ -230,9 +226,10 @@ function item:Update()
         SetItemButtonDesaturated(self, locked)
         UpdateQuest(self, isQuestItem, questId, isActive)
         UpdateNewItemAnimations(self, isNewItem, isBattlePayItem, quality)
-        UpdateFiltered(self, filtered, shouldDoRelicChecks, id)
+        UpdateFiltered(self, filtered)
         UpdateCooldown(self)
         UpdateUpgrade(self)
+        self:UpdateItemContextMatching()
     end
 end
 
@@ -242,8 +239,7 @@ end
 
 function item:UpdateSearch()
     local _, _, _, _, _, _, _, filtered, _, id = GetContainerItemInfo(self:GetParent():GetID(), self:GetID())
-    local shouldDoRelicChecks = not BagHelpBox:IsShown() and not GetCVarBitfield("closedInfoFrames", LE_FRAME_TUTORIAL_ARTIFACT_RELIC_MATCH)
-    self:SetFiltered(filtered, shouldDoRelicChecks)
+    self:SetFiltered(filtered)
 end
 
 function item:UpdateLock(locked)
@@ -251,8 +247,8 @@ function item:UpdateLock(locked)
     SetItemButtonDesaturated(self, locked);
 end
 
-function item:SetFiltered(filtered, shouldDoRelicChecks)
-    UpdateFiltered(self, filtered, shouldDoRelicChecks, self.id)
+function item:SetFiltered(filtered)
+    UpdateFiltered(self, filtered, self.id)
 end
 
 function item:IncrementCount(count)
